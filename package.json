@@ -1,0 +1,43 @@
+{
+  "name": "js-toolkit",
+  "version": "0.1.0",
+  "license": "AGPLv3.0",
+  "sideEffects": false,
+  "scripts": {
+    "doc": "",
+    "build": "",
+    "types:build": "tsc",
+    "test": "jest",
+    "lint": "eslint \"*/**/*.{ts,js,json}\"",
+    "lint:fix": "eslint \"*/**/*.{ts,js,json}\" --fix",
+    "prepublish": "npm run types:build && npm run build && npm run test && npm run lint",
+    "publish:public": "npm publish --access public"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.3.0",
+    "@commitlint/config-conventional": "^19.2.2",
+    "@types/eslint": "^8.56.10",
+    "@types/jest": "^29.5.12",
+    "@types/node": "^20.13.0",
+    "@typescript-eslint/eslint-plugin": "^7.11.0",
+    "@typescript-eslint/parser": "^7.11.0",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-filenames": "^1.3.2",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-prettier": "^5.1.3",
+    "husky": "^9.0.11",
+    "prettier": "^3.3.0",
+    "ts-jest": "^29.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run prepublish"
+    }
+  },
+  "dependencies": {
+    "lodash": "^4.17.21"
+  }
+}
