@@ -1,5 +1,5 @@
 {
-  "name": "js-toolkit",
+  "name": "@guebbit/js-toolkit",
   "version": "1.0.0",
   "license": "AGPLv3.0",
   "sideEffects": false,
