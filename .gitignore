@@ -4,9 +4,9 @@
 # IDE files
 .idea
 
-# cypress
-cypress/snapshots/
-cypress/videos/
+# vitepress
+.vitepress/dist
+.vitepress/cache
 
 # npm run build
 dist/
