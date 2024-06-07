@@ -23,3 +23,4 @@ export { default as sort } from "./src/sort";
 export { default as timeToSeconds } from "./src/timeToSeconds";
 export { default as toFormData } from "./src/toFormData";
 export { default as whitelist } from "./src/whitelist";
+//# sourceMappingURL=index.d.ts.map

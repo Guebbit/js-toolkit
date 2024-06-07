@@ -5,12 +5,11 @@
   "sideEffects": false,
   "scripts": {
     "doc": "",
-    "build": "",
-    "types:build": "tsc",
+    "build": "tsc",
     "test": "jest",
     "lint": "eslint \"*/**/*.{ts,js,json}\"",
     "lint:fix": "eslint \"*/**/*.{ts,js,json}\" --fix",
-    "prepublish": "npm run types:build && npm run build && npm run test && npm run lint",
+    "prepublish": "npm run build && npm run test && npm run lint",
     "publish:public": "npm publish --access public"
   },
   "devDependencies": {
