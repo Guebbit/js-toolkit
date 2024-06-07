@@ -1,4 +1,4 @@
-import { arrayDivide } from '../';
+import arrayDivide from './arrayDivide';
 
 /**
  * Divide array in N numbers of sub-arrays.
