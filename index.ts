@@ -26,8 +26,6 @@ export { default as match } from "./src/match";
 export { default as matrixTranspose } from "./src/matrixTranspose";
 export { default as rangeOverlaps } from "./src/rangeOverlaps";
 export { default as secondsToTime } from "./src/secondsToTime";
-export { default as setIntersection } from "./src/setIntersection";
-export { default as setLazyload, setLazyloadAttributes, setLazyloadLoadVideo, setLazyloadApplyToVideo, setLazyloadApplyToImage, setLazyloadApplyToSource } from "./src/setLazyload";
 export { default as sort } from "./src/sort";
 export { default as timeToSeconds } from "./src/timeToSeconds";
 export { default as toFormData } from "./src/toFormData";

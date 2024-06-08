@@ -1,13 +1,13 @@
 {
   "name": "@guebbit/js-toolkit",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "license": "AGPLv3.0",
   "sideEffects": false,
   "scripts": {
     "doc": "",
     "build": "tsc",
     "test": "jest",
-    "test:target": "jest /tests/setLazyload.test.ts",
+    "test:target": "jest /tests/filename.test.ts",
     "lint": "eslint \"*/**/*.{ts,js,json}\"",
     "lint:fix": "eslint \"*/**/*.{ts,js,json}\" --fix",
     "docs:dev": "vitepress dev --port 8080",
