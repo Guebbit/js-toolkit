@@ -1,4 +1,4 @@
-import { getIndex } from '../index';
+import { getIndex } from '../src';
 
 document.body.innerHTML =
 	'<div>'+

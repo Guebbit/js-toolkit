@@ -1,4 +1,4 @@
-import { timeToSeconds } from '../index';
+import { timeToSeconds } from '../src';
 
 describe("(timeToSeconds) Transform 'HH:MM:SS:ms' string in milliseconds integer", () => {
 	test("default", () => {

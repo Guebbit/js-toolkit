@@ -1,4 +1,4 @@
-import { match } from '../index';
+import { match } from '../src';
 
 describe("(match) Check 2 strings", () => {
 

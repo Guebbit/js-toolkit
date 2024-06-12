@@ -2,7 +2,7 @@
  * TODO REDO
  * CREATED WITH CHATGPT
  */
-import { eventDelegate } from '../index';
+import { eventDelegate } from '../src';
 
 describe('eventDelegate', () => {
   let parent: HTMLElement;

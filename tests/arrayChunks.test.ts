@@ -1,4 +1,4 @@
-import { arrayChunks } from '../';
+import { arrayChunks } from '../src';
 
 describe("(arrayChunks) divide array in [num] numbers of sub-arrays, lengths differ as less as possible", () => {
 	const input :string[] = [

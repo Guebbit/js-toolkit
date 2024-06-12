@@ -30,4 +30,3 @@ export { default as sort } from "./sort";
 export { default as timeToSeconds } from "./timeToSeconds";
 export { default as toFormData } from "./toFormData";
 export { default as whitelist } from "./whitelist";
-//# sourceMappingURL=index.d.ts.map

@@ -1,4 +1,4 @@
-import { getDelta } from '../index';
+import { getDelta } from '../src';
 
 
 describe("(getDelta) Math delta", () => {

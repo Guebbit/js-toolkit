@@ -1,4 +1,4 @@
-import { sort, arrayColumns } from '../index';
+import { sort, arrayColumns } from '../src';
 
 const input = [
   {

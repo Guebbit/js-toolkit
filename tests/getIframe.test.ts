@@ -1,4 +1,4 @@
-import { getIframe } from '../index';
+import { getIframe } from '../src';
 
 document.body.innerHTML =
 	'<iframe id="iframe-test">'+

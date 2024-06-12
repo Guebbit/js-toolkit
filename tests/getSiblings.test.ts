@@ -1,4 +1,4 @@
-import { getSiblings, appendChildren } from '../index';
+import { getSiblings, appendChildren } from '../src';
 
 document.body.innerHTML =
 	'<div>'+

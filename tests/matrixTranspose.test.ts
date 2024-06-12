@@ -1,4 +1,4 @@
-import { matrixTranspose } from '../index';
+import { matrixTranspose } from '../src';
 
 
 describe("(matrixTranspose) Transpose a matrix. Invert rows and columns", () => {

@@ -1,4 +1,4 @@
-import { arrayDepth } from '../';
+import { arrayDepth } from '../src';
 
 describe("(arrayDepth) Get depth of array", () => {
 

@@ -2,7 +2,7 @@
  * TODO REDO
  * CREATED WITH CHATGPT
  */
-import { formatNodeList } from '../index';
+import { formatNodeList } from '../src';
 
 describe("formatNodeList", () => {
   test("should return an empty array when given null", () => {

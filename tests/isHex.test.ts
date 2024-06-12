@@ -1,4 +1,4 @@
-import { isHex } from '../';
+import { isHex } from '../src';
 
 describe("(isObject) check if object", () => {
   test("3 with hash", () => {

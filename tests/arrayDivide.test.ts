@@ -1,4 +1,4 @@
-import { arrayDivide } from '../';
+import { arrayDivide } from '../src';
 
 describe("(arrayDivide) splits array in sub-arrays with MAX [num] elements", () => {
 	const input :string[] = [

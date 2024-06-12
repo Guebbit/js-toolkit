@@ -2,17 +2,25 @@
   "name": "@guebbit/js-toolkit",
   "version": "1.0.2",
   "license": "AGPLv3.0",
+  "main": "dist/index.js",
+  "types": "types/index.d.ts",
+  "files": [
+    "dist",
+    "types",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG"
+  ],
   "sideEffects": false,
   "scripts": {
-    "doc": "",
     "build": "tsc",
     "test": "jest",
     "test:target": "jest /tests/filename.test.ts",
     "lint": "eslint \"*/**/*.{ts,js,json}\"",
     "lint:fix": "eslint \"*/**/*.{ts,js,json}\" --fix",
-    "docs:dev": "vitepress dev --port 8080",
-    "docs:build": "vitepress build",
-    "docs:preview": "vitepress preview",
+    "docs:dev": "vitepress dev docs --port 8080",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs",
     "prepublish": "npm run build && npm run test && npm run lint && npm run docs:build",
     "publish:public": "npm run prepublish && npm publish --access public"
   },
@@ -43,8 +51,5 @@
     "hooks": {
       "pre-commit": "npm run prepublish"
     }
-  },
-  "dependencies": {
-    "lodash": "^4.17.21"
   }
 }

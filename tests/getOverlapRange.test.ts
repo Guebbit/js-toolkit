@@ -1,4 +1,4 @@
-import { getOverlapRange } from '../index';
+import { getOverlapRange } from '../src';
 
 describe("(getOverlapRange) check if 2 range overlap then return the START and END period of the overlap", () => {
   test("Same time", () => {

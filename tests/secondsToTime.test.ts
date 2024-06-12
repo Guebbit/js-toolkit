@@ -1,4 +1,4 @@
-import { secondsToTime } from '../index';
+import { secondsToTime } from '../src';
 
 describe("(secondsToTime) Transform a milliseconds integer in an object with all possible time variations", () => {
 	test("12 hours and 30 minutes", () => {

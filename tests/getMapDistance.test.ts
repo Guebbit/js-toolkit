@@ -1,4 +1,4 @@
-import { getMapDistance } from '../index';
+import { getMapDistance } from '../src';
 
 
 describe("(getMapDistance) Distance between 2 points, like coordinates on a map A(x,y) & B(x,y)", () => {

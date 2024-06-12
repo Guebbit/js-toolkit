@@ -1,4 +1,4 @@
-import { hexToRgb } from '../index';
+import { hexToRgb } from '../src';
 
 describe("(secondsToTime) Transform a milliseconds integer in an object with all possible time variations", () => {
   test("Black", () => {

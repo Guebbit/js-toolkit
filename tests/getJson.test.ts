@@ -1,4 +1,4 @@
-import { getJson } from '../index';
+import { getJson } from '../src';
 
 describe("(getJson) Safe conversion of JSON", () => {
 

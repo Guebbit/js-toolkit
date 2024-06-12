@@ -1,4 +1,4 @@
-import { isJson } from '../';
+import { isJson } from '../src';
 
 describe("(isJson) check if JSON is valid", () => {
 	test("Empty string", () => {

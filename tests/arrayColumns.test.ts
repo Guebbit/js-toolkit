@@ -1,4 +1,4 @@
-import { arrayColumns } from '../index';
+import { arrayColumns } from '../src';
 
 describe("(arrayColumns) php equivalent of arrayColumns - but extended to use an array of columns", () => {
   const input = [
