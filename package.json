@@ -1,6 +1,6 @@
 {
   "name": "@guebbit/js-toolkit",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "license": "AGPLv3.0",
   "main": "dist/index.js",
   "types": "types/index.d.ts",
