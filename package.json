@@ -1,6 +1,6 @@
 {
   "name": "@guebbit/js-toolkit",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "license": "AGPLv3.0",
   "main": "dist/index.js",
   "types": "types/index.d.ts",
@@ -15,7 +15,7 @@
   "scripts": {
     "build": "tsc",
     "test": "jest",
-    "test:target": "jest /tests/eventDelegate.test.ts",
+    "test:target": "jest /tests/getElementCenter.test.ts",
     "lint": "eslint \"*/**/*.{ts,js,json}\"",
     "lint:fix": "eslint \"*/**/*.{ts,js,json}\" --fix",
     "docs:dev": "vitepress dev docs --port 8080",
@@ -29,7 +29,7 @@
     "@commitlint/config-conventional": "^19.2.2",
     "@types/eslint": "^8.56.10",
     "@types/jest": "^29.5.12",
-    "@types/node": "^20.13.0",
+    "@types/node": "^22.5.0",
     "@typescript-eslint/eslint-plugin": "^7.11.0",
     "@typescript-eslint/parser": "^7.11.0",
     "eslint": "^8.56.0",

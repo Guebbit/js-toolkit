@@ -7,6 +7,7 @@ export { default as associativeSlice } from "./associativeSlice";
 export { default as eventDelegate } from "./eventDelegate";
 export { default as formatNodeList } from "./formatNodeList";
 export { default as getDelta } from "./getDelta";
+export { default as getElementCenter } from "./getElementCenter";
 export { default as getForm } from "./getForm";
 export { default as getIframe } from "./getIframe";
 export { default as getIndex } from "./getIndex";
