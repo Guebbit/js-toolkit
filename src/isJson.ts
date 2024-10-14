@@ -7,6 +7,7 @@ export default <T>(test :string) :Record<string, T> | false => {
 	try {
 		return JSON.parse(test);
 	} catch (e) {
+    console.error(e);
 		return false;
 	}
 }

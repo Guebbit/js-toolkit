@@ -40,12 +40,15 @@ export default (time = 0) => {
   let timeDepletion = time;
   const timeObject :ISecondsToTimeMap = {};
   // loop
-  for(const key in timeFactory)
+  for(const key in timeFactory){
     if(key && Object.prototype.hasOwnProperty.call(timeFactory, key) && timeFactory[key]){
       timeObject[key + 'Only' as keyof ISecondsToTimeMap] = Math.floor(time / timeFactory[key]!);
       timeObject[key as keyof ISecondsToTimeMap] = Math.floor(timeDepletion / timeFactory[key]!);
       timeDepletion -= timeObject[key as keyof ISecondsToTimeMap]! * timeFactory[key as keyof ISecondsToTimeMap]!;
     }
+  }
   // final object
   return timeObject;
 };
+
+

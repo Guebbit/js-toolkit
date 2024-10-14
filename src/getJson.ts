@@ -12,6 +12,8 @@ export default (json ?:string) :unknown | undefined => {
   try {
     decoded = JSON.parse(json)
     // eslint-disable-next-line no-empty
-  } catch (e) {}
+  } catch (e) {
+    console.error(e);
+  }
   return decoded;
 }
