@@ -24,22 +24,19 @@ e non so come evitarlo o che fanno)
 	[forEach] => function forEach() { [native code] }
 	[entries] => function entries() { [native code] }
 */
-const toFormData = (obj :Record<string, unknown>, form :FormData | null = null, namespace :string | null = null) :FormData => {
-	const fd = form || new FormData();
+const toFormData = (object:Record<string, unknown>, form?: FormData, namespace?: string) :FormData => {
+	const fd = form ?? new FormData();
 	let formKey :string;
-	for(const property in obj) {
-		if(Object.prototype.hasOwnProperty.call(obj, property)) {
-			if(namespace)
-				formKey = namespace + '[' + property + ']';
-			else
-				formKey = property;
+	for(const property in object) {
+		if(Object.prototype.hasOwnProperty.call(object, property)) {
+			formKey = namespace ? namespace + '[' + property + ']' : property;
 			// if the property is an object, but not a File,
 			// use recursivity.
-			if(typeof obj[property] === 'object' && !(obj[property] instanceof File))
-				toFormData(obj[property] as Record<string, unknown>, fd, property);
+			if(typeof object[property] === 'object' && !(object[property] instanceof File))
+				toFormData(object[property] as Record<string, unknown>, fd, property);
 			else
 				// if it's a string or a File object
-				fd.append(formKey, obj[property] as string | Blob);
+				fd.append(formKey, object[property] as string | Blob);
 		}
 	}
 	return fd;

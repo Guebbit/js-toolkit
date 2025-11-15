@@ -11,7 +11,7 @@ describe("(getJson) Safe conversion of JSON", () => {
   test("Random string", () => {
     expect(
       getJson("12345")
-    ).toBe(12345)
+    ).toBe(12_345)
   });
 
   test("Empty object (json)", () => {

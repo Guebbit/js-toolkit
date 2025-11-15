@@ -3,7 +3,7 @@ import { secondsToTime } from '../src';
 describe("(secondsToTime) Transform a milliseconds integer in an object with all possible time variations", () => {
 	test("12 hours and 30 minutes", () => {
     expect(
-      secondsToTime(45000000)
+      secondsToTime(45_000_000)
     ).toEqual({
       years: 0,
       yearsOnly: 0,
@@ -18,15 +18,15 @@ describe("(secondsToTime) Transform a milliseconds integer in an object with all
       minutes: 30,
       minutesOnly: 750,
       seconds: 0,
-      secondsOnly: 45000,
+      secondsOnly: 45_000,
       milliseconds: 0,
-      millisecondsOnly: 45000000
+      millisecondsOnly: 45_000_000
     });
 	});
 
   test("timestamp", () => {
     expect(
-      secondsToTime(1651440376000)
+      secondsToTime(1_651_440_376_000)
     ).toEqual({
       years: 52,
       yearsOnly: 52,
@@ -35,15 +35,15 @@ describe("(secondsToTime) Transform a milliseconds integer in an object with all
       weeks: 1,
       weeksOnly: 2730,
       days: 6,
-      daysOnly: 19113,
+      daysOnly: 19_113,
       hours: 21,
-      hoursOnly: 458733,
+      hoursOnly: 458_733,
       minutes: 26,
-      minutesOnly: 27524006,
+      minutesOnly: 27_524_006,
       seconds: 16,
-      secondsOnly: 1651440376,
+      secondsOnly: 1_651_440_376,
       milliseconds: 0,
-      millisecondsOnly: 1651440376000
+      millisecondsOnly: 1_651_440_376_000
     });
   })
 

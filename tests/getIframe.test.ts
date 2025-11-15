@@ -10,7 +10,7 @@ describe("(getIframe) Get Iframe content", () => {
 
 	test(" - ", () => {
 		expect(
-			getIframe(document.getElementById('iframe-test'))!.tagName
+			getIframe(document.querySelector('#iframe-test'))?.tagName
 		).toEqual('BODY')
 	});
 

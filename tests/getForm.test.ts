@@ -18,7 +18,7 @@ describe("(getForm) Get all form-like values paired with their name (ignored if 
 
 	test("Input", () => {
 		expect(
-			getForm(document.getElementById('form-test'))
+			getForm(document.querySelector('#form-test'))
 		).toEqual({
       // eslint-disable-next-line @typescript-eslint/naming-convention
 			"checkbox-test": true,

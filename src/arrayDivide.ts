@@ -6,5 +6,5 @@
  */
 export default <T>(array: T[], n = 0): T[][] => {
   const items: T[] = Object.assign([], array);
-  return new Array(Math.ceil(items.length / n)).fill([]).map(() => items.splice(0, n));
+  return Array.from({length: Math.ceil(items.length / n)}).fill([]).map(() => items.splice(0, n));
 }

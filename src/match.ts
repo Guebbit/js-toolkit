@@ -26,10 +26,10 @@ export default (check = '', match = '', sensitive = false, distance = -1) :boole
   if(check === match)
     return true;
   // (2-way) is one a substring of the other
-  if(distance === -2 && (check.indexOf(match) !== -1 || match.indexOf(check) !== -1))
+  if(distance === -2 && (check.includes(match) || match.includes(check)))
     return true;
   // (1-way) if {check} is substring of {match}
-  if(distance === -1 && match.indexOf(check) !== -1)
+  if(distance === -1 && match.includes(check))
     return true;
   // (2-way) fuzzy search: levenshtein distance must be lower or equal the requested distance
   return distance > 0 && levenshteinDistance(check, match) <= distance;

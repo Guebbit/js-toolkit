@@ -3,45 +3,45 @@ import { match } from '../src';
 describe("(match) Check 2 strings", () => {
 
 	test("[case insensitive] Check if they are the same string", () =>
-    expect(
+    { expect(
       match('lorem ipsum', 'Lorem Ipsum')
-    ).toBeTruthy()
+    ).toBeTruthy(); }
 	);
 
 	test("[case sensitive] Check if they are the same string", () =>
-		expect(
+		{ expect(
 			match('lorem ipsum', 'Lorem Ipsum', true)
-		).toBeFalsy()
+		).toBeFalsy(); }
 	);
 
   test("[distance -1, case insensitive] 1-way check if 1° parameter is substring contained in the 2°", () =>
-    expect(
+    { expect(
       match('Ipsum', 'lorem ipsum sit dolor')
-    ).toBeTruthy()
+    ).toBeTruthy(); }
   );
 
   test("[distance -1, case sensitive] 1-way check if 1° parameter is substring contained in the 2°", () =>
-    expect(
+    { expect(
       match('Ipsum', 'lorem ipsum sit dolor', true)
-    ).toBeFalsy()
+    ).toBeFalsy(); }
   );
 
   test("[distance -2] 2-way Check substring contained in a string", () =>
-    expect(
+    { expect(
       match('Ipsum', 'lorem ipsum sit dolor', false, -2) &&
       match('lorem ipsum sit dolor', 'Ipsum', false, -2)
-    ).toBeTruthy()
+    ).toBeTruthy(); }
   );
 
   test("[distance 2, case insensitive] Check if they are similar (Levenshtein Distance)", () =>
-    expect(
+    { expect(
       match('lorem ipsum', 'lorem ispum', false, 2)
-    ).toBeTruthy()
+    ).toBeTruthy(); }
   );
 
   test("[distance 4, case sensitive] Check if they are similar (sensitive count as distance)", () =>
-    expect(
+    { expect(
       match('lorem ipsum', 'Lorem Ispum', true, 4)
-    ).toBeTruthy()
+    ).toBeTruthy(); }
   )
 });

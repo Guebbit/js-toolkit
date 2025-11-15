@@ -18,7 +18,7 @@ describe('eventDelegate', () => {
     `;
 
     parent = document.body; // document.getElementById('parent') as HTMLElement;
-    child = document.getElementById('child') as HTMLElement;
+    child = document.querySelector('#child')!;
     callback = jest.fn();
     // Simulate click event
     mouseEvent = new MouseEvent('click', { bubbles: true });

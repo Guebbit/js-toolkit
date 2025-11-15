@@ -48,11 +48,11 @@ export function check(item1 :unknown, item2 :unknown, order: ISortParameterOrder
  * @param {Object[]} haystack
  * @param {[string, number][]} parameters
  */
-export default (haystack :Array<Record<string, unknown>>, parameters :ISortParameterType[] = []) => {
-  return [...haystack].sort((item1, item2) => {
-    for(let i = 0, len = parameters.length; i < len; i++){
-      const [ key, order ] = parameters[i]!;
-      const result = check(item1[key as keyof typeof item1], item2[key as keyof typeof item2], order || 0);
+export default (haystack :Record<string, unknown>[], parameters :ISortParameterType[] = []) => {
+  return [...haystack].toSorted((item1, item2) => {
+    for(let index = 0, length_ = parameters.length; index < length_; index++){
+      const [ key, order ] = parameters[index];
+      const result = check(item1[key], item2[key], order || 0);
       if(result === 0)
         continue;
       return result;

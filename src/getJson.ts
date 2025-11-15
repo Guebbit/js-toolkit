@@ -5,15 +5,14 @@
  * @param {string} json
  * @return {Object?}
  */
-export default (json ?:string) :unknown | undefined => {
-  if(!json)
-    return;
-  let decoded :unknown = undefined;
-  try {
-    decoded = JSON.parse(json)
-    // eslint-disable-next-line no-empty
-  } catch (e) {
-    console.error(e);
-  }
-  return decoded;
+export default (json?: string): unknown => {
+    if (!json) return
+    let decoded: unknown = undefined
+    try {
+        decoded = JSON.parse(json)
+    } catch (error) {
+        //eslint-disable-next-line no-console
+        console.error(error)
+    }
+    return decoded
 }

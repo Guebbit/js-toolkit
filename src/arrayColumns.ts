@@ -8,19 +8,19 @@
  * @param {string} columns
  * @return {Array<Array<unknown>>>}
  */
-export default (haystack: Record<string, unknown>[], columns: string | string[]): Array<unknown | unknown[]> => {
+export default (haystack: Record<string, unknown>[], columns: string | string[]): unknown[] => {
   const resultArray = [];
   const isMulticolumn = Array.isArray(columns);
   const columnsArray = isMulticolumn ? columns : [columns];
   // filter
-  for(let i = 0, len = haystack.length; i < len; i++){
+  for(let index = 0, length_ = haystack.length; index < length_; index++){
     const semiResultArray = [];
     for(let k = 0, lenk = columnsArray.length; k < lenk; k++)
       semiResultArray.push(
-        haystack[i] &&
+        haystack[index] &&
         columnsArray[k] &&
-        Object.prototype.hasOwnProperty.call(haystack[i], columnsArray[k]!) ?
-          haystack[i]![columnsArray[k]!] : undefined
+        Object.prototype.hasOwnProperty.call(haystack[index], columnsArray[k]) ?
+          haystack[index][columnsArray[k]] : undefined
       )
     // Remove the extra layer if I added it
     resultArray.push(isMulticolumn ? semiResultArray : semiResultArray[0]);

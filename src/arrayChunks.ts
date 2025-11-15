@@ -9,20 +9,20 @@ import arrayDivide from './arrayDivide';
  */
 export default <T>(array: T[], n: number) :T[][] => {
   const items = Object.assign([] as T[], array),
-    len = items.length,
+    length_ = items.length,
     output: T[][] = [];
-  let i = 0;
+  let index = 0;
 
   if (n < 1)
     return [];
   if (n < 2)
     return [items];
-  if (len % n === 0)
-    return arrayDivide(items, Math.floor(len / n));
+  if (length_ % n === 0)
+    return arrayDivide(items, Math.floor(length_ / n));
 
-  while (i < len)
+  while (index < length_)
     output.push(
-      items.slice(i, i += Math.ceil((len - i) / n--))
+      items.slice(index, index += Math.ceil((length_ - index) / n--))
     );
   return output;
 }

@@ -33,7 +33,7 @@ describe("(levenshteinDistance) Levenshtein Distance from 2 strings (0)", () => 
 	});
 	test("A missing string (11)", () => {
 		expect(
-			levenshteinDistance('lorem ipsum', null)
+			levenshteinDistance('lorem ipsum')
 		).toBe(11);
 	});
 });

@@ -10,6 +10,6 @@ document.body.innerHTML =
 
 describe("(getIndex) get index of element (nth child of parent)", () => {
 	test("Element only", () => {
-		expect(getIndex(document.getElementById('testContent'))).toBe(2)
+		expect(getIndex(document.querySelector('#testContent'))).toBe(2)
 	});
 });

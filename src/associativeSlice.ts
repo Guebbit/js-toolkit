@@ -7,15 +7,15 @@
  * @param end - end of slice
  * @return object sliced associative array / object to slice
  */
-export default (obj :Record<string, unknown>, start :number, end :number) :Record<string, unknown> => {
+export default (object:Record<string, unknown>, start :number, end :number) :Record<string, unknown> => {
 	const sliced :Record<string, unknown> = {};
-	let i = 0;
-	for (const k in obj) {
-		if(Object.prototype.hasOwnProperty.call(obj, k)){
-			if (i >= start && i < end){
-				sliced[k] = obj[k];
+	let index = 0;
+	for (const k in object) {
+		if(Object.prototype.hasOwnProperty.call(object, k)){
+			if (index >= start && index < end){
+				sliced[k] = object[k];
 			}
-			i++;
+			index++;
 		}
 	}
 	return sliced;

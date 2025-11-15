@@ -6,7 +6,7 @@ import { formatNodeList } from '../src';
 
 describe("formatNodeList", () => {
   test("should return an empty array when given null", () => {
-    expect(formatNodeList(null)).toEqual([]);
+    expect(formatNodeList()).toEqual([]);
   });
 
   test("should convert a single HTMLElement to an array", () => {
@@ -25,7 +25,7 @@ describe("formatNodeList", () => {
   test("should convert a NodeList to an array", () => {
     document.body.innerHTML = '<div></div><span></span>';
     const nodeList = document.querySelectorAll('div, span');
-    expect(formatNodeList(nodeList)).toEqual(Array.from(nodeList));
+    expect(formatNodeList(nodeList)).toEqual([...nodeList]);
   });
 
 

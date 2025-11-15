@@ -13,15 +13,15 @@ export default (
   eventName: string,
   childSelector: string | Node,
   callback: (this: Element, event: Event) => void,
-  parent: Node | Window = window,
+  parent: Node | Window | typeof globalThis = globalThis,
 ): void => {
-  return parent.addEventListener(eventName, function (event: Event) {
+  parent.addEventListener(eventName, function (event: Event) {
     const clickedElement = event.target;
     let matchingChild: Element | undefined;
 
     // if it's a string, get the closest element
     if (typeof childSelector === "string")
-      matchingChild = (clickedElement as Element).closest(childSelector as string)!;
+      matchingChild = (clickedElement as Element).closest(childSelector)!;
     // if it's an element, check
     else if (childSelector.contains(clickedElement as Element))
       matchingChild = clickedElement as Element;

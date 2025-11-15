@@ -9,16 +9,16 @@ import getValue from "./getValue";
 export default (form :HTMLElement | null, selectors = "input, textarea, select") :Record<string, unknown> => {
 	if(!form)
 		return {};
-	let i :number;
-  let temp :string | null;
+	let index:number;
+  let temporary:string | null;
 
 	const results :Record<string, unknown> = {};
-  const	elementsArray = Array.from(form.querySelectorAll(selectors));
+  const	elementsArray = [...form.querySelectorAll(selectors)];
 
-	for (i = elementsArray.length; i--; ){
-		temp = (elementsArray[i] as HTMLElement).getAttribute("name");
-		if(temp)
-			results[temp] = getValue(elementsArray[i] as HTMLElement);
+	for (index = elementsArray.length; index--; ){
+		temporary = (elementsArray[index] as HTMLElement).getAttribute("name");
+		if(temporary)
+			results[temporary] = getValue(elementsArray[index] as HTMLElement);
 	}
 	return results;
 }

@@ -9,5 +9,5 @@ export default (element :HTMLElement | null) :number => {
 	const parent :HTMLElement | null = element.parentElement;
 	if(!parent)
 		return -1;
-	return Array.from(parent.children).indexOf(element);
+	return [...parent.children].indexOf(element);
 }

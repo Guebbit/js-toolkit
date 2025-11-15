@@ -5,5 +5,5 @@
  */
 export default (date= '', delimiter = ':') :number => {
   const [hours = '0', minutes = '0', seconds = '0', milliseconds = '0'] = date.split(delimiter);
-  return (parseInt(hours)*3600 + parseInt(minutes)*60 + parseInt(seconds)) * 1000 + parseInt(milliseconds)
+  return (Number.parseInt(hours)*3600 + Number.parseInt(minutes)*60 + Number.parseInt(seconds)) * 1000 + Number.parseInt(milliseconds)
 };

@@ -12,7 +12,7 @@ describe("(getSiblings) get siblings of element", () => {
 	test("Input", () => {
 		const wrapper = document.createElement('div');
 		expect(
-			appendChildren(wrapper, ...getSiblings(document.getElementById('testSpan'))).innerHTML
+			appendChildren(wrapper, ...getSiblings(document.querySelector('#testSpan'))).innerHTML
 		).toEqual('<span>Lorem</span><span>Sit</span><span>Dolor</span>')
 	});
 

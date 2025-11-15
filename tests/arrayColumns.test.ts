@@ -43,7 +43,7 @@ describe("(arrayColumns) php equivalent of arrayColumns - but extended to use an
 
   test("When having a single haystack or a single column, wrap in array", () => {
     expect(
-      arrayColumns([input[2]!], ["param1"])
+      arrayColumns([input[2]], ["param1"])
     ).toEqual([['adipiscing']]);
   });
 

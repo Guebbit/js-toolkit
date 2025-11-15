@@ -12,43 +12,43 @@
  * @param a - string to check
  * @param b - same as above, order is not important
  */
-export default (a :string | null | undefined, b :string | null | undefined) :number => {
+export default (a ?:string | null, b ?:string | null) :number => {
 	//declaration
 	const matrix:number[][] = [];
-	let i :number,
-		j :number;
+	let index:number,
+		index_:number;
 
 	if(!a && !b)
 		return 999;
 	if(a === b)
 		return 0;
 	//checks
-	if(!a || a.length == 0)
+	if(!a || a.length === 0)
 		return b!.length;
-  if(!b || b.length == 0)
+  if(!b || b.length === 0)
 		return a.length;
 
 
 	// increment along the first column of each row
-	for(i = 0; i <= b.length; i++)
-		matrix[i] = [i];
+	for(index = 0; index <= b.length; index++)
+		matrix[index] = [index];
     // increment each column in the first row
-	for(j = 0; j <= a.length; j++)
-		matrix[0][j] = j;
+	for(index_ = 0; index_ <= a.length; index_++)
+		matrix[0][index_] = index_;
 
 	// Fill in the rest of the matrix
-	for(i = 1; i <= b.length; i++)
-		for(j = 1; j <= (a as string).length; j++)
-			if(b.charAt(i-1) == (a as string).charAt(j-1))
-				matrix[i][j] = matrix[i-1][j-1];
-			else
-				matrix[i][j] = Math.min(
-					matrix[i-1][j-1] + 1, // substitution
-					Math.min(
-						matrix[i][j-1] + 1, // insertion
-						matrix[i-1][j] + 1	// deletion
-					)
-				);
+	for(index = 1; index <= b.length; index++)
+		for(index_ = 1; index_ <= (a).length; index_++)
+			matrix[index][index_] =
+                b.charAt(index - 1) == a.charAt(index_ - 1)
+                    ? matrix[index - 1][index_ - 1]
+                    : Math.min(
+                          matrix[index - 1][index_ - 1] + 1, // substitution
+                          Math.min(
+                              matrix[index][index_ - 1] + 1, // insertion
+                              matrix[index - 1][index_] + 1 // deletion
+                          )
+                      )
 
   	//result
     return matrix[b.length][a.length];
