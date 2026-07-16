@@ -1,52 +1,35 @@
-import { getJson } from '../src';
+import { getJson } from '../src'
 
-describe("(getJson) Safe conversion of JSON", () => {
+describe('(getJson) Safe conversion of JSON', () => {
+    test('Empty', () => {
+        expect(getJson()).toBeFalsy()
+    })
 
-  test("Empty", () => {
-    expect(
-      getJson()
-    ).toBeFalsy()
-  });
+    test('Random string', () => {
+        expect(getJson('12345')).toBe(12_345)
+    })
 
-  test("Random string", () => {
-    expect(
-      getJson("12345")
-    ).toBe(12_345)
-  });
+    test('Empty object (json)', () => {
+        expect(getJson('{}')).toBeTruthy()
+    })
 
-  test("Empty object (json)", () => {
-    expect(
-      getJson("{}")
-    ).toBeTruthy()
-  });
+    test('Empty array (json)', () => {
+        expect(getJson('[]')).toBeTruthy()
+    })
 
-  test("Empty array (json)", () => {
-    expect(
-      getJson("[]")
-    ).toBeTruthy()
-  });
+    test('Wrong object (json)', () => {
+        expect(getJson("{ 'test': 'toast' }")).toBeFalsy()
+    })
 
-  test("Wrong object (json)", () => {
-    expect(
-      getJson("{ 'test': 'toast' }")
-    ).toBeFalsy()
-  });
+    test('Wrong array (json)', () => {
+        expect(getJson("['bim', 'bum', 'bam']")).toBeFalsy()
+    })
 
-  test("Wrong array (json)", () => {
-    expect(
-      getJson("['bim', 'bum', 'bam']")
-    ).toBeFalsy()
-  });
+    test('Correct object (json)', () => {
+        expect(getJson('{"test":"toast","lorem":"ipsum"}')).toBeTruthy()
+    })
 
-  test("Correct object (json)", () => {
-    expect(
-      getJson("{\"test\":\"toast\",\"lorem\":\"ipsum\"}")
-    ).toBeTruthy()
-  });
-
-  test("Correct array (json)", () => {
-    expect(
-      getJson("[\"bim\",\"bum\",\"bam\"]")
-    ).toBeTruthy()
-  });
-});
+    test('Correct array (json)', () => {
+        expect(getJson('["bim","bum","bam"]')).toBeTruthy()
+    })
+})

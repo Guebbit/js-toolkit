@@ -24,22 +24,26 @@ e non so come evitarlo o che fanno)
 	[forEach] => function forEach() { [native code] }
 	[entries] => function entries() { [native code] }
 */
-const toFormData = (object:Record<string, unknown>, form?: FormData, namespace?: string) :FormData => {
-	const fd = form ?? new FormData();
-	let formKey :string;
-	for(const property in object) {
-		if(Object.prototype.hasOwnProperty.call(object, property)) {
-			formKey = namespace ? namespace + '[' + property + ']' : property;
-			// if the property is an object, but not a File,
-			// use recursivity.
-			if(typeof object[property] === 'object' && !(object[property] instanceof File))
-				toFormData(object[property] as Record<string, unknown>, fd, property);
-			else
-				// if it's a string or a File object
-				fd.append(formKey, object[property] as string | Blob);
-		}
-	}
-	return fd;
+const toFormData = (
+    object: Record<string, unknown>,
+    form?: FormData,
+    namespace?: string
+): FormData => {
+    const fd = form ?? new FormData()
+    let formKey: string
+    for (const property in object) {
+        if (Object.prototype.hasOwnProperty.call(object, property)) {
+            formKey = namespace ? namespace + '[' + property + ']' : property
+            // if the property is an object, but not a File,
+            // use recursivity.
+            if (typeof object[property] === 'object' && !(object[property] instanceof File))
+                toFormData(object[property] as Record<string, unknown>, fd, property)
+            else
+                // if it's a string or a File object
+                fd.append(formKey, object[property] as string | Blob)
+        }
+    }
+    return fd
 }
 
-export default toFormData;
+export default toFormData

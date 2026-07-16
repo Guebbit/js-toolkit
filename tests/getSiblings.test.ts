@@ -1,19 +1,18 @@
-import { getSiblings, appendChildren } from '../src';
+import { getSiblings, appendChildren } from '../src'
 
 document.body.innerHTML =
-	'<div>'+
-		'<span>Lorem</span>'+
-		'<span id="testSpan">Ipsum</span>'+
-		'<span>Sit</span>'+
-		'<span>Dolor</span>'+
-	'</div>';
+    '<div>' +
+    '<span>Lorem</span>' +
+    '<span id="testSpan">Ipsum</span>' +
+    '<span>Sit</span>' +
+    '<span>Dolor</span>' +
+    '</div>'
 
-describe("(getSiblings) get siblings of element", () => {
-	test("Input", () => {
-		const wrapper = document.createElement('div');
-		expect(
-			appendChildren(wrapper, ...getSiblings(document.querySelector('#testSpan'))).innerHTML
-		).toEqual('<span>Lorem</span><span>Sit</span><span>Dolor</span>')
-	});
-
-});
+describe('(getSiblings) get siblings of element', () => {
+    test('Input', () => {
+        const wrapper = document.createElement('div')
+        expect(
+            appendChildren(wrapper, ...getSiblings(document.querySelector('#testSpan'))).innerHTML
+        ).toEqual('<span>Lorem</span><span>Sit</span><span>Dolor</span>')
+    })
+})

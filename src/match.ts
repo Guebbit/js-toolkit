@@ -1,4 +1,4 @@
-import levenshteinDistance from "./levenshteinDistance";
+import levenshteinDistance from './levenshteinDistance'
 
 /**
  * Match if 2 strings are similar
@@ -13,24 +13,21 @@ import levenshteinDistance from "./levenshteinDistance";
  *  0: then they must be the same
  *  1+: maximum distance to be accepted
  */
-export default (check = '', match = '', sensitive = false, distance = -1) :boolean => {
-  // Since they are not objects I can change them without worrying about unwanted changes
-  check = check.trim();
-  match = match.trim();
-  // if case insensitive
-  if(!sensitive){
-    check = check.toLowerCase();
-    match = match.toLowerCase();
-  }
-  // (2-way) if they are the same
-  if(check === match)
-    return true;
-  // (2-way) is one a substring of the other
-  if(distance === -2 && (check.includes(match) || match.includes(check)))
-    return true;
-  // (1-way) if {check} is substring of {match}
-  if(distance === -1 && match.includes(check))
-    return true;
-  // (2-way) fuzzy search: levenshtein distance must be lower or equal the requested distance
-  return distance > 0 && levenshteinDistance(check, match) <= distance;
+export default (check = '', match = '', sensitive = false, distance = -1): boolean => {
+    // Since they are not objects I can change them without worrying about unwanted changes
+    check = check.trim()
+    match = match.trim()
+    // if case insensitive
+    if (!sensitive) {
+        check = check.toLowerCase()
+        match = match.toLowerCase()
+    }
+    // (2-way) if they are the same
+    if (check === match) return true
+    // (2-way) is one a substring of the other
+    if (distance === -2 && (check.includes(match) || match.includes(check))) return true
+    // (1-way) if {check} is substring of {match}
+    if (distance === -1 && match.includes(check)) return true
+    // (2-way) fuzzy search: levenshtein distance must be lower or equal the requested distance
+    return distance > 0 && levenshteinDistance(check, match) <= distance
 }

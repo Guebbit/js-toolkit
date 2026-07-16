@@ -13,6 +13,17 @@
  * @param {number} sameUnitOverlap - same unit is or isn't overlap
  * @return {number}
  */
-export default (firstStart :number, firstEnd :number, secondStart :number, secondEnd :number, sameUnitOverlap = false) :number => {
-  return Math.max(Math.min(firstEnd, secondEnd) - Math.max(firstStart, secondStart) + (sameUnitOverlap ? 1 : 0), 0);
+export default (
+    firstStart: number,
+    firstEnd: number,
+    secondStart: number,
+    secondEnd: number,
+    sameUnitOverlap = false
+): number => {
+    return Math.max(
+        Math.min(firstEnd, secondEnd) -
+            Math.max(firstStart, secondStart) +
+            (sameUnitOverlap ? 1 : 0),
+        0
+    )
 }

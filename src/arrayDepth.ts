@@ -3,10 +3,10 @@
  *
  * @param {*} check
  */
-function arrayDepth<T>(check: T | T[]) :number {
-  return Array.isArray(check) ?
-    1 + Math.max(0, ...check.map((element) => arrayDepth(element))) :
-    0;
+function arrayDepth<T>(check: T | T[]): number {
+    return Array.isArray(check)
+        ? 1 + Math.max(0, ...check.map((element) => arrayDepth(element)))
+        : 0
 }
 
-export default arrayDepth;
+export default arrayDepth

@@ -13,27 +13,27 @@
  * @param {number} secondEnd   - B2
  * @return {number}
  */
-export default (firstStart :number, firstEnd :number, secondStart :number, secondEnd :number) :[number, number] => {
-  // First EQUAL Second
-  if(firstStart === secondStart && firstEnd === secondEnd)
-    return [firstStart, firstEnd]
+export default (
+    firstStart: number,
+    firstEnd: number,
+    secondStart: number,
+    secondEnd: number
+): [number, number] => {
+    // First EQUAL Second
+    if (firstStart === secondStart && firstEnd === secondEnd) return [firstStart, firstEnd]
 
-  // First IN Second
-  if(secondStart < firstStart && firstEnd < secondEnd)
-    return [firstStart, firstEnd];
+    // First IN Second
+    if (secondStart < firstStart && firstEnd < secondEnd) return [firstStart, firstEnd]
 
-  // Second IN First
-  if(firstStart < secondStart && secondEnd < firstEnd)
-    return [secondStart, secondEnd];
+    // Second IN First
+    if (firstStart < secondStart && secondEnd < firstEnd) return [secondStart, secondEnd]
 
-  // Second starts in First
-  if(firstStart < secondStart && secondStart < firstEnd)
-    return [secondStart,firstEnd];
+    // Second starts in First
+    if (firstStart < secondStart && secondStart < firstEnd) return [secondStart, firstEnd]
 
-  // Second ends in First
-  if(firstStart < secondEnd && secondEnd < firstEnd)
-    return [firstStart,secondEnd];
+    // Second ends in First
+    if (firstStart < secondEnd && secondEnd < firstEnd) return [firstStart, secondEnd]
 
-  // NO overlapping
-  return [0,0];
+    // NO overlapping
+    return [0, 0]
 }

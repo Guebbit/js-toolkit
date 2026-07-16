@@ -1,4 +1,4 @@
-import getDelta from './getDelta';
+import getDelta from './getDelta'
 
 /**
  * Distance between 2 points, like coordinates on a map A(x,y) & B(x,y)
@@ -9,5 +9,5 @@ import getDelta from './getDelta';
  * @param {number} Yb - coordinate Y of point B
  * @param {number} size
  */
-export default (Xa :number, Xb :number, Ya :number, Yb :number, size = 0) =>
-  Math.hypot(getDelta(size, Xa, Xb), getDelta(size, Ya, Yb));
+export default (Xa: number, Xb: number, Ya: number, Yb: number, size = 0) =>
+    Math.hypot(getDelta(size, Xa, Xb), getDelta(size, Ya, Yb))

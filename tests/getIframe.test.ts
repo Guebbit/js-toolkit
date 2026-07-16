@@ -1,17 +1,10 @@
-import { getIframe } from '../src';
+import { getIframe } from '../src'
 
 document.body.innerHTML =
-	'<iframe id="iframe-test">'+
-		'<div>Lorem</div>'+
-		'<div>Ipsum</div>'+
-	'</iframe>';
+    '<iframe id="iframe-test">' + '<div>Lorem</div>' + '<div>Ipsum</div>' + '</iframe>'
 
-describe("(getIframe) Get Iframe content", () => {
-
-	test(" - ", () => {
-		expect(
-			getIframe(document.querySelector('#iframe-test'))?.tagName
-		).toEqual('BODY')
-	});
-
-});
+describe('(getIframe) Get Iframe content', () => {
+    test(' - ', () => {
+        expect(getIframe(document.querySelector('#iframe-test'))?.tagName).toEqual('BODY')
+    })
+})

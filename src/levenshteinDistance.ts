@@ -12,34 +12,26 @@
  * @param a - string to check
  * @param b - same as above, order is not important
  */
-export default (a ?:string | null, b ?:string | null) :number => {
-	//declaration
-	const matrix:number[][] = [];
-	let index:number,
-		index_:number;
+export default (a?: string | null, b?: string | null): number => {
+    //declaration
+    const matrix: number[][] = []
+    let index: number, index_: number
 
-	if(!a && !b)
-		return 999;
-	if(a === b)
-		return 0;
-	//checks
-	if(!a || a.length === 0)
-		return b!.length;
-  if(!b || b.length === 0)
-		return a.length;
+    if (!a && !b) return 999
+    if (a === b) return 0
+    //checks
+    if (!a || a.length === 0) return b!.length
+    if (!b || b.length === 0) return a.length
 
-
-	// increment along the first column of each row
-	for(index = 0; index <= b.length; index++)
-		matrix[index] = [index];
+    // increment along the first column of each row
+    for (index = 0; index <= b.length; index++) matrix[index] = [index]
     // increment each column in the first row
-	for(index_ = 0; index_ <= a.length; index_++)
-		matrix[0][index_] = index_;
+    for (index_ = 0; index_ <= a.length; index_++) matrix[0][index_] = index_
 
-	// Fill in the rest of the matrix
-	for(index = 1; index <= b.length; index++)
-		for(index_ = 1; index_ <= (a).length; index_++)
-			matrix[index][index_] =
+    // Fill in the rest of the matrix
+    for (index = 1; index <= b.length; index++)
+        for (index_ = 1; index_ <= a.length; index_++)
+            matrix[index][index_] =
                 b.charAt(index - 1) == a.charAt(index_ - 1)
                     ? matrix[index - 1][index_ - 1]
                     : Math.min(
@@ -50,6 +42,6 @@ export default (a ?:string | null, b ?:string | null) :number => {
                           )
                       )
 
-  	//result
-    return matrix[b.length][a.length];
-};
+    //result
+    return matrix[b.length][a.length]
+}

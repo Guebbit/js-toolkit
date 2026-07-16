@@ -5,6 +5,8 @@
  * @param {number} n - number of chunks (sub arrays)
  */
 export default <T>(array: T[], n = 0): T[][] => {
-  const items: T[] = Object.assign([], array);
-  return Array.from({length: Math.ceil(items.length / n)}).fill([]).map(() => items.splice(0, n));
+    const items: T[] = Object.assign([], array)
+    return Array.from({ length: Math.ceil(items.length / n) })
+        .fill([])
+        .map(() => items.splice(0, n))
 }

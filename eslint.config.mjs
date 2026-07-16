@@ -38,7 +38,7 @@ export default tseslint.config(
                 // projectService: true, this would create problems with tests, better to use a specific tsconfig
                 project: ['./tsconfig.eslint.json'],
                 tsconfigRootDir: import.meta.dirname,
-                extraFileExtensions: ['.vue'],
+                extraFileExtensions: ['.vue']
             }
         }
     },
@@ -225,10 +225,7 @@ export default tseslint.config(
 
         languageOptions: {
             parserOptions: {
-                project: [
-                    './tsconfig.eslint.json',
-                    './tsconfig.tests.json'
-                ]
+                project: ['./tsconfig.eslint.json', './tsconfig.tests.json']
             },
             globals: {
                 ...globals.jest

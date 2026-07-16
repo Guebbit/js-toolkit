@@ -10,24 +10,22 @@
  * @return addEventListener
  */
 export default (
-  eventName: string,
-  childSelector: string | Node,
-  callback: (this: Element, event: Event) => void,
-  parent: Node | Window | typeof globalThis = globalThis,
+    eventName: string,
+    childSelector: string | Node,
+    callback: (this: Element, event: Event) => void,
+    parent: Node | Window | typeof globalThis = globalThis
 ): void => {
-  parent.addEventListener(eventName, function (event: Event) {
-    const clickedElement = event.target;
-    let matchingChild: Element | undefined;
+    parent.addEventListener(eventName, function (event: Event) {
+        const clickedElement = event.target
+        let matchingChild: Element | undefined
 
-    // if it's a string, get the closest element
-    if (typeof childSelector === "string")
-      matchingChild = (clickedElement as Element).closest(childSelector)!;
-    // if it's an element, check
-    else if (childSelector.contains(clickedElement as Element))
-      matchingChild = clickedElement as Element;
+        // if it's a string, get the closest element
+        if (typeof childSelector === 'string')
+            matchingChild = (clickedElement as Element).closest(childSelector)!
+        // if it's an element, check
+        else if (childSelector.contains(clickedElement as Element))
+            matchingChild = clickedElement as Element
 
-    if (matchingChild)
-      callback.call(matchingChild, event); // matchingChild  pass as this
-  });
+        if (matchingChild) callback.call(matchingChild, event) // matchingChild  pass as this
+    })
 }
-
