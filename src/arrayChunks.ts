@@ -1,5 +1,3 @@
-import arrayDivide from './arrayDivide'
-
 /**
  * Divide array in N numbers of sub-arrays.
  * Sub-arrays' lengths differ as less as possible
@@ -15,7 +13,11 @@ export default <T>(array: T[], n: number): T[][] => {
 
     if (n < 1) return []
     if (n < 2) return [items]
-    if (length_ % n === 0) return arrayDivide(items, Math.floor(length_ / n))
+    if (length_ % n === 0) {
+        const size = Math.floor(length_ / n)
+        while (items.length > 0) output.push(items.splice(0, size))
+        return output
+    }
 
     while (index < length_)
         output.push(items.slice(index, (index += Math.ceil((length_ - index) / n--))))

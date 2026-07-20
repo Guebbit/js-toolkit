@@ -1,0 +1,21 @@
+# Changelog
+
+All notable changes to this project are documented here.
+
+## [1.2.0] - 2026-07-20
+
+### Added
+
+- `getUrlQueries` / `setUrlQueries` — parse and build URL query strings, framework-agnostic (works standalone or alongside any router)
+- `copyToClipboard` — copy text to the clipboard, with an `execCommand` fallback for older/insecure contexts
+- `downloadBlob` — trigger a client-side file download from a `Blob` or raw content
+- `isInViewport` — check if an element is (fully or partially) within the viewport
+- `getCookie` / `setCookie` / `deleteCookie` — read, write and remove cookies
+- `prefersReducedMotion` / `prefersDarkScheme` — `matchMedia` convenience wrappers
+
+### Removed
+
+- `arrayDivide` — duplicate of lodash's `chunk`
+- `matrixTranspose` — duplicate of lodash's `zip`
+- `sort` — duplicate of lodash's `orderBy`
+- `whitelist` — duplicate of lodash's `pick`
