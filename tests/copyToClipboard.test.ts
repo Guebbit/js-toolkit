@@ -1,9 +1,9 @@
 import { copyToClipboard } from '../src'
 
-const mockExecCommand = (result: boolean) => {
-    const fn = jest.fn().mockReturnValue(result)
+const mockExecCommand = (result: boolean | (() => boolean)) => {
+    const fn = jest.fn(typeof result === 'function' ? result : () => result)
     // eslint-disable-next-line @typescript-eslint/no-deprecated
-    document.execCommand = fn
+    document.execCommand = fn as typeof document.execCommand
     return fn
 }
 
@@ -32,10 +32,11 @@ describe('copyToClipboard', () => {
             configurable: true
         })
         // eslint-disable-next-line @typescript-eslint/no-empty-function
-        jest.spyOn(console, 'error').mockImplementation(() => {})
+        const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
         mockExecCommand(false)
 
         await expect(copyToClipboard('hello')).resolves.toBe(false)
+        expect(errorSpy).toHaveBeenCalled()
     })
 
     test('falls back to execCommand when the Clipboard API is unavailable', async () => {
@@ -43,5 +44,35 @@ describe('copyToClipboard', () => {
 
         await expect(copyToClipboard('hello')).resolves.toBe(true)
         expect(execCommand).toHaveBeenCalledWith('copy')
+    })
+
+    test('returns false and logs when execCommand throws', async () => {
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+        mockExecCommand(() => {
+            throw new Error('nope')
+        })
+
+        await expect(copyToClipboard('hello')).resolves.toBe(false)
+        expect(errorSpy).toHaveBeenCalled()
+    })
+
+    test('configures a hidden textarea for the fallback', async () => {
+        const created: HTMLTextAreaElement[] = []
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        const realCreateElement = document.createElement.bind(document)
+        jest.spyOn(document, 'createElement').mockImplementation((tag: string) => {
+            const element = realCreateElement(tag)
+            if (tag === 'textarea') created.push(element as HTMLTextAreaElement)
+            return element
+        })
+        mockExecCommand(true)
+
+        await copyToClipboard('payload')
+
+        expect(created).toHaveLength(1)
+        expect(created[0].value).toBe('payload')
+        expect(created[0].style.position).toBe('fixed')
+        expect(created[0].style.opacity).toBe('0')
     })
 })

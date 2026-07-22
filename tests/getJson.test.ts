@@ -32,4 +32,15 @@ describe('(getJson) Safe conversion of JSON', () => {
     test('Correct array (json)', () => {
         expect(getJson('["bim","bum","bam"]')).toBeTruthy()
     })
+
+    test('logs the error and returns undefined on invalid JSON', () => {
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        const spy = jest.spyOn(console, 'error').mockImplementation(() => {})
+        try {
+            expect(getJson("{ 'test': 'toast' }")).toBeUndefined()
+            expect(spy).toHaveBeenCalledTimes(1)
+        } finally {
+            spy.mockRestore()
+        }
+    })
 })

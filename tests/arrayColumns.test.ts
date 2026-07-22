@@ -22,7 +22,7 @@ describe('(arrayColumns) php equivalent of arrayColumns - but extended to use an
     ]
 
     test('Return the values from a single column ({param1} in this case)', () => {
-        expect(arrayColumns(input, ['param1'])).toEqual([
+        expect(arrayColumns(input, ['param1'])).toStrictEqual([
             ['lorem ipsum'],
             ['lorem ipsum'],
             ['adipiscing']
@@ -30,7 +30,7 @@ describe('(arrayColumns) php equivalent of arrayColumns - but extended to use an
     })
 
     test('Return the values from 2 columns', () => {
-        expect(arrayColumns(input, ['param1', 'param3'])).toEqual([
+        expect(arrayColumns(input, ['param1', 'param3'])).toStrictEqual([
             ['lorem ipsum', undefined],
             ['lorem ipsum', 'consectetur'],
             ['adipiscing', 'eiusmod']
@@ -38,10 +38,20 @@ describe('(arrayColumns) php equivalent of arrayColumns - but extended to use an
     })
 
     test('When having a single haystack or a single column, wrap in array', () => {
-        expect(arrayColumns([input[2]], ['param1'])).toEqual([['adipiscing']])
+        expect(arrayColumns([input[2]], ['param1'])).toStrictEqual([['adipiscing']])
     })
 
     test('Return the values from a single column NOT array', () => {
-        expect(arrayColumns(input, 'param1')).toEqual(['lorem ipsum', 'lorem ipsum', 'adipiscing'])
+        expect(arrayColumns(input, 'param1')).toStrictEqual([
+            'lorem ipsum',
+            'lorem ipsum',
+            'adipiscing'
+        ])
+    })
+
+    test('Ignores inherited properties, returning undefined for non-own columns', () => {
+        // 'toString' exists on the prototype but not as an own property:
+        // the hasOwnProperty guard must keep it out of the result.
+        expect(arrayColumns([{ id: 1 }], ['toString'])).toStrictEqual([[undefined]])
     })
 })

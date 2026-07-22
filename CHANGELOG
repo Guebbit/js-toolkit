@@ -2,6 +2,13 @@
 
 All notable changes to this project are documented here.
 
+## [1.2.1] - 2026-07-23
+
+### Changed
+
+- Hardened the test suite via mutation testing (Stryker), raising the overall mutation score from ~75% to ~90% with every source file now at or above 70%
+- `secondsToTime` — removed a redundant always-true guard inside the loop and iterate with `Object.entries` (no behavior change)
+
 ## [1.2.0] - 2026-07-20
 
 ### Added

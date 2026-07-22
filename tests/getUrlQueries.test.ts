@@ -32,4 +32,13 @@ describe('getUrlQueries', () => {
     test('returns an empty object for an empty query string', () => {
         expect(getUrlQueries('')).toEqual({})
     })
+
+    test('defaults to the current location search when no argument is passed', () => {
+        globalThis.history.pushState({}, '', '?a=1&b=2')
+        try {
+            expect(getUrlQueries()).toEqual({ a: '1', b: '2' })
+        } finally {
+            globalThis.history.pushState({}, '', '/')
+        }
+    })
 })

@@ -12,6 +12,11 @@
 dist/
 cache/
 
+# Stryker mutation testing
+reports/
+.stryker-tmp/
+stryker.log
+
 # Finder's configuration files (Mac).
 .DS_Store
 
