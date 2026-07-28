@@ -2,6 +2,14 @@
 
 All notable changes to this project are documented here.
 
+## [1.2.2] - 2026-07-28
+
+### Added
+
+- `getExecTime` — time a sync or async function's execution, resolving with its result and elapsed milliseconds
+- `deleteFile` — delete a file, resolving `true`/`false` on success/absence, with an optional `onError` callback for unexpected failures
+- `coerceStringArray` — coerce any value (array, comma-separated string, single value, `null`/`undefined`) into a trimmed `string[]`
+
 ## [1.2.1] - 2026-07-23
 
 ### Changed
