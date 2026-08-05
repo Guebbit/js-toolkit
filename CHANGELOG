@@ -2,6 +2,16 @@
 
 All notable changes to this project are documented here.
 
+## [1.2.3] - 2026-08-05
+
+### Fixed
+
+- `toFormData` — a plain `Blob` was silently dropped instead of being appended. The recursion
+  guard tested `instanceof File`, so any binary value that was not a `File` (`canvas.toBlob()`,
+  `fetch().blob()`, most image croppers) took the recursive branch; a `Blob` has no enumerable
+  own properties, so nothing was appended and the upload went out with no file and no error.
+  The guard now tests `instanceof Blob`, which covers `File` too since `File` extends `Blob`.
+
 ## [1.2.2] - 2026-07-28
 
 ### Added

@@ -34,12 +34,17 @@ const toFormData = (
     for (const property in object) {
         if (Object.prototype.hasOwnProperty.call(object, property)) {
             formKey = namespace ? namespace + '[' + property + ']' : property
-            // if the property is an object, but not a File,
-            // use recursivity.
-            if (typeof object[property] === 'object' && !(object[property] instanceof File))
+            // if the property is a plain object, use recursivity.
+            //
+            // The check is `Blob`, not `File`: File extends Blob, so this covers both, while
+            // testing for File alone let a plain Blob — what canvas.toBlob(), fetch().blob()
+            // and most image croppers hand you — fall into the recursive branch. A Blob has no
+            // enumerable own properties, so the loop below found nothing to append and the
+            // upload was silently dropped, with no error anywhere.
+            if (typeof object[property] === 'object' && !(object[property] instanceof Blob))
                 toFormData(object[property] as Record<string, unknown>, fd, property)
             else
-                // if it's a string or a File object
+                // if it's a primitive or a binary value (Blob/File)
                 fd.append(formKey, object[property] as string | Blob)
         }
     }
