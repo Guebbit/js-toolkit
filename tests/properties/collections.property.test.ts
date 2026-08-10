@@ -206,7 +206,7 @@ describe('(arrayColumns) properties', () => {
                 fc.array(row, { maxLength: 8 }),
                 fc.array(column, { minLength: 1, maxLength: 3 }),
                 (haystack, names) => {
-                    const nested = arrayColumns(haystack, names) as unknown[][]
+                    const nested = arrayColumns(haystack, names)
                     return nested.every(
                         (entry) => Array.isArray(entry) && entry.length === names.length
                     )
@@ -219,7 +219,7 @@ describe('(arrayColumns) properties', () => {
         fc.assert(
             fc.property(fc.array(row, { maxLength: 8 }), column, (haystack, name) => {
                 const bare = arrayColumns(haystack, name)
-                const nested = arrayColumns(haystack, [name]) as unknown[][]
+                const nested = arrayColumns(haystack, [name])
                 expect(bare).toEqual(nested.map(([first]) => first))
             })
         )
@@ -258,7 +258,7 @@ describe('(canonicalize) properties', () => {
     const shuffleKeys = (value: unknown): unknown => {
         if (Array.isArray(value)) return value.map((element) => shuffleKeys(element))
         if (value && typeof value === 'object') {
-            const entries = Object.entries(value as Record<string, unknown>).toReversed()
+            const entries = [...Object.entries(value as Record<string, unknown>)].reverse()
             return Object.fromEntries(entries.map(([key, item_]) => [key, shuffleKeys(item_)]))
         }
         return value

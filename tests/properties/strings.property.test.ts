@@ -1,18 +1,38 @@
 import fc from 'fast-check'
-import { coerceStringArray, isEmail, isUrl, levenshteinDistance, match } from '../../src'
+import { coerceStringArray, levenshteinDistance, match } from '../../src'
 
 // Levenshtein is O(a*b); short strings keep the whole file fast enough to stay
 // in the pre-commit hook.
 const shortString = fc.string({ maxLength: 12 })
 const nonEmpty = fc.string({ minLength: 1, maxLength: 12 })
+// The metric holds for the empty string too now that it is not a special case
+const anyString = fc.string({ maxLength: 12 })
 
 describe('(levenshteinDistance) properties', () => {
     test('is zero exactly when the strings are equal', () => {
         fc.assert(
             fc.property(
-                nonEmpty,
-                nonEmpty,
+                anyString,
+                anyString,
                 (a, b) => (levenshteinDistance(a, b) === 0) === (a === b)
+            )
+        )
+    })
+
+    // A metric has no exceptions: d(x, x) must be 0 for every x, the empty
+    // string included. The old sentinel returned 999 here.
+    test('is zero for any string against itself', () => {
+        fc.assert(fc.property(anyString, (a) => levenshteinDistance(a, a) === 0))
+    })
+
+    test('treats an absent string as the empty string', () => {
+        fc.assert(
+            fc.property(
+                anyString,
+                (a) =>
+                    levenshteinDistance(a) === levenshteinDistance(a, '') &&
+                    // eslint-disable-next-line unicorn/no-null
+                    levenshteinDistance(a, null) === levenshteinDistance(a, '')
             )
         )
     })
@@ -60,9 +80,9 @@ describe('(levenshteinDistance) properties', () => {
     test('satisfies the triangle inequality', () => {
         fc.assert(
             fc.property(
-                nonEmpty,
-                nonEmpty,
-                nonEmpty,
+                anyString,
+                anyString,
+                anyString,
                 (a, b, c) =>
                     levenshteinDistance(a, c) <=
                     levenshteinDistance(a, b) + levenshteinDistance(b, c)
@@ -89,41 +109,48 @@ describe('(levenshteinDistance) properties', () => {
 })
 
 describe('(match) properties', () => {
+    const modes = ['exact', 'contains', 'contained', 'either', 'fuzzy'] as const
+
     // Reflexivity across every mode. A string always matches itself, whatever
     // the caller asked for; any mode that fails this is unusable.
     test('a string always matches itself, in every mode', () => {
         fc.assert(
-            fc.property(
-                nonEmpty,
-                fc.boolean(),
-                fc.integer({ min: -2, max: 5 }),
-                (a, sensitive, distance) => match(a, a, sensitive, distance)
+            fc.property(anyString, fc.boolean(), fc.constantFrom(...modes), (a, sensitive, mode) =>
+                match(a, a, { mode, sensitive })
             )
         )
     })
 
     test('case folding is applied unless the caller asks for sensitivity', () => {
-        fc.assert(fc.property(nonEmpty, (a) => match(a.toUpperCase(), a.toLowerCase(), false, 0)))
-    })
-
-    // Substring mode -2 looks both ways, so it must accept every pair mode -1
-    // accepts. A one-way check smuggled into the two-way branch breaks this.
-    test('two-way substring mode accepts everything one-way mode accepts', () => {
         fc.assert(
-            fc.property(shortString, shortString, (a, b) =>
-                match(a, b, false, -1) ? match(a, b, false, -2) : true
+            fc.property(anyString, (a) =>
+                match(a.toUpperCase(), a.toLowerCase(), { mode: 'exact' })
             )
         )
     })
 
-    test('two-way substring mode is symmetric', () => {
+    // 'either' is the union of the two one-way modes, by definition.
+    test("'either' accepts exactly what 'contains' or 'contained' accept", () => {
         fc.assert(
             fc.property(
                 shortString,
                 shortString,
-                fc.boolean(),
-                (a, b, sensitive) => match(a, b, sensitive, -2) === match(b, a, sensitive, -2)
+                (a, b) =>
+                    match(a, b, { mode: 'either' }) ===
+                    (match(a, b, { mode: 'contains' }) || match(a, b, { mode: 'contained' }))
             )
+        )
+    })
+
+    test("'either' is symmetric, the one-way modes are mirrors", () => {
+        fc.assert(
+            fc.property(shortString, shortString, (a, b) => {
+                const symmetric =
+                    match(a, b, { mode: 'either' }) === match(b, a, { mode: 'either' })
+                const mirrored =
+                    match(a, b, { mode: 'contains' }) === match(b, a, { mode: 'contained' })
+                return symmetric && mirrored
+            })
         )
     })
 
@@ -132,8 +159,20 @@ describe('(match) properties', () => {
     // inverted somewhere.
     test('a larger allowed distance never rejects a previously accepted pair', () => {
         fc.assert(
-            fc.property(shortString, shortString, fc.integer({ min: 1, max: 8 }), (a, b, d) =>
-                match(a, b, true, d) ? match(a, b, true, d + 1) : true
+            fc.property(shortString, shortString, fc.integer({ min: 0, max: 8 }), (a, b, d) =>
+                match(a, b, { mode: 'fuzzy', maxDistance: d, sensitive: true })
+                    ? match(a, b, { mode: 'fuzzy', maxDistance: d + 1, sensitive: true })
+                    : true
+            )
+        )
+    })
+
+    // 'exact' is the tightest rule, so anything it accepts every other mode
+    // must accept too.
+    test('every mode accepts what exact accepts', () => {
+        fc.assert(
+            fc.property(shortString, shortString, fc.constantFrom(...modes), (a, b, mode) =>
+                match(a, b, { mode: 'exact' }) ? match(a, b, { mode }) : true
             )
         )
     })
@@ -141,80 +180,10 @@ describe('(match) properties', () => {
     test('leading and trailing whitespace never changes the answer', () => {
         fc.assert(
             fc.property(
-                nonEmpty,
-                nonEmpty,
-                fc.integer({ min: -2, max: 4 }),
-                (a, b, distance) =>
-                    match(`  ${a}  `, `\t${b}\n`, false, distance) === match(a, b, false, distance)
-            )
-        )
-    })
-})
-
-describe('(isEmail) properties', () => {
-    test('never throws, whatever the input', () => {
-        fc.assert(fc.property(fc.string(), (s) => typeof isEmail(s) === 'boolean'))
-    })
-
-    // The pattern is anchored at both ends. Whitespace padding is the classic
-    // way an unanchored pattern leaks through.
-    test('rejects anything padded with whitespace', () => {
-        fc.assert(fc.property(fc.string({ maxLength: 20 }), (s) => !isEmail(` ${s} `)))
-    })
-
-    test('rejects a value with no @ at all', () => {
-        fc.assert(
-            fc.property(
-                fc.string({ maxLength: 20 }).filter((s) => !s.includes('@')),
-                (s) => !isEmail(s)
-            )
-        )
-    })
-
-    // Built from parts the pattern documents as valid, so this checks the
-    // pattern accepts its own stated grammar rather than restating the regex.
-    test('accepts a simple local part against a multi-label domain', () => {
-        const label = fc.stringMatching(/^[a-z]{1,8}$/)
-        fc.assert(
-            fc.property(
-                label,
-                label,
-                label,
-                fc.stringMatching(/^[a-z]{2,6}$/),
-                (local, a, b, tld) => isEmail(`${local}@${a}.${b}.${tld}`)
-            )
-        )
-    })
-})
-
-describe('(isUrl) properties', () => {
-    test('never throws, whatever the input', () => {
-        fc.assert(fc.property(fc.string(), (s) => typeof isUrl(s) === 'boolean'))
-    })
-
-    test('accepts a hostname with or without a protocol', () => {
-        const label = fc.stringMatching(/^[a-z]{1,8}$/)
-        fc.assert(
-            fc.property(label, fc.stringMatching(/^[a-z]{2,6}$/), (host, tld) => {
-                const bare = `${host}.${tld}`
-                return isUrl(bare) && isUrl(`http://${bare}`) && isUrl(`https://${bare}`)
-            })
-        )
-    })
-
-    test('accepts any dotted quad', () => {
-        const octet = fc.integer({ min: 0, max: 255 })
-        fc.assert(
-            fc.property(octet, octet, octet, octet, (a, b, c, d) => isUrl(`${a}.${b}.${c}.${d}`))
-        )
-    })
-
-    test('rejects a value containing whitespace', () => {
-        fc.assert(
-            fc.property(
-                fc.stringMatching(/^[a-z]{1,8}$/),
-                fc.stringMatching(/^[a-z]{2,6}$/),
-                (host, tld) => !isUrl(`${host} .${tld}`)
+                anyString,
+                anyString,
+                fc.constantFrom(...modes),
+                (a, b, mode) => match(`  ${a}  `, `\t${b}\n`, { mode }) === match(a, b, { mode })
             )
         )
     })

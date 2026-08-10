@@ -23,14 +23,20 @@ describe('(levenshteinDistance) Levenshtein Distance from 2 strings (0)', () => 
         expect(levenshteinDistance('lorem ipsum')).toBe(11)
     })
 
-    // Two absent strings return a large sentinel, not 0. Returning 0 would say
-    // "identical" and a caller filtering on `distance <= 2` would treat two
-    // blank fields as a match. Pinned because the value is arbitrary and would
-    // otherwise be free to drift.
-    test('Both strings missing or empty (999 sentinel)', () => {
-        expect(levenshteinDistance()).toBe(999)
-        expect(levenshteinDistance('', '')).toBe(999)
+    // Absent and empty are the same string, so the distance between two of them
+    // is 0. Any other answer breaks `d(x, x) === 0` and misleads a caller
+    // filtering on `distance <= threshold`.
+    test('Both strings missing or empty', () => {
+        expect(levenshteinDistance()).toBe(0)
+        expect(levenshteinDistance('', '')).toBe(0)
         // eslint-disable-next-line unicorn/no-null
-        expect(levenshteinDistance(null, null)).toBe(999)
+        expect(levenshteinDistance(null, null)).toBe(0)
+        expect(levenshteinDistance('')).toBe(0)
+    })
+
+    test('An absent string counts as empty against a real one', () => {
+        // eslint-disable-next-line unicorn/no-null
+        expect(levenshteinDistance(null, 'lorem')).toBe(5)
+        expect(levenshteinDistance('lorem')).toBe(5)
     })
 })

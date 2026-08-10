@@ -1,0 +1,48 @@
+name: Nightly
+
+# The property tests run on a fixed seed in CI so the mutation baseline cannot
+# drift. That keeps the gate honest but stops the suite exploring: the same 100
+# cases forever. This job re-runs it on a fresh random seed so new counterexamples
+# still surface, without destabilising the per-commit gate.
+#
+# Anything it finds should be committed as a named regression case in the
+# matching unit test file, not left for a lucky seed to rediscover.
+
+on:
+    schedule:
+        # 03:17 UTC, off the hour to avoid the scheduler stampede
+        - cron: '17 3 * * *'
+    workflow_dispatch:
+
+jobs:
+    property-fuzz:
+        runs-on: ubuntu-latest
+        timeout-minutes: 20
+        permissions:
+            contents: read
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Setup Node
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 22
+                  cache: npm
+                  cache-dependency-path: package-lock.json
+
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Pick a seed
+              id: seed
+              run: echo "value=$RANDOM$RANDOM" >> "$GITHUB_OUTPUT"
+
+            - name: Run the suite on a random seed
+              env:
+                  FAST_CHECK_SEED: ${{ steps.seed.outputs.value }}
+                  # more cases than the per-commit run, since nothing waits on this
+                  FAST_CHECK_RUNS: 1000
+              run: |
+                  echo "FAST_CHECK_SEED=$FAST_CHECK_SEED"
+                  npm test

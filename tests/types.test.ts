@@ -1,6 +1,6 @@
 import { expectTypeOf } from 'expect-type'
 import * as toolkit from '../src'
-import type { ISecondsToTimeMap, ISetCookieOptions } from '../src'
+import type { IMatchOptions, ISecondsToTimeMap, ISetCookieOptions, TMatchMode } from '../src'
 
 /**
  * Type-level tests.
@@ -56,7 +56,11 @@ describe('exported type surface', () => {
         expectTypeOf(toolkit.arrayChunks([1, 2, 3], 2)).toEqualTypeOf<number[][]>()
         expectTypeOf(toolkit.arrayDepth).returns.toEqualTypeOf<number>()
         expectTypeOf(toolkit.associativeSlice).returns.toEqualTypeOf<Record<string, unknown>>()
-        expectTypeOf(toolkit.arrayColumns).returns.toEqualTypeOf<unknown[]>()
+        // Overloaded: a bare column name gives a flat array, a list of names gives
+        // one array per record. Without the overloads both collapse to unknown[]
+        // and the caller has to cast.
+        expectTypeOf(toolkit.arrayColumns([{ a: 1 }], 'a')).toEqualTypeOf<unknown[]>()
+        expectTypeOf(toolkit.arrayColumns([{ a: 1 }], ['a'])).toEqualTypeOf<unknown[][]>()
     })
 
     // `unknown`, not `any`. The whole point of a safe JSON wrapper is that the
@@ -74,15 +78,24 @@ describe('exported type surface', () => {
     })
 
     test('predicates return a plain boolean', () => {
-        expectTypeOf(toolkit.isEmail).toEqualTypeOf<(string: string) => boolean>()
-        expectTypeOf(toolkit.isUrl).toEqualTypeOf<(string: string) => boolean>()
         expectTypeOf(toolkit.isInViewport).toEqualTypeOf<
             (element: Element, fully?: boolean) => boolean
         >()
-        expectTypeOf(toolkit.match).parameters.toEqualTypeOf<
-            [string?, string?, boolean?, number?]
-        >()
+        expectTypeOf(toolkit.match).parameters.toEqualTypeOf<[string?, string?, IMatchOptions?]>()
         expectTypeOf(toolkit.match).returns.toEqualTypeOf<boolean>()
+    })
+
+    // The mode is a closed union, not a string: a typo has to be a compile
+    // error, which is the whole reason for replacing the old magic numbers.
+    test('match options are a closed union, not loose strings', () => {
+        expectTypeOf<TMatchMode>().toEqualTypeOf<
+            'exact' | 'contains' | 'contained' | 'either' | 'fuzzy'
+        >()
+        expectTypeOf<IMatchOptions>().toEqualTypeOf<{
+            sensitive?: boolean
+            mode?: TMatchMode
+            maxDistance?: number
+        }>()
     })
 
     test('string helpers accept the nullable inputs they document', () => {
@@ -113,8 +126,10 @@ describe('exported type surface', () => {
 
     test('DOM helpers return element types rather than a bare object', () => {
         expectTypeOf(toolkit.formatNodeList).returns.toEqualTypeOf<HTMLElement[]>()
+        // An unsubscribe, not void: it is the only way to remove the listener
+        expectTypeOf(toolkit.eventDelegate).returns.toEqualTypeOf<() => void>()
         expectTypeOf(toolkit.getSiblings).returns.toEqualTypeOf<Element[]>()
-        expectTypeOf(toolkit.getElementCenter).returns.toEqualTypeOf<number[]>()
+        expectTypeOf(toolkit.getElementCenter).returns.toEqualTypeOf<[number, number]>()
         expectTypeOf(toolkit.getIndex).toEqualTypeOf<(element: HTMLElement | null) => number>()
         expectTypeOf(toolkit.getIframe).returns.toEqualTypeOf<
             HTMLElement | HTMLBodyElement | undefined
@@ -147,6 +162,9 @@ describe('exported type surface', () => {
             'Strict' | 'Lax' | 'None' | undefined
         >()
         expectTypeOf(toolkit.secondsToTime).returns.toEqualTypeOf<ISecondsToTimeMap>()
+        // Every field is required, so reading one never needs a non-null assertion
+        expectTypeOf<ISecondsToTimeMap['hours']>().toEqualTypeOf<number>()
+        expectTypeOf<ISecondsToTimeMap['millisecondsOnly']>().toEqualTypeOf<number>()
         expectTypeOf(toolkit.setCookie).parameters.toEqualTypeOf<
             [string, string, ISetCookieOptions?]
         >()
@@ -156,7 +174,7 @@ describe('exported type surface', () => {
         // Guards the barrel itself: a re-export that resolves to undefined at
         // runtime still type-checks if the module shape is right.
         const values = Object.values(toolkit)
-        expect(values).toHaveLength(39)
+        expect(values).toHaveLength(37)
         expect(values.every((value) => typeof value === 'function')).toBe(true)
     })
 })

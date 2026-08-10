@@ -27,11 +27,14 @@ idempotence (`canonicalize`), symmetry and the triangle inequality
 (`levenshteinDistance`), bounds that hold for every input (`getDelta` never
 exceeds half the circumference).
 
-The seed is fixed in `tests/setup.ts` so the mutation baseline is stable. To
-explore further:
+The seed is fixed in `tests/setup.ts` so the mutation baseline is stable. That
+keeps the gate honest but stops the suite exploring — the same 100 cases forever.
+The `Nightly` workflow re-runs everything on a fresh random seed with ten times
+the cases, so new counterexamples still surface without destabilising the
+per-commit gate. Locally:
 
 ```sh
-FAST_CHECK_SEED=$RANDOM npm test
+FAST_CHECK_SEED=$RANDOM FAST_CHECK_RUNS=1000 npm test
 ```
 
 Anything a new seed finds gets committed as a named regression case in the
@@ -49,12 +52,36 @@ what makes this file mean anything. It is wired into CI as its own job.
 
 ## Packaging smoke test — `scripts/pack-smoke.mjs`
 
-Builds a tarball with `npm pack`, installs it into a throwaway directory and
-imports it as both CommonJS and ESM, then calls a real function. Also checks
-that the published file set has no module without a matching source.
+Builds a tarball with `npm pack`, installs it into a throwaway directory, and
+imports it every way a consumer can: `require` and `import`, from the barrel and
+from a subpath. Then it type-checks a consumer of each module kind.
 
 Jest resolves `../src` through ts-jest and never touches `main`, `exports`,
 `files` or `dist`, so every packaging failure ships green without this.
+
+The dual build has two traps this catches and nothing else does:
+
+- The root package is `"type": "module"`, so `dist/cjs` only parses as CommonJS
+  because the build writes a `{"type":"commonjs"}` marker into it. Lose that file
+  and `require()` dies at runtime.
+- Declarations are emitted **per format**, and the `types` condition sits inside
+  `import`/`require`. One shared declaration folder is read as ESM by TypeScript,
+  and a CommonJS consumer then cannot import the package at all.
+
+A note on the test itself: the generated consumer must not use `paths`/`baseUrl`
+to find the package. A path mapping resolves it directly and skips the exports
+map, which is exactly the thing under test.
+
+## What jsdom does not cover
+
+The DOM helpers run against jsdom, not a browser. jsdom implements the shape of
+the DOM but not all of its behaviour — `Blob.text()` is absent, layout is not
+computed, so `getBoundingClientRect` returns zeroes unless stubbed, and CSS is
+not applied. Tests for `getElementCenter`, `isInViewport` and anything
+layout-dependent therefore assert against stubbed rects rather than real
+geometry, and confirm the arithmetic rather than the rendering.
+
+Treat a green DOM test as "the logic is right", not "this works in Safari".
 
 ## Mutation testing — Stryker
 
@@ -97,3 +124,21 @@ A file can also lose percentage points without losing a single test, by getting
 smaller: a survivor that is one of two mutants scores 50%, the same survivor
 among twenty scores 95%. When the gate reports a regression, check whether the
 mutant count moved before touching a test.
+
+## Falsifying a test
+
+A test nobody has watched fail is not evidence. Before trusting one, break the
+source it covers on purpose and confirm it goes red.
+
+Two traps have produced false "all clear" results here, both in the harness
+rather than the tests:
+
+- **Jest colourises its summary even when piped.** `grep '^Tests:'` silently
+  matches nothing, and a script reading an empty result as "no failures" reports
+  a clean pass for every mutation. Strip ANSI first:
+  `npx jest 2>&1 | sed 's/\x1b\[[0-9;]*m//g'`.
+- **A patch that does not apply looks exactly like a test that caught nothing.**
+  Assert the edit landed before drawing a conclusion from the run.
+
+Any script that falsifies in bulk should fail loudly when it cannot parse a
+result, rather than treating an unparsed run as a pass.

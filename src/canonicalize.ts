@@ -1,7 +1,7 @@
 /**
  * Rebuilds a value into a canonical form, so JSON.stringify of the result is a
  * stable cache key regardless of property insertion order. Recurses into nested
- * objects — a single-level `Object.keys().toSorted()` replacer only sorts the
+ * objects — a single-level `Object.keys().sort()` replacer only sorts the
  * top level and silently corrupts nested keys.
  *
  * Arrays keep their order (meaningful in a filter, e.g. sort priority);
@@ -18,7 +18,7 @@
  */
 const canonicalize = (value: unknown, throwOnCircular = false): unknown => {
     // objects currently on the path from the root to `node`, used to spot a loop
-    const seen = new WeakSet<object>()
+    const seen = new WeakSet()
     const walk = (node: unknown): unknown => {
         if (!node || typeof node !== 'object') return node
         if (node instanceof Date) return node.toISOString()
@@ -35,7 +35,7 @@ const canonicalize = (value: unknown, throwOnCircular = false): unknown => {
         else {
             const source = node as Record<string, unknown>
             const normalized: Record<string, unknown> = {}
-            for (const key of Object.keys(source).toSorted())
+            for (const key of Object.keys(source).sort())
                 if (source[key] !== undefined) normalized[key] = walk(source[key])
             result = normalized
         }

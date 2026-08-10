@@ -105,12 +105,8 @@
         "covered": 100
     },
     "src/getValue.ts": {
-        "total": 92.31,
-        "covered": 92.31
-    },
-    "src/isEmail.ts": {
-        "total": 100,
-        "covered": 100
+        "total": 94.74,
+        "covered": 94.74
     },
     "src/isInViewport.ts": {
         "total": 100,
@@ -120,17 +116,13 @@
         "total": 100,
         "covered": 100
     },
-    "src/isUrl.ts": {
-        "total": 100,
-        "covered": 100
-    },
     "src/levenshteinDistance.ts": {
-        "total": 93.02,
-        "covered": 93.02
+        "total": 93.33,
+        "covered": 93.33
     },
     "src/match.ts": {
-        "total": 95.12,
-        "covered": 95.12
+        "total": 100,
+        "covered": 100
     },
     "src/rangeOverlaps.ts": {
         "total": 100,

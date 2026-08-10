@@ -129,10 +129,10 @@ describe('(secondsToTime → timeToSeconds) round trip', () => {
             fc.property(withinADay, (ms) => {
                 const time = secondsToTime(ms)
                 return (
-                    time.hours! < 24 &&
-                    time.minutes! < 60 &&
-                    time.seconds! < 60 &&
-                    time.milliseconds! < 1000
+                    time.hours < 24 &&
+                    time.minutes < 60 &&
+                    time.seconds < 60 &&
+                    time.milliseconds < 1000
                 )
             })
         )
@@ -160,14 +160,14 @@ describe('(secondsToTime → timeToSeconds) round trip', () => {
             fc.property(fc.integer({ min: 0, max: 4_000_000_000 }), (ms) => {
                 const t = secondsToTime(ms)
                 const total =
-                    t.years! * 31_536_000_000 +
-                    t.months! * 2_592_000_000 +
-                    t.weeks! * 604_800_000 +
-                    t.days! * 86_400_000 +
-                    t.hours! * 3_600_000 +
-                    t.minutes! * 60_000 +
-                    t.seconds! * 1000 +
-                    t.milliseconds!
+                    t.years * 31_536_000_000 +
+                    t.months * 2_592_000_000 +
+                    t.weeks * 604_800_000 +
+                    t.days * 86_400_000 +
+                    t.hours * 3_600_000 +
+                    t.minutes * 60_000 +
+                    t.seconds * 1000 +
+                    t.milliseconds
                 return total === ms
             })
         )
@@ -282,9 +282,7 @@ describe('(toFormData) properties', () => {
     test('adds no key the input did not have', () => {
         fc.assert(
             fc.property(flatRecord, (object) => {
-                expect([...toFormData(object).keys()].toSorted()).toEqual(
-                    Object.keys(object).toSorted()
-                )
+                expect([...toFormData(object).keys()].sort()).toEqual(Object.keys(object).sort())
             })
         )
     })
@@ -299,7 +297,7 @@ describe('(toFormData) properties', () => {
                 fc.string({ maxLength: 6 }),
                 (path, leaf) => {
                     let nested: Record<string, unknown> = { [path.at(-1)!]: leaf }
-                    for (const key of path.slice(0, -1).toReversed()) nested = { [key]: nested }
+                    for (const key of path.slice(0, -1).reverse()) nested = { [key]: nested }
                     const expected =
                         path[0] +
                         path

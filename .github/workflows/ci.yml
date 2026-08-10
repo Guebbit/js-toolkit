@@ -139,6 +139,13 @@ jobs:
               run: npm run build
 
     test-unit:
+        # The whole supported range from `engines`, not just one version: the
+        # package targets es2022 and a helper reaching past that would only fail
+        # on the oldest runtime.
+        strategy:
+            fail-fast: false
+            matrix:
+                node: [20, 22, 24]
         runs-on: ubuntu-latest
         timeout-minutes: 15
         permissions:
@@ -150,7 +157,7 @@ jobs:
             - name: Setup Node
               uses: actions/setup-node@v4
               with:
-                  node-version: ${{ env.NODE_VERSION }}
+                  node-version: ${{ matrix.node }}
                   cache: npm
                   cache-dependency-path: package-lock.json
 

@@ -2,14 +2,36 @@
     "name": "@guebbit/js-toolkit",
     "version": "2.0.0",
     "license": "AGPLv3.0",
-    "main": "dist/index.js",
-    "types": "dist/types/index.d.ts",
+    "type": "module",
+    "sideEffects": false,
+    "main": "./dist/cjs/index.js",
+    "module": "./dist/esm/index.js",
+    "types": "./dist/cjs/index.d.ts",
     "exports": {
         ".": {
-            "types": "./dist/types/index.d.ts",
-            "default": "./dist/index.js"
+            "import": {
+                "types": "./dist/esm/index.d.ts",
+                "default": "./dist/esm/index.js"
+            },
+            "require": {
+                "types": "./dist/cjs/index.d.ts",
+                "default": "./dist/cjs/index.js"
+            }
+        },
+        "./*": {
+            "import": {
+                "types": "./dist/esm/*.d.ts",
+                "default": "./dist/esm/*.js"
+            },
+            "require": {
+                "types": "./dist/cjs/*.d.ts",
+                "default": "./dist/cjs/*.js"
+            }
         },
         "./package.json": "./package.json"
+    },
+    "engines": {
+        "node": ">=20"
     },
     "files": [
         "dist",
@@ -18,12 +40,10 @@
         "LICENSE",
         "CHANGELOG"
     ],
-    "sideEffects": false,
     "scripts": {
         "prepare": "husky",
-        "clean": "node -e \"require('node:fs').rmSync('dist', { recursive: true, force: true })\"",
-        "build": "npm run clean && tsc",
-        "typecheck": "tsc --noEmit && tsc -p tsconfig.tests.json --noEmit",
+        "build": "node scripts/build.mjs",
+        "typecheck": "tsc -p tsconfig.json && tsc -p tsconfig.tests.json",
         "test": "jest",
         "test:pack": "node scripts/pack-smoke.mjs",
         "test:mutation": "stryker run",

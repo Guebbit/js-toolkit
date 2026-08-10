@@ -8,9 +8,11 @@ Every function is a default export of its own module and is re-exported by name 
 root. Nothing here wraps a library — if lodash already does it well, it is not in this toolkit.
 
 - No runtime dependencies
-- TypeScript throughout, with the types published
-- `sideEffects: false`, so a bundler drops what you do not import
-- Works from CommonJS and ESM
+- TypeScript throughout, with declarations published for both module formats
+- Real ESM and CommonJS builds, so `import` and `require` both work natively
+- Every helper is importable on its own, and `sideEffects: false` lets a bundler
+  drop whatever you do not use
+- Node 20+
 
 ## Install
 
@@ -25,18 +27,26 @@ import { arrayChunks, getMapDistance, match, setUrlQueries } from '@guebbit/js-t
 
 arrayChunks(['a', 'b', 'c', 'd', 'e'], 2) // [['a', 'b', 'c'], ['d', 'e']]
 getMapDistance(0, 3, 0, 4) // 5
-match('Ipsum', 'lorem ipsum sit') // true  — case-insensitive substring by default
+match('Ipsum', 'lorem ipsum sit') // true  — case-insensitive, first inside second
 setUrlQueries({ tags: ['a', 'b'], page: 2 }) // 'tags=a%2Cb&page=2'
+```
+
+Import a single helper instead, when you would rather not go through the barrel:
+
+```ts
+import getMapDistance from '@guebbit/js-toolkit/getMapDistance'
 ```
 
 CommonJS works the same way:
 
 ```js
 const { arrayChunks } = require('@guebbit/js-toolkit')
+const getDelta = require('@guebbit/js-toolkit/getDelta').default
 ```
 
-The package is compiled to CommonJS. Named ESM imports work through Node's static detection of
-CommonJS exports, which the packaging test exercises on every build.
+There is no default export on the barrel — it exports names. Every one of these forms, both
+module systems and both subpath styles, is exercised against a real packed tarball on each
+build.
 
 ### Browser and Node
 
@@ -62,11 +72,27 @@ server bundle does not drag the DOM ones in.
 
 | Signature                                               | What it does                                                                                                                                 |
 | ------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| `isEmail(string: string): boolean`                      | Anchored e-mail check, including quoted local parts and IPv4 literals.                                                                       |
-| `isUrl(string: string): boolean`                        | URL check with optional protocol, port, path, query and fragment.                                                                            |
 | `levenshteinDistance(a?, b?): number`                   | Edit distance. `999` when both sides are absent — "nothing to compare", not "identical".                                                     |
 | `match(check?, match?, sensitive?, distance?): boolean` | Fuzzy compare. `distance` selects the mode: `-2` two-way substring, `-1` one-way substring (default), `0` exact, `1+` maximum edit distance. |
 | `getUuid(): string`                                     | `crypto.randomUUID()` where available, timestamp + random otherwise. Not for cryptographic use.                                              |
+
+`match` takes `{ sensitive?, mode?, maxDistance? }`. The mode says what a match means:
+
+| Mode        | True when                                                  |
+| ----------- | ---------------------------------------------------------- |
+| `exact`     | the two are equal                                          |
+| `contains`  | `check` contains `against`                                 |
+| `contained` | `check` is inside `against` — the default                  |
+| `either`    | one is inside the other, whichever way round               |
+| `fuzzy`     | their edit distance is at most `maxDistance` (default `0`) |
+
+Both sides are trimmed, and lowercased unless `sensitive` is set. Equality satisfies every mode.
+
+```ts
+match('Ipsum', 'lorem ipsum') // true   — default 'contained'
+match('lorem ipsum', 'Ipsum', { mode: 'contains' }) // true
+match('lorem ipsum', 'lorem ispum', { mode: 'fuzzy', maxDistance: 2 }) // true
+```
 
 ### Numbers and ranges
 
@@ -131,8 +157,9 @@ with `history.replaceState`.
 
 ### Exported types
 
-`ISecondsToTimeMap` (the shape `secondsToTime` returns) and `ISetCookieOptions` (the third argument
-to `setCookie`) are both importable from the package root.
+`ISecondsToTimeMap` (the shape `secondsToTime` returns, every field required), `ISetCookieOptions`
+(the third argument to `setCookie`), and `IMatchOptions` / `TMatchMode` (the second argument to
+`match`) are all importable from the package root.
 
 ## Contributing
 
@@ -141,6 +168,8 @@ npm run complete:check   # lint, format, typecheck, build, test
 npm test                 # unit, property and type tests
 npm run test:pack        # packaging smoke test
 npm run test:mutation    # mutation testing
+
+FAST_CHECK_SEED=$RANDOM FAST_CHECK_RUNS=1000 npm test   # explore past the fixed seed
 ```
 
 The suite is layered — unit, property-based, type-level, packaging and mutation — and each layer

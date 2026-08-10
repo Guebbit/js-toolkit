@@ -1,29 +1,18 @@
 /**
- *  Trasformo un array normale in un FormData
- *  Necessario per il passaggio di file o per evitare l'uso di php:\\input
- *  WARNING formData appiattisce tutti gli array multidimensionali,
- *  quindi è meglio trasformarli in un json.
- *  JSON.stringify(); prima e poi json_decode($_POST['']); nel php
+ * Flatten an object into FormData, for a multipart request.
  *
- *  @param object obj = oggetto da convertire
- *  @param FormData RECURSIVO  form = l'oggetto convertito
- *  @param string RECURSIVO  namespace = ??
+ * Nested objects and arrays are namespaced with PHP-style brackets, so
+ * `{ user: { tags: ['a'] } }` becomes the key `user[tags][0]`. Blob and File
+ * values are appended whole rather than walked into.
+ *
+ * FormData has no notion of nesting of its own — every value is a string or a
+ * blob — so a server that does not understand bracket notation is better served
+ * by one JSON.stringify'd field.
+ *
+ * @param object - the object to convert
+ * @param form - an existing FormData to append to, a new one otherwise
+ * @param namespace - bracket prefix for the current depth, set by the recursion
  */
-/*
-TODO proibire queste parole in set data
-(a volte appaiono, quando cancello un this._data.files o this._data.files_info
-e non so come evitarlo o che fanno)
-	[append] => function append() { [native code] }
-	[delete] => function delete() { [native code] }
-	[get] => function get() { [native code] }
-	[getAll] => function getAll() { [native code] }
-	[has] => function has() { [native code] }
-	[set] => function set() { [native code] }
-	[keys] => function keys() { [native code] }
-	[values] => function values() { [native code] }
-	[forEach] => function forEach() { [native code] }
-	[entries] => function entries() { [native code] }
-*/
 const toFormData = (
     object: Record<string, unknown>,
     form?: FormData,

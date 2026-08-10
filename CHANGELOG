@@ -4,56 +4,98 @@ All notable changes to this project are documented here.
 
 ## [2.0.0] - 2026-08-10
 
-Behaviour of eight exports changed, so this is a major release. Every change below is a fix for
-something that was wrong, but code depending on the old output will see different results — read
-"Breaking" before upgrading.
+A rework, not a patch release. The public API changed shape, two exports are gone, and the package
+is now published as a real dual ESM/CommonJS build. Read "Breaking" before upgrading.
 
-### Breaking
+### Breaking — packaging
 
-- `getDelta` — returned a negative number, and with the default `size = 0` always returned
+- The package now ships an `exports` map. Deep imports into the build output
+  (`@guebbit/js-toolkit/dist/...`) no longer resolve; import from the package root, or from a
+  helper subpath such as `@guebbit/js-toolkit/getDelta`.
+- The barrel has no default export. `import toolkit from '@guebbit/js-toolkit'` used to work only
+  as a CommonJS-interop artifact; use `import * as toolkit` or named imports.
+- `engines` now declares Node >= 20, and the build targets es2022. The package previously used
+  `Array.prototype.toSorted` (es2023) with nothing declaring it, so it broke at runtime on Node 18
+  with no warning at install time. That call is gone.
+
+### Breaking — removed
+
+- `isEmail` and `isUrl` are removed. Both were regex validators: the email pattern inherently
+  rejects valid addresses and accepts invalid ones, and the URL pattern predates `URL.canParse()`
+  being universally available. A validator that is confidently wrong is worse than none. Use a
+  schema library, or `URL`, and confirm an address by sending mail to it.
+
+### Breaking — behaviour
+
+- `getDelta` returned a negative number, and with the default `size = 0` always returned
   `-|a - b|`. A distance is now non-negative. With a positive `size` the two numbers sit on a
   wrapping space and the shorter way around is returned, never more than `size / 2`.
-- `getMapDistance` — arguments reached `getDelta` in the wrong order (`(size, Xa, Xb)` against a
-  `(a, b, size)` signature), so the map size was mixed into a coordinate. The distance between
-  (40,70) and (50,50) returned `417.73`; it is now `22.36`.
-- `getOverlapRange` — two ranges sharing a start or an end were an overlap in one argument order
-  and not in the other: `getOverlapRange(0, 2, 0, 1)` gave `[0, 1]` while `getOverlapRange(0, 1, 0, 2)`
-  gave `[0, 0]`. The result is now the intersection and does not depend on argument order. Ranges
-  that merely touch are still not an overlap.
-- `toFormData` — nesting deeper than two levels lost every ancestor above the innermost:
-  `{a:{b:{c:1}}}` posted as `b[c]` instead of `a[b][c]`, so two sibling branches with the same
-  inner shape collided on one key. The bracket chain now carries the full path.
-- `timeToSeconds` — returned `NaN` when called with no argument, despite defaulting to an empty
-  string. Absent and blank components now count as zero. A component that is present but not a
+- `getMapDistance` passed its arguments to `getDelta` in the wrong order (`(size, Xa, Xb)` against
+  a `(a, b, size)` signature), mixing the map size into a coordinate. The distance between (40,70)
+  and (50,50) returned `417.73`; it is now `22.36`.
+- `getOverlapRange` was asymmetric for ranges sharing a start or an end:
+  `getOverlapRange(0, 2, 0, 1)` gave `[0, 1]` while `getOverlapRange(0, 1, 0, 2)` gave `[0, 0]`.
+  The result is now the intersection and does not depend on argument order. Ranges that merely
+  touch are still not an overlap.
+- `toFormData` lost every ancestor above the innermost key past two levels: `{a:{b:{c:1}}}` posted
+  as `b[c]` instead of `a[b][c]`, so two sibling branches with the same inner shape collided on
+  one key. The bracket chain now carries the full path.
+- `timeToSeconds` returned `NaN` when called with no argument, despite defaulting to an empty
+  string. Absent and blank components now count as zero; a component that is present but not a
   number still yields `NaN`, so malformed input stays visible.
-- `formatNodeList` — an `HTMLCollection`, which the signature accepts, was wrapped as a single
-  element instead of being expanded, producing a one-item array holding the collection itself.
-- `isJson` — its declared return type `Record<string, T> | false` did not match its behaviour,
-  which returned any parsed JSON value. It now accepts only objects and arrays, returns `false`
-  for a bare value, and is typed `Record<string, T> | T[] | false`. This also removes an
-  ambiguity: `isJson('false')` parsed to the same `false` used to signal failure. Use `getJson`
-  when any JSON value is acceptable.
-- `getJson` and `isJson` no longer write to `console.error` on invalid input. A malformed string
-  is expected input for both and the return value is the report; the logging was noise the caller
-  could not switch off.
+- `formatNodeList` wrapped an `HTMLCollection` — which its signature accepts — as a single element
+  instead of expanding it, producing a one-item array holding the collection.
+- `isJson` accepts only objects and arrays and returns `Record<string, T> | T[] | false`. Its
+  declared type never matched its behaviour, which returned any parsed JSON value. This also
+  removes an ambiguity: `isJson('false')` parsed to the same `false` used to signal failure. Use
+  `getJson` when any JSON value is acceptable.
+- `getJson` and `isJson` no longer write to `console.error`. A malformed string is expected input
+  for both, and the return value is the report.
+- `levenshteinDistance` no longer returns a `999` sentinel when both sides are absent. Absent and
+  empty are the same string, so the distance between two of them is `0`. The old value broke
+  `d(x, x) === 0` and misled any caller filtering on `distance <= threshold`.
+
+### Breaking — signatures
+
+- `match(check, against, options)` replaces the magic-number `distance` parameter with
+  `{ sensitive?, mode?, maxDistance? }`, where mode is `'exact' | 'contains' | 'contained' |
+  'either' | 'fuzzy'`. The old `-1` default is now `'contained'` and `-2` is `'either'`; the
+  one-way `'contains'` had no equivalent before.
+- `eventDelegate` returns an unsubscribe function. It previously returned nothing while its own
+  documentation claimed the listener could be removed — it could not, since the registered
+  listener was an anonymous function that was never exposed. Every call leaked one.
+- `getElementCenter` returns `[number, number]` instead of `number[]`.
+- `ISecondsToTimeMap` has every field required instead of every field optional, so reading one no
+  longer needs a non-null assertion.
+- `arrayColumns` is overloaded: a bare column name returns `unknown[]`, a list of names returns
+  `unknown[][]`. Both previously collapsed to `unknown[]`.
+- `getValue` compares a radio's `name` as a property rather than interpolating it into a CSS
+  selector, which threw on a name containing a quote or bracket.
 
 ### Added
 
-- `ISecondsToTimeMap` and `ISetCookieOptions` are exported from the package root. They were
-  reachable only by importing the emitted declaration file directly.
-- `exports` map in `package.json`, with a `types` condition so the published types resolve under
-  `moduleResolution: node16` and `bundler`.
-- Property-based tests (fast-check) over the pure functions, covering round trips, idempotence,
-  symmetry, the triangle inequality and per-input bounds. The `getOverlapRange` asymmetry above
-  came from one of its counterexamples, now committed as a named regression case.
+- Real ESM and CommonJS builds from one source tree, with declarations emitted per format so both
+  kinds of consumer type-check.
+- Subpath exports: `@guebbit/js-toolkit/getDelta` and friends.
+- `IMatchOptions` and `TMatchMode` exported from the package root, alongside `ISecondsToTimeMap`
+  and `ISetCookieOptions` — the latter two were previously reachable only by importing the emitted
+  declaration file directly.
+- Property-based tests (fast-check) over the pure functions: round trips, idempotence, symmetry,
+  the triangle inequality and per-input bounds. The `getOverlapRange` asymmetry above came from one
+  of its counterexamples, now committed as a named regression case.
 - Type-level tests (expect-type) over the exported signatures, gated by `tsc` — `isolatedModules`
   puts ts-jest in transpile-only mode, so a type error in a test never fails a jest run.
-- Packaging smoke test (`npm run test:pack`): packs a tarball, installs it, imports it as both
-  CommonJS and ESM, calls a real function and type-checks the published types.
+- Packaging smoke test (`npm run test:pack`): packs a tarball, installs it, imports it via
+  `require` and `import` from both the barrel and a subpath, and type-checks an ESM and a
+  CommonJS consumer.
 - Per-file mutation baseline (`mutation-baseline.json`) with a gate that fails a file dropping
   below its recorded score and raises the baseline when one improves.
-- `README.md` documenting the whole API, and `TESTING.md` documenting the test layers.
-- CI jobs for the packaging test and the mutation baseline.
+- A nightly workflow that re-runs the property tests on a random seed with ten times the cases,
+  so the fixed per-commit seed does not stop the suite exploring.
+- CI now runs the unit tests on Node 20, 22 and 24, and has jobs for the packaging test and the
+  mutation baseline.
+- `README.md` documenting the whole API, and `TESTING.md` documenting the test layers and what
+  jsdom does not cover.
 
 ### Changed
 
@@ -61,8 +103,6 @@ something that was wrong, but code depending on the old output will see differen
   (`arrayDivide`, `matrixTranspose`, `prefersDarkScheme`, `prefersReducedMotion`, `sort`,
   `whitelist`) were still being published.
 - `npm run typecheck` now type-checks the test tree as well as `src`.
-- `tsconfig.json` includes `dom.iterable`, which `getForm`, `getIndex` and `appendChildren`
-  already relied on.
 
 ### Fixed
 

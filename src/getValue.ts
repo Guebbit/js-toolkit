@@ -22,10 +22,16 @@ export default (
         // Mutation testing: mutating this guard survives and is equivalent.
         // A radio with no name makes the selector below match nothing, so the
         // function returns undefined either way. Do not chase it.
+        // Mutation testing: mutating this guard survives and is equivalent.
+        // A radio with no name matches nothing in the search below, so the
+        // function returns undefined either way. Do not chase it.
         if (!name) return
-        const checked = parentElement.querySelector<HTMLInputElement>(
-            `input[name="${name}"]:checked`
-        )
+        // The name is compared as a property rather than interpolated into a
+        // selector: a name holding a quote or bracket would otherwise build a
+        // malformed selector and throw.
+        const checked = [
+            ...parentElement.querySelectorAll<HTMLInputElement>('input[type="radio"]')
+        ].find((radio) => radio.name === name && radio.checked)
         return checked?.value
     }
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition

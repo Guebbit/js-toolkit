@@ -1,37 +1,61 @@
-import levenshteinDistance from './levenshteinDistance'
+import levenshteinDistance from './levenshteinDistance.js'
+
+export type TMatchMode = 'exact' | 'contains' | 'contained' | 'either' | 'fuzzy'
+
+export interface IMatchOptions {
+    // compare with case sensitivity, off by default
+    sensitive?: boolean
+    // how the two strings are compared, see TMatchMode
+    mode?: TMatchMode
+    // maximum edit distance accepted in 'fuzzy' mode
+    maxDistance?: number
+}
 
 /**
- * Match if 2 strings are similar
- * If distance === 0 then they must be the same
+ * Compare two strings under one of several rules.
  *
- * @param {string} check - check with match
- * @param {string} match - same as above, equal role
- * @param {boolean} sensitive - if case sensitive or not
- * @param {number} distance - max levenshtein distance
- *  -2: They can be substring one of another
- *  -1: {check} can be substring of {match} (default)
- *  0: then they must be the same
- *  1+: maximum distance to be accepted
+ * Both sides are trimmed first, and lowercased unless {sensitive} is set. The
+ * mode says what "match" means:
+ *
+ *  exact     - the two are equal
+ *  contains  - {check} contains {against}
+ *  contained - {check} is contained in {against} (default)
+ *  either    - one contains the other, whichever way round
+ *  fuzzy     - their edit distance is at most {maxDistance}
+ *
+ * @param check
+ * @param against - same role, order only matters for the one-way modes
+ * @param options
  */
-export default (check = '', match = '', sensitive = false, distance = -1): boolean => {
-    // Since they are not objects I can change them without worrying about unwanted changes
-    check = check.trim()
-    match = match.trim()
-    // if case insensitive
+export default (check = '', against = '', options: IMatchOptions = {}): boolean => {
+    const { sensitive = false, mode = 'contained', maxDistance = 0 } = options
+
+    let first = check.trim()
+    let second = against.trim()
     if (!sensitive) {
-        check = check.toLowerCase()
-        match = match.toLowerCase()
+        first = first.toLowerCase()
+        second = second.toLowerCase()
     }
-    // (2-way) if they are the same
-    if (check === match) return true
-    // (2-way) is one a substring of the other
-    if (distance === -2 && (check.includes(match) || match.includes(check))) return true
-    // (1-way) if {check} is substring of {match}
-    if (distance === -1 && match.includes(check)) return true
-    // (2-way) fuzzy search: levenshtein distance must be lower or equal the requested distance
-    // Mutation testing: mutating `distance > 0` here survives and is equivalent.
-    // At distance 0 the only pair with an edit distance of 0 is an equal pair,
-    // which already returned true above; at -1 and -2 no distance is ever <= a
-    // negative number. Do not chase it.
-    return distance > 0 && levenshteinDistance(check, match) <= distance
+
+    // Equality satisfies every mode, so it is answered once up front rather
+    // than repeated in each branch.
+    if (first === second) return true
+
+    switch (mode) {
+        case 'exact': {
+            return false
+        }
+        case 'contains': {
+            return first.includes(second)
+        }
+        case 'contained': {
+            return second.includes(first)
+        }
+        case 'either': {
+            return first.includes(second) || second.includes(first)
+        }
+        case 'fuzzy': {
+            return levenshteinDistance(first, second) <= maxDistance
+        }
+    }
 }

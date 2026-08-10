@@ -83,4 +83,40 @@ describe('eventDelegate', () => {
 
         expect(callback).toHaveBeenCalledTimes(1)
     })
+
+    // The listener is created inside eventDelegate and never otherwise exposed,
+    // so the returned function is the only way to remove it. Without it every
+    // call leaks a listener for the lifetime of the parent.
+    describe('the returned unsubscribe', () => {
+        test('stops the callback firing', () => {
+            const off = eventDelegate('click', '#child', callback, parent)
+            child.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+            expect(callback).toHaveBeenCalledTimes(1)
+
+            off()
+            child.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+            expect(callback).toHaveBeenCalledTimes(1)
+        })
+
+        test('is safe to call more than once', () => {
+            const off = eventDelegate('click', '#child', callback, parent)
+            off()
+            off()
+            child.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+            expect(callback).not.toHaveBeenCalled()
+        })
+
+        // Two delegates on the same parent and event must be independently
+        // removable, which a shared or re-created listener would break.
+        test('removes only its own listener', () => {
+            const other = jest.fn()
+            const off = eventDelegate('click', '#child', callback, parent)
+            eventDelegate('click', '#child', other, parent)
+
+            off()
+            child.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+            expect(callback).not.toHaveBeenCalled()
+            expect(other).toHaveBeenCalledTimes(1)
+        })
+    })
 })

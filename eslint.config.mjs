@@ -211,6 +211,18 @@ export default tseslint.config(
     },
 
     /**
+     * Prettier owns formatting; rules it also controls have to yield or the two
+     * fight each other on every run.
+     */
+    {
+        rules: {
+            // prettier lowercases hex literals, unicorn wants them uppercase,
+            // and --fix from either one is undone by the other
+            'unicorn/number-literal-case': 'off'
+        }
+    },
+
+    /**
      * "Special" files names are better to be left untouched
      */
     {

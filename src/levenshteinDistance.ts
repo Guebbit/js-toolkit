@@ -6,49 +6,53 @@
 */
 
 /**
- * Compute the edit distance between the two given strings
- * Mathematical formula
+ * Number of single-character edits needed to turn one string into the other.
+ *
+ * This is a true metric: never negative, symmetric, zero exactly when the two
+ * are equal, and obeying the triangle inequality. Absent and empty strings are
+ * treated as the empty string, so comparing two of them is 0 — they really are
+ * identical, and any other answer would break `d(x, x) === 0` and mislead a
+ * caller filtering on `distance <= threshold`.
  *
  * @param a - string to check
  * @param b - same as above, order is not important
  */
 export default (a?: string | null, b?: string | null): number => {
-    //declaration
+    // Not default parameters: those only fire for undefined, and null has to
+    // collapse to the empty string too.
+    /* eslint-disable unicorn/prefer-default-parameters */
+    const first = a ?? ''
+    const second = b ?? ''
+    /* eslint-enable unicorn/prefer-default-parameters */
+
+    // Mutation testing: all three of these early returns have surviving mutants
+    // and all three are equivalent. Equal strings walk the matrix to 0 anyway,
+    // and an empty side leaves the inner loop with nothing to do, so the matrix
+    // already returns the other length. They are shortcuts, not behaviour.
+    // Do not chase them.
+    if (first === second) return 0
+    if (first.length === 0) return second.length
+    if (second.length === 0) return first.length
+
     const matrix: number[][] = []
     let index: number, index_: number
 
-    // Two absent strings are not "identical", they are "nothing to compare", and
-    // the caller is told so with a large sentinel rather than a 0 that would read
-    // as a perfect match. This is real behaviour and is pinned by a test.
-    if (!a && !b) return 999
-    // Mutation testing: this early return and the two length checks below have
-    // surviving mutants, and they are equivalent. An equal pair walks the matrix
-    // to 0 anyway, and `a.length === 0` can only be true when `!a` already was.
-    // They are shortcuts, not behaviour. Do not chase them.
-    if (a === b) return 0
-    //checks
-    if (!a || a.length === 0) return b!.length
-    if (!b || b.length === 0) return a.length
-
     // increment along the first column of each row
-    for (index = 0; index <= b.length; index++) matrix[index] = [index]
+    for (index = 0; index <= second.length; index++) matrix[index] = [index]
     // increment each column in the first row
-    for (index_ = 0; index_ <= a.length; index_++) matrix[0][index_] = index_
+    for (index_ = 0; index_ <= first.length; index_++) matrix[0][index_] = index_
 
     // Fill in the rest of the matrix
-    for (index = 1; index <= b.length; index++)
-        for (index_ = 1; index_ <= a.length; index_++)
+    for (index = 1; index <= second.length; index++)
+        for (index_ = 1; index_ <= first.length; index_++)
             matrix[index][index_] =
-                b.charAt(index - 1) == a.charAt(index_ - 1)
+                second.charAt(index - 1) === first.charAt(index_ - 1)
                     ? matrix[index - 1][index_ - 1]
                     : Math.min(
                           matrix[index - 1][index_ - 1] + 1, // substitution
-                          Math.min(
-                              matrix[index][index_ - 1] + 1, // insertion
-                              matrix[index - 1][index_] + 1 // deletion
-                          )
+                          matrix[index][index_ - 1] + 1, // insertion
+                          matrix[index - 1][index_] + 1 // deletion
                       )
 
-    //result
-    return matrix[b.length][a.length]
+    return matrix[second.length][first.length]
 }

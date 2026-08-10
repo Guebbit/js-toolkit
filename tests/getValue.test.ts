@@ -46,4 +46,30 @@ describe('(getValue) get value of various elements', () => {
             'ut labore et dolore'
         )
     })
+
+    // Two radio groups under one parent. Matching on the checked state alone
+    // returns whichever group happens to come first, so the name has to be
+    // compared as well.
+    test('Radio reads its own group, not a neighbouring one', () => {
+        document.body.innerHTML =
+            '<form id="two-groups">' +
+            '<input type="radio" id="first-a" name="first" value="A"/>' +
+            '<input type="radio" name="first" value="B" checked/>' +
+            '<input type="radio" id="second-a" name="second" value="X"/>' +
+            '<input type="radio" name="second" value="Y" checked/>' +
+            '</form>'
+        expect(getValue(document.querySelector('#first-a'))).toBe('B')
+        expect(getValue(document.querySelector('#second-a'))).toBe('Y')
+    })
+
+    // A name is compared as a property, never interpolated into a selector, so
+    // characters with meaning in CSS cannot break the lookup.
+    test('Radio handles a name containing CSS syntax', () => {
+        document.body.innerHTML =
+            '<form id="odd">' +
+            '<input type="radio" id="odd-a" name=\'a"]b[c\' value="A"/>' +
+            '<input type="radio" name=\'a"]b[c\' value="B" checked/>' +
+            '</form>'
+        expect(getValue(document.querySelector('#odd-a'))).toBe('B')
+    })
 })

@@ -1,4 +1,4 @@
-import getDelta from './getDelta'
+import getDelta from './getDelta.js'
 
 /**
  * Distance between 2 points, like coordinates on a map A(x,y) & B(x,y)

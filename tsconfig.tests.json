@@ -6,10 +6,7 @@
         // in a test never reaches the jest run. This project is the gate that makes
         // tests/types.test.ts mean anything.
         "noEmit": true,
-        // fast-check ships its types behind package `exports`, which the base
-        // config's classic "node" resolution cannot read.
-        "moduleResolution": "bundler",
-        "module": "esnext"
+        "types": ["jest", "node"]
     },
     "include": ["src/**/*", "tests/**/*"],
     "exclude": []

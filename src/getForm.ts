@@ -1,4 +1,4 @@
-import getValue from './getValue'
+import getValue from './getValue.js'
 
 /**
  * Get all values from different input and textareas
