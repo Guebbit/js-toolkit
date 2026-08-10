@@ -12,6 +12,26 @@ describe('(toFormData) transform object in FormData', () => {
         expect(fd.get('dolor[sit]')).toBe('consectetur')
     })
 
+    // Two levels is the depth where the accumulated namespace and the bare
+    // property name are still the same string, so it cannot tell them apart.
+    // Three is where they diverge.
+    test('namespaces three levels deep with the full bracket chain', () => {
+        const fd = toFormData({ lorem: { ipsum: { dolor: 'sit' } } })
+        expect([...fd.keys()]).toEqual(['lorem[ipsum][dolor]'])
+        expect(fd.get('lorem[ipsum][dolor]')).toBe('sit')
+    })
+
+    // Without the full chain both branches post as `inner[value]` and the server
+    // sees two entries under one key with no way to tell which is which.
+    test('keeps sibling branches with the same inner shape apart', () => {
+        const fd = toFormData({
+            first: { inner: { value: 'a' } },
+            second: { inner: { value: 'b' } }
+        })
+        expect(fd.get('first[inner][value]')).toBe('a')
+        expect(fd.get('second[inner][value]')).toBe('b')
+    })
+
     test('flattens arrays using indexed bracket keys', () => {
         const fd = toFormData({ adipiscing: ['elit', 'sed do'] })
         expect(fd.get('adipiscing[0]')).toBe('elit')
@@ -25,9 +45,9 @@ describe('(toFormData) transform object in FormData', () => {
     })
 
     test('appends plain Blob instances directly instead of recursing', () => {
-        // Regression: the recursion guard used to test `instanceof File`, so a Blob that was not
-        // a File was recursed into. A Blob has no enumerable own properties, so nothing was
-        // appended and the value vanished without an error.
+        // A Blob that is not a File must not take the recursive branch: it has no
+        // enumerable own properties, so nothing would be appended and the value
+        // would vanish without an error.
         //
         // Identity is not asserted: `FormData.append` normalises a non-File Blob into a File
         // named "blob" per spec, so the stored value is equivalent but not the same reference.

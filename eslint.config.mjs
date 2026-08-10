@@ -8,7 +8,17 @@ export default tseslint.config(
      * Excluded files
      */
     {
-        ignores: ['dist', 'node_modules', 'eslint.config.mjs', 'docs']
+        ignores: [
+            'dist',
+            'node_modules',
+            'eslint.config.mjs',
+            'docs',
+            // Stryker's sandbox is a copy of the tree; linting it doubles every
+            // finding and fails outright when a run is interrupted and the
+            // directory survives.
+            '.stryker-tmp',
+            'reports'
+        ]
     },
 
     /**
@@ -230,6 +240,44 @@ export default tseslint.config(
             globals: {
                 ...globals.jest
             }
+        },
+
+        rules: {
+            // Property-based tests build their fixtures out of generated numbers
+            // ('14:30', a coordinate pair, a bracket path). Requiring String()
+            // around each one buries the case being expressed.
+            '@typescript-eslint/restrict-template-expressions': ['error', { allowNumber: true }]
+        }
+    },
+
+    /**
+     * Build and test tooling: plain node scripts, not part of the published
+     * package, so they are linted without the type-aware program.
+     */
+    {
+        files: ['scripts/**/*.mjs'],
+
+        // The type-aware rules need a TypeScript program, and these plain node
+        // scripts are not in one — they are tooling, not published source.
+        extends: [tseslint.configs.disableTypeChecked],
+
+        languageOptions: {
+            globals: {
+                ...globals.node
+            }
+        },
+
+        rules: {
+            // A CLI script talks to the terminal and exits with a status; both
+            // are the interface, not a smell.
+            'no-console': 'off',
+            'unicorn/no-process-exit': 'off',
+            // JSON.stringify's replacer slot and Node's own APIs take null.
+            'unicorn/no-null': 'off',
+            // kebab-case filenames match the npm script names that invoke them.
+            'unicorn/filename-case': 'off',
+            'unicorn/prevent-abbreviations': 'off',
+            '@typescript-eslint/no-dynamic-delete': 'off'
         }
     }
 )

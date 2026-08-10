@@ -26,6 +26,10 @@ describe('downloadBlob', () => {
         const [blob] = createObjectUrl.mock.calls[0] as [Blob]
         expect(blob).toBeInstanceOf(Blob)
         expect(blob.type).toBe('text/plain')
+        // The content has to reach the Blob. Asserting only the type leaves the
+        // wrapping free to drop the data and still look correct.
+        // Size rather than text(): jsdom's Blob has no text().
+        expect(blob.size).toBe('hello world'.length)
         expect(click).toHaveBeenCalledTimes(1)
         expect(revokeObjectUrl).toHaveBeenCalledWith('blob:mock-url')
     })

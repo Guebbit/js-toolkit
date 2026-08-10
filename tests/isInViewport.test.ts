@@ -1,10 +1,12 @@
 import { isInViewport } from '../src'
 
+// isInViewport reads nothing but getBoundingClientRect, so a stub with that one
+// method is enough. The cast goes through `unknown` because the stub genuinely
+// is not an Element and TypeScript is right to say so.
 const mockElement = (rect: Partial<DOMRect>) =>
     ({
         getBoundingClientRect: jest.fn().mockReturnValue(rect)
-        // @ts-expect-error this is a poor mock of an Element
-    }) as Element
+    }) as unknown as Element
 
 beforeAll(() => {
     Object.defineProperty(globalThis, 'innerWidth', { value: 1024, configurable: true })

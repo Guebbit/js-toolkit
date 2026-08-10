@@ -1,7 +1,3 @@
-/**
- * TODO REDO
- * CREATED WITH CHATGPT
- */
 import { eventDelegate } from '../src'
 
 describe('eventDelegate', () => {
@@ -61,5 +57,30 @@ describe('eventDelegate', () => {
 
         expect(callback).toHaveBeenCalled()
         expect(callback.mock.instances[0]).toBe(child)
+    })
+
+    // The Node form asks "is the clicked element inside this node". A sibling
+    // branch is not, so the callback must stay silent — without the containment
+    // check every click in the document would fire it.
+    test('should not trigger callback when the Node selector does not contain the clicked element', () => {
+        document.body.innerHTML = '<div id="inside"></div><div id="outside"></div>'
+        const inside = document.querySelector('#inside')!
+        const outside = document.querySelector('#outside')!
+
+        eventDelegate('click', inside, callback, document.body)
+        outside.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+
+        expect(callback).not.toHaveBeenCalled()
+    })
+
+    // A Node contains itself, so clicking the delegate target itself counts.
+    test('should trigger callback when the Node selector is the clicked element', () => {
+        document.body.innerHTML = '<div id="self"></div>'
+        const self = document.querySelector('#self')!
+
+        eventDelegate('click', self, callback, document.body)
+        self.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+
+        expect(callback).toHaveBeenCalledTimes(1)
     })
 })

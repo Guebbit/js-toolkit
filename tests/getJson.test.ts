@@ -2,45 +2,56 @@ import { getJson } from '../src'
 
 describe('(getJson) Safe conversion of JSON', () => {
     test('Empty', () => {
-        expect(getJson()).toBeFalsy()
+        expect(getJson()).toBeUndefined()
+        expect(getJson('')).toBeUndefined()
     })
 
-    test('Random string', () => {
+    // Unlike isJson, any JSON value is acceptable here — this is the general
+    // parse, so a bare number comes back as a number.
+    test('Bare JSON value', () => {
         expect(getJson('12345')).toBe(12_345)
+        expect(getJson('"lorem"')).toBe('lorem')
+        expect(getJson('true')).toBe(true)
+        expect(getJson('null')).toBeNull()
     })
 
     test('Empty object (json)', () => {
-        expect(getJson('{}')).toBeTruthy()
+        expect(getJson('{}')).toStrictEqual({})
     })
 
     test('Empty array (json)', () => {
-        expect(getJson('[]')).toBeTruthy()
+        expect(getJson('[]')).toStrictEqual([])
     })
 
     test('Wrong object (json)', () => {
-        expect(getJson("{ 'test': 'toast' }")).toBeFalsy()
+        expect(getJson("{ 'test': 'toast' }")).toBeUndefined()
     })
 
     test('Wrong array (json)', () => {
-        expect(getJson("['bim', 'bum', 'bam']")).toBeFalsy()
+        expect(getJson("['bim', 'bum', 'bam']")).toBeUndefined()
     })
 
     test('Correct object (json)', () => {
-        expect(getJson('{"test":"toast","lorem":"ipsum"}')).toBeTruthy()
+        expect(getJson('{"test":"toast","lorem":"ipsum"}')).toStrictEqual({
+            test: 'toast',
+            lorem: 'ipsum'
+        })
     })
 
     test('Correct array (json)', () => {
-        expect(getJson('["bim","bum","bam"]')).toBeTruthy()
+        expect(getJson('["bim","bum","bam"]')).toStrictEqual(['bim', 'bum', 'bam'])
     })
 
-    test('logs the error and returns undefined on invalid JSON', () => {
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        const spy = jest.spyOn(console, 'error').mockImplementation(() => {})
+    // The return value is the only report. Parsing something that might not be
+    // JSON is the reason to reach for this over JSON.parse, so a malformed
+    // string is expected input, not an event worth logging.
+    test('returns undefined and writes nothing to the console on invalid JSON', () => {
+        const error = jest.spyOn(console, 'error').mockImplementation(jest.fn())
         try {
             expect(getJson("{ 'test': 'toast' }")).toBeUndefined()
-            expect(spy).toHaveBeenCalledTimes(1)
+            expect(error).not.toHaveBeenCalled()
         } finally {
-            spy.mockRestore()
+            error.mockRestore()
         }
     })
 })

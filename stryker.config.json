@@ -10,10 +10,14 @@
     "tsconfigFile": "tsconfig.json",
     "coverageAnalysis": "perTest",
     "mutate": ["src/**/*.ts", "!src/index.ts"],
-    "reporters": ["html", "clear-text", "progress"],
+    "reporters": ["html", "json", "clear-text", "progress"],
     "htmlReporter": {
         "fileName": "reports/mutation/index.html"
     },
+    "jsonReporter": {
+        "fileName": "reports/mutation/mutation.json"
+    },
+    "concurrency": 4,
     "thresholds": {
         "high": 90,
         "low": 70,

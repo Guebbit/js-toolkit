@@ -19,6 +19,9 @@ export default (
         const { parentElement } = element
         const { name } = element as HTMLInputElement
         if (!parentElement) return
+        // Mutation testing: mutating this guard survives and is equivalent.
+        // A radio with no name makes the selector below match nothing, so the
+        // function returns undefined either way. Do not chase it.
         if (!name) return
         const checked = parentElement.querySelector<HTMLInputElement>(
             `input[name="${name}"]:checked`

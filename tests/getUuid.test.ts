@@ -26,6 +26,19 @@ describe('(getUuid) random unique id', () => {
         }
     })
 
+    // The guard is `typeof crypto !== 'undefined'`, which exists for runtimes
+    // where the binding is absent entirely rather than merely empty. Reading
+    // `crypto.randomUUID` without it throws a ReferenceError there.
+    test('falls back when there is no crypto binding at all', () => {
+        const original = Object.getOwnPropertyDescriptor(globalThis, 'crypto')
+        delete (globalThis as { crypto?: unknown }).crypto
+        try {
+            expect(getUuid()).toMatch(/^\d+-[\da-z]+$/)
+        } finally {
+            if (original) Object.defineProperty(globalThis, 'crypto', original)
+        }
+    })
+
     test('falls back to timestamp + random when crypto.randomUUID is unavailable', () => {
         const original = Object.getOwnPropertyDescriptor(globalThis, 'crypto')
         Object.defineProperty(globalThis, 'crypto', {

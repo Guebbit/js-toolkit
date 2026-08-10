@@ -160,6 +160,67 @@ jobs:
             - name: Run unit tests
               run: npm run test -- --runInBand
 
+    test-pack:
+        # Installs a real tarball and imports it as both ESM and CJS. Catches a
+        # broken exports map, a missing files entry or a stale dist module — the
+        # failures that ship green because no unit test ever resolves the
+        # package the way a consumer does.
+        runs-on: ubuntu-latest
+        timeout-minutes: 15
+        permissions:
+            contents: read
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Setup Node
+              uses: actions/setup-node@v4
+              with:
+                  node-version: ${{ env.NODE_VERSION }}
+                  cache: npm
+                  cache-dependency-path: package-lock.json
+
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Packaging smoke test
+              run: npm run test:pack
+
+    test-mutation:
+        # Gates on the per-file baseline in mutation-baseline.json, not on a
+        # global percentage: a global number lets a strong file carry a weak one.
+        runs-on: ubuntu-latest
+        timeout-minutes: 30
+        permissions:
+            contents: read
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Setup Node
+              uses: actions/setup-node@v4
+              with:
+                  node-version: ${{ env.NODE_VERSION }}
+                  cache: npm
+                  cache-dependency-path: package-lock.json
+
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Run mutation testing
+              run: npm run test:mutation
+
+            - name: Check per-file mutation baseline
+              run: npm run test:mutation:check
+
+            - name: Upload mutation report
+              if: always()
+              uses: actions/upload-artifact@v4
+              with:
+                  name: mutation-report
+                  path: reports/mutation/
+                  retention-days: 14
+
     audit:
         # Fail on known high/critical severity vulnerabilities in production dependencies.
         runs-on: ubuntu-latest
@@ -194,6 +255,8 @@ jobs:
             - typecheck
             - build
             - test-unit
+            - test-pack
+            - test-mutation
             - audit
         runs-on: ubuntu-latest
         timeout-minutes: 5

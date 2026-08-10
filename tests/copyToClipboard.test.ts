@@ -15,7 +15,9 @@ describe('copyToClipboard', () => {
     })
 
     test('uses the Clipboard API when available', async () => {
-        const writeText = jest.fn().mockResolvedValue()
+        // navigator.clipboard.writeText resolves with undefined
+        // eslint-disable-next-line unicorn/no-useless-undefined
+        const writeText = jest.fn().mockResolvedValue(undefined)
         Object.defineProperty(navigator, 'clipboard', {
             value: { writeText },
             configurable: true
@@ -74,5 +76,22 @@ describe('copyToClipboard', () => {
         expect(created[0].value).toBe('payload')
         expect(created[0].style.position).toBe('fixed')
         expect(created[0].style.opacity).toBe('0')
+    })
+
+    // Feature detection, not a try/catch: when the Clipboard API is absent the
+    // function must go straight to the fallback. Reaching for
+    // navigator.clipboard.writeText anyway would still "work" thanks to the
+    // catch, but it logs a TypeError on every copy in older browsers.
+    test('does not touch the Clipboard API when it is absent', () => {
+        const error = jest.spyOn(console, 'error').mockImplementation(jest.fn())
+        Object.defineProperty(document, 'execCommand', {
+            value: jest.fn().mockReturnValue(true),
+            configurable: true
+        })
+
+        return copyToClipboard('hello').then((result) => {
+            expect(result).toBe(true)
+            expect(error).not.toHaveBeenCalled()
+        })
     })
 })

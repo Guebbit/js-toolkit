@@ -19,6 +19,12 @@ describe('(getExecTime) measure execution time of a function', () => {
         })
         expect(typeof time).toBe('number')
         expect(time).toBeGreaterThanOrEqual(0)
+        // An upper bound is what makes this a measurement rather than a type
+        // check: without it the unit conversion could be inverted, or the two
+        // timestamps added instead of subtracted, and nothing would notice.
+        // A minute is far past any plausible runtime for the loop above, so the
+        // bound cannot flake on a loaded machine.
+        expect(time).toBeLessThan(60_000)
     })
 
     test('throws synchronously when the timed function throws synchronously', () => {

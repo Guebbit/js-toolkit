@@ -7,7 +7,9 @@
         "esModuleInterop": true,
         "baseUrl": "src",
         "sourceMap": true,
-        "lib": ["dom", "esnext"],
+        // dom.iterable is required: getForm, getIndex and appendChildren spread
+        // NodeList/HTMLCollection, and FormData is iterated in the tests
+        "lib": ["dom", "dom.iterable", "esnext"],
         "allowSyntheticDefaultImports": true,
         "isolatedModules": true,
         "resolveJsonModule": true,

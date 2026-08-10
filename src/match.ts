@@ -29,5 +29,9 @@ export default (check = '', match = '', sensitive = false, distance = -1): boole
     // (1-way) if {check} is substring of {match}
     if (distance === -1 && match.includes(check)) return true
     // (2-way) fuzzy search: levenshtein distance must be lower or equal the requested distance
+    // Mutation testing: mutating `distance > 0` here survives and is equivalent.
+    // At distance 0 the only pair with an edit distance of 0 is an equal pair,
+    // which already returned true above; at -1 and -2 no distance is ever <= a
+    // negative number. Do not chase it.
     return distance > 0 && levenshteinDistance(check, match) <= distance
 }

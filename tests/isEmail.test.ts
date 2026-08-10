@@ -58,4 +58,17 @@ describe('(isEmail) check if valid E-Mail', () => {
     test('Rejects a numeric TLD', () => {
         expect(isEmail('lorem@ipsum.123')).toBeFalsy()
     })
+
+    // A single-digit octet would still match a one-character quantifier, so the
+    // multi-digit octet is what proves the 1-to-3 range is really there.
+    test('Accepts an IPv4 literal with multi-digit octets', () => {
+        expect(isEmail('lorem@[192.168.10.254]')).toBeTruthy()
+    })
+
+    // Domain labels allow digits. Without that the class is satisfied by
+    // letters alone and a perfectly ordinary host is rejected.
+    test('Accepts digits inside a domain label', () => {
+        expect(isEmail('lorem@ipsum1.com')).toBeTruthy()
+        expect(isEmail('lorem@123abc.com')).toBeTruthy()
+    })
 })

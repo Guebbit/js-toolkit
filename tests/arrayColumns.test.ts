@@ -49,6 +49,25 @@ describe('(arrayColumns) php equivalent of arrayColumns - but extended to use an
         ])
     })
 
+    // The guard covers rows that are not objects at all: a sparse or
+    // partially-loaded haystack must yield undefined rather than throwing.
+    test('returns undefined for a missing row instead of throwing', () => {
+        expect(
+            // eslint-disable-next-line unicorn/no-null
+            arrayColumns([null as unknown as Record<string, unknown>], ['param1'])
+        ).toStrictEqual([[undefined]])
+        expect(
+            arrayColumns([undefined as unknown as Record<string, unknown>], 'param1')
+        ).toStrictEqual([undefined])
+    })
+
+    // An empty column name cannot address anything, and must not be read as
+    // "every column" or as a key that happens to exist.
+    test('returns undefined for an empty column name', () => {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        expect(arrayColumns([{ '': 'lorem' }], [''])).toStrictEqual([[undefined]])
+    })
+
     test('Ignores inherited properties, returning undefined for non-own columns', () => {
         // 'toString' exists on the prototype but not as an own property:
         // the hasOwnProperty guard must keep it out of the result.

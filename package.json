@@ -1,23 +1,33 @@
 {
     "name": "@guebbit/js-toolkit",
-    "version": "1.2.3",
+    "version": "2.0.0",
     "license": "AGPLv3.0",
     "main": "dist/index.js",
     "types": "dist/types/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/types/index.d.ts",
+            "default": "./dist/index.js"
+        },
+        "./package.json": "./package.json"
+    },
     "files": [
         "dist",
         "README.md",
+        "TESTING.md",
         "LICENSE",
         "CHANGELOG"
     ],
     "sideEffects": false,
     "scripts": {
         "prepare": "husky",
-        "build": "tsc",
-        "typecheck": "tsc --noEmit",
+        "clean": "node -e \"require('node:fs').rmSync('dist', { recursive: true, force: true })\"",
+        "build": "npm run clean && tsc",
+        "typecheck": "tsc --noEmit && tsc -p tsconfig.tests.json --noEmit",
         "test": "jest",
-        "test:target": "jest /tests/getColorBrightness.spec.ts",
+        "test:pack": "node scripts/pack-smoke.mjs",
         "test:mutation": "stryker run",
+        "test:mutation:check": "node scripts/mutation-baseline.mjs",
         "lint": "eslint \"*/**/*.{ts,js,json}\"",
         "lint:fix": "eslint \"*/**/*.{ts,js,json}\" --fix",
         "prettier": "npx prettier .",
@@ -27,8 +37,8 @@
         "docs:build": "vitepress build docs",
         "docs:preview": "vitepress preview docs",
         "update:all": "npm-check-updates -u",
-        "complete:check": "npm run lint && npm run prettier:check && npm run build && npm run test",
-        "complete": "npm run lint:fix && npm run prettier:fix && npm run build && npm run test && npm run docs:build",
+        "complete:check": "npm run lint && npm run prettier:check && npm run typecheck && npm run build && npm run test",
+        "complete": "npm run lint:fix && npm run prettier:fix && npm run typecheck && npm run build && npm run test && npm run test:pack && npm run docs:build",
         "publish:public": "npm run complete && npm publish --access public"
     },
     "devDependencies": {

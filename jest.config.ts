@@ -1,9 +1,8 @@
 export default {
     preset: 'ts-jest',
     testEnvironment: 'jsdom',
-    roots: ['<rootDir>/tests']
-    // transform: {
-    //   // eslint-disable-next-line @typescript-eslint/naming-convention
-    //   '^.+\\.tsx?$': 'ts-jest',
-    // },
+    roots: ['<rootDir>/tests'],
+    setupFilesAfterEnv: ['<rootDir>/tests/setup.ts'],
+    // setup.ts holds configuration, not tests
+    testPathIgnorePatterns: ['<rootDir>/tests/setup.ts']
 }

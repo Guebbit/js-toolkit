@@ -13,6 +13,10 @@ export default <T>(array: T[], n: number): T[][] => {
 
     if (n < 1) return []
     if (n < 2) return [items]
+    // Mutation testing: the mutants on this branch survive and are meant to.
+    // It is a fast path, not a behaviour — the general loop below produces the
+    // same chunks for an evenly divisible array, so deleting the branch changes
+    // nothing observable. Do not chase it.
     if (length_ % n === 0) {
         const size = Math.floor(length_ / n)
         while (items.length > 0) output.push(items.splice(0, size))

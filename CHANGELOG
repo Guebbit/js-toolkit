@@ -2,6 +2,74 @@
 
 All notable changes to this project are documented here.
 
+## [2.0.0] - 2026-08-10
+
+Behaviour of eight exports changed, so this is a major release. Every change below is a fix for
+something that was wrong, but code depending on the old output will see different results — read
+"Breaking" before upgrading.
+
+### Breaking
+
+- `getDelta` — returned a negative number, and with the default `size = 0` always returned
+  `-|a - b|`. A distance is now non-negative. With a positive `size` the two numbers sit on a
+  wrapping space and the shorter way around is returned, never more than `size / 2`.
+- `getMapDistance` — arguments reached `getDelta` in the wrong order (`(size, Xa, Xb)` against a
+  `(a, b, size)` signature), so the map size was mixed into a coordinate. The distance between
+  (40,70) and (50,50) returned `417.73`; it is now `22.36`.
+- `getOverlapRange` — two ranges sharing a start or an end were an overlap in one argument order
+  and not in the other: `getOverlapRange(0, 2, 0, 1)` gave `[0, 1]` while `getOverlapRange(0, 1, 0, 2)`
+  gave `[0, 0]`. The result is now the intersection and does not depend on argument order. Ranges
+  that merely touch are still not an overlap.
+- `toFormData` — nesting deeper than two levels lost every ancestor above the innermost:
+  `{a:{b:{c:1}}}` posted as `b[c]` instead of `a[b][c]`, so two sibling branches with the same
+  inner shape collided on one key. The bracket chain now carries the full path.
+- `timeToSeconds` — returned `NaN` when called with no argument, despite defaulting to an empty
+  string. Absent and blank components now count as zero. A component that is present but not a
+  number still yields `NaN`, so malformed input stays visible.
+- `formatNodeList` — an `HTMLCollection`, which the signature accepts, was wrapped as a single
+  element instead of being expanded, producing a one-item array holding the collection itself.
+- `isJson` — its declared return type `Record<string, T> | false` did not match its behaviour,
+  which returned any parsed JSON value. It now accepts only objects and arrays, returns `false`
+  for a bare value, and is typed `Record<string, T> | T[] | false`. This also removes an
+  ambiguity: `isJson('false')` parsed to the same `false` used to signal failure. Use `getJson`
+  when any JSON value is acceptable.
+- `getJson` and `isJson` no longer write to `console.error` on invalid input. A malformed string
+  is expected input for both and the return value is the report; the logging was noise the caller
+  could not switch off.
+
+### Added
+
+- `ISecondsToTimeMap` and `ISetCookieOptions` are exported from the package root. They were
+  reachable only by importing the emitted declaration file directly.
+- `exports` map in `package.json`, with a `types` condition so the published types resolve under
+  `moduleResolution: node16` and `bundler`.
+- Property-based tests (fast-check) over the pure functions, covering round trips, idempotence,
+  symmetry, the triangle inequality and per-input bounds. The `getOverlapRange` asymmetry above
+  came from one of its counterexamples, now committed as a named regression case.
+- Type-level tests (expect-type) over the exported signatures, gated by `tsc` — `isolatedModules`
+  puts ts-jest in transpile-only mode, so a type error in a test never fails a jest run.
+- Packaging smoke test (`npm run test:pack`): packs a tarball, installs it, imports it as both
+  CommonJS and ESM, calls a real function and type-checks the published types.
+- Per-file mutation baseline (`mutation-baseline.json`) with a gate that fails a file dropping
+  below its recorded score and raises the baseline when one improves.
+- `README.md` documenting the whole API, and `TESTING.md` documenting the test layers.
+- CI jobs for the packaging test and the mutation baseline.
+
+### Changed
+
+- `npm run build` cleans `dist/` first. Six modules whose sources had been removed
+  (`arrayDivide`, `matrixTranspose`, `prefersDarkScheme`, `prefersReducedMotion`, `sort`,
+  `whitelist`) were still being published.
+- `npm run typecheck` now type-checks the test tree as well as `src`.
+- `tsconfig.json` includes `dom.iterable`, which `getForm`, `getIndex` and `appendChildren`
+  already relied on.
+
+### Fixed
+
+- Three pre-existing type errors in the test suite, invisible until the tests were type-checked.
+- `formatNodeList`'s empty-input test asserted nothing: jest's `toEqual` treats `[undefined]` as
+  equal to `[]`.
+
 ## [1.2.3] - 2026-08-05
 
 ### Fixed

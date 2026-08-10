@@ -17,7 +17,14 @@ export default (a?: string | null, b?: string | null): number => {
     const matrix: number[][] = []
     let index: number, index_: number
 
+    // Two absent strings are not "identical", they are "nothing to compare", and
+    // the caller is told so with a large sentinel rather than a 0 that would read
+    // as a perfect match. This is real behaviour and is pinned by a test.
     if (!a && !b) return 999
+    // Mutation testing: this early return and the two length checks below have
+    // surviving mutants, and they are equivalent. An equal pair walks the matrix
+    // to 0 anyway, and `a.length === 0` can only be true when `!a` already was.
+    // They are shortcuts, not behaviour. Do not chase them.
     if (a === b) return 0
     //checks
     if (!a || a.length === 0) return b!.length

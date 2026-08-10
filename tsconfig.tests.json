@@ -1,5 +1,16 @@
 {
     "extends": "./tsconfig.json",
-    "include": ["src/**/__tests__/**/*", "tests/**/*"],
+    "compilerOptions": {
+        // The test tree is type-checked by `tsc`, not by ts-jest: `isolatedModules`
+        // in the base config puts ts-jest in transpile-only mode, so a type error
+        // in a test never reaches the jest run. This project is the gate that makes
+        // tests/types.test.ts mean anything.
+        "noEmit": true,
+        // fast-check ships its types behind package `exports`, which the base
+        // config's classic "node" resolution cannot read.
+        "moduleResolution": "bundler",
+        "module": "esnext"
+    },
+    "include": ["src/**/*", "tests/**/*"],
     "exclude": []
 }

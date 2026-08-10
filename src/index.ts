@@ -1,3 +1,6 @@
+export type { ISecondsToTimeMap } from './secondsToTime'
+export type { ISetCookieOptions } from './setCookie'
+
 export { default as arrayChunks } from './arrayChunks'
 export { default as appendChildren } from './appendChildren'
 export { default as arrayColumns } from './arrayColumns'

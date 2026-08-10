@@ -34,15 +34,21 @@ const toFormData = (
     for (const property in object) {
         if (Object.prototype.hasOwnProperty.call(object, property)) {
             formKey = namespace ? namespace + '[' + property + ']' : property
-            // if the property is a plain object, use recursivity.
+            // A plain object recurses; anything else is appended.
             //
-            // The check is `Blob`, not `File`: File extends Blob, so this covers both, while
-            // testing for File alone let a plain Blob — what canvas.toBlob(), fetch().blob()
-            // and most image croppers hand you — fall into the recursive branch. A Blob has no
-            // enumerable own properties, so the loop below found nothing to append and the
-            // upload was silently dropped, with no error anywhere.
+            // The check is `Blob`, not `File`: File extends Blob, so this covers both.
+            // Testing for File alone sends a plain Blob — what canvas.toBlob(),
+            // fetch().blob() and most image croppers hand you — down the recursive
+            // branch, where it has no enumerable own properties, so nothing is
+            // appended and the upload goes out empty with no error anywhere.
+            //
+            // The namespace passed down is the accumulated {formKey}, not the bare
+            // {property}: PHP-style bracket notation has to carry every ancestor,
+            // or `{a:{b:{c:1}}}` posts as `b[c]` and the server cannot tell which
+            // branch it came from — two siblings holding the same nested shape
+            // collide on one key.
             if (typeof object[property] === 'object' && !(object[property] instanceof Blob))
-                toFormData(object[property] as Record<string, unknown>, fd, property)
+                toFormData(object[property] as Record<string, unknown>, fd, formKey)
             else
                 // if it's a primitive or a binary value (Blob/File)
                 fd.append(formKey, object[property] as string | Blob)

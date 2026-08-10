@@ -63,4 +63,21 @@ describe('(match) Check 2 strings', () => {
     test('Fuzzy match fails when the distance is exceeded', () => {
         expect(match('lorem', 'xxxxx', false, 2)).toBe(false)
     })
+
+    // One-way substring matching belongs to distance -1 only. If the mode check
+    // is dropped, an exact-match request starts accepting substrings.
+    test('substring matching does not leak into distance 0', () => {
+        expect(match('ipsum', 'lorem ipsum', false, 0)).toBe(false)
+    })
+
+    test('substring matching does not leak into a positive distance', () => {
+        // far beyond the allowed edit distance, so only a substring rule could
+        // make this true
+        expect(match('ipsum', 'lorem ipsum dolor sit amet', false, 1)).toBe(false)
+    })
+
+    // Mode -2 is the two-way one; -1 must stay one-way.
+    test('distance -1 does not match when only the second is inside the first', () => {
+        expect(match('lorem ipsum sit dolor', 'Ipsum', false, -1)).toBe(false)
+    })
 })

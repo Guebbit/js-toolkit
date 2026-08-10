@@ -27,4 +27,16 @@ describe('(coerceStringArray) coerce any value into a trimmed string array', () 
     test('returns an empty array for an empty array input', () => {
         expect(coerceStringArray([])).toEqual([])
     })
+
+    // The generic fallback stringifies whatever it is given, so a value whose
+    // string form is padded still has to come out trimmed.
+    test('trims the string form of a non-string, non-array value', () => {
+        expect(coerceStringArray({ toString: () => '  lorem  ' })).toEqual(['lorem'])
+    })
+
+    // And a value whose string form is blank is nothing at all, not [''].
+    test('returns an empty array when the string form is blank', () => {
+        expect(coerceStringArray({ toString: () => '   ' })).toEqual([])
+        expect(coerceStringArray({ toString: () => '' })).toEqual([])
+    })
 })

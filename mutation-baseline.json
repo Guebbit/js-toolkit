@@ -1,0 +1,159 @@
+{
+    "src/appendChildren.ts": {
+        "total": 100,
+        "covered": 100
+    },
+    "src/arrayChunks.ts": {
+        "total": 88.46,
+        "covered": 88.46
+    },
+    "src/arrayColumns.ts": {
+        "total": 100,
+        "covered": 100
+    },
+    "src/arrayDepth.ts": {
+        "total": 100,
+        "covered": 100
+    },
+    "src/associativeSlice.ts": {
+        "total": 100,
+        "covered": 100
+    },
+    "src/canonicalize.ts": {
+        "total": 100,
+        "covered": 100
+    },
+    "src/coerceStringArray.ts": {
+        "total": 100,
+        "covered": 100
+    },
+    "src/copyToClipboard.ts": {
+        "total": 100,
+        "covered": 100
+    },
+    "src/deleteCookie.ts": {
+        "total": 100,
+        "covered": 100
+    },
+    "src/deleteFile.ts": {
+        "total": 100,
+        "covered": 100
+    },
+    "src/downloadBlob.ts": {
+        "total": 100,
+        "covered": 100
+    },
+    "src/eventDelegate.ts": {
+        "total": 100,
+        "covered": 100
+    },
+    "src/formatNodeList.ts": {
+        "total": 100,
+        "covered": 100
+    },
+    "src/getCookie.ts": {
+        "total": 100,
+        "covered": 100
+    },
+    "src/getDelta.ts": {
+        "total": 100,
+        "covered": 100
+    },
+    "src/getElementCenter.ts": {
+        "total": 100,
+        "covered": 100
+    },
+    "src/getExecTime.ts": {
+        "total": 100,
+        "covered": 100
+    },
+    "src/getForm.ts": {
+        "total": 100,
+        "covered": 100
+    },
+    "src/getIframe.ts": {
+        "total": 85.71,
+        "covered": 85.71
+    },
+    "src/getIndex.ts": {
+        "total": 100,
+        "covered": 100
+    },
+    "src/getJson.ts": {
+        "total": 50,
+        "covered": 50,
+        "note": "Two mutants only. The surviving one empties the catch block, which is equivalent: falling off the end of the function yields undefined, the same value the catch returns. Marked in the source. Lowered by hand, not by the gate."
+    },
+    "src/getMapDistance.ts": {
+        "total": 100,
+        "covered": 100
+    },
+    "src/getOverlapRange.ts": {
+        "total": 100,
+        "covered": 100
+    },
+    "src/getSiblings.ts": {
+        "total": 100,
+        "covered": 100
+    },
+    "src/getUrlQueries.ts": {
+        "total": 100,
+        "covered": 100
+    },
+    "src/getUuid.ts": {
+        "total": 100,
+        "covered": 100
+    },
+    "src/getValue.ts": {
+        "total": 92.31,
+        "covered": 92.31
+    },
+    "src/isEmail.ts": {
+        "total": 100,
+        "covered": 100
+    },
+    "src/isInViewport.ts": {
+        "total": 100,
+        "covered": 100
+    },
+    "src/isJson.ts": {
+        "total": 100,
+        "covered": 100
+    },
+    "src/isUrl.ts": {
+        "total": 100,
+        "covered": 100
+    },
+    "src/levenshteinDistance.ts": {
+        "total": 93.02,
+        "covered": 93.02
+    },
+    "src/match.ts": {
+        "total": 95.12,
+        "covered": 95.12
+    },
+    "src/rangeOverlaps.ts": {
+        "total": 100,
+        "covered": 100
+    },
+    "src/secondsToTime.ts": {
+        "total": 100,
+        "covered": 100
+    },
+    "src/setCookie.ts": {
+        "total": 100,
+        "covered": 100
+    },
+    "src/setUrlQueries.ts": {
+        "total": 100,
+        "covered": 100
+    },
+    "src/timeToSeconds.ts": {
+        "total": 100,
+        "covered": 100
+    },
+    "src/toFormData.ts": {
+        "total": 100,
+        "covered": 100
+    }
+}
