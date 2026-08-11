@@ -68,6 +68,16 @@ try {
 
     const installed = path.join(temporary, 'node_modules', pkg.name)
 
+    // Every module is re-exported from the barrel under its own file name, so
+    // the source folder is the expected export list. Deriving it beats a
+    // hardcoded count, which goes stale on every added function and — worse —
+    // still passes when a new module is never wired into index.ts.
+    const sources = fs
+        .readdirSync(path.join(root, 'src'))
+        .filter((name) => name.endsWith('.ts'))
+        .map((name) => name.replace(/\.ts$/, ''))
+    const expectedExports = sources.filter((name) => name !== 'index').sort()
+
     console.log('\nchecking the published file set:')
     check('both builds and the types are published', () => {
         for (const relative of [
@@ -92,17 +102,12 @@ try {
     // behind and `files: ["dist"]` happily publishes it. Dead modules in the
     // tarball are how a removed export keeps resolving for consumers.
     check('no module is published without a matching source', () => {
-        const sources = new Set(
-            fs
-                .readdirSync(path.join(root, 'src'))
-                .filter((name) => name.endsWith('.ts'))
-                .map((name) => name.replace(/\.ts$/, ''))
-        )
+        const known = new Set(sources)
         const orphans = fs
             .readdirSync(path.join(installed, 'dist', 'esm'))
             .filter((name) => name.endsWith('.js'))
             .map((name) => name.replace(/\.js$/, ''))
-            .filter((name) => !sources.has(name))
+            .filter((name) => !known.has(name))
         if (orphans.length > 0) throw new Error(`orphaned modules shipped: ${orphans.join(', ')}`)
     })
 
@@ -116,8 +121,12 @@ const { getDelta } = require(${JSON.stringify(pkg.name)})
 if (typeof getDelta !== 'function') throw new Error('getDelta is not a function')
 const wrapped = getDelta(350, 10, 360)
 if (wrapped !== 20) throw new Error('getDelta(350, 10, 360) === ' + wrapped + ', expected 20')
-const names = Object.keys(toolkit)
-if (names.length !== 37) throw new Error('barrel exposes ' + names.length + ' exports, expected 37')
+const names = Object.keys(toolkit).sort()
+const expected = ${JSON.stringify(expectedExports)}
+const missing = expected.filter((name) => !names.includes(name))
+const extra = names.filter((name) => !expected.includes(name))
+if (missing.length > 0) throw new Error('barrel is missing exports: ' + missing.join(', '))
+if (extra.length > 0) throw new Error('barrel exposes unexpected exports: ' + extra.join(', '))
 const subpath = require(${JSON.stringify(pkg.name)} + '/getDelta').default
 if (typeof subpath !== 'function') throw new Error('subpath require did not resolve')
 if (subpath(350, 10, 360) !== 20) throw new Error('subpath getDelta returned the wrong value')
