@@ -2,6 +2,30 @@
 
 All notable changes to this project are documented here.
 
+## [2.1.0] - 2026-08-11
+
+### Added
+
+- `formatText`, `formatDateTime`, `formatCurrency` and `formatFlag` — display formatters for the
+  values a table or detail page actually renders. Each takes its fallback glyph as a parameter
+  (default `—`) and its locale explicitly, so they stay pure: no ambient locale, no module-level
+  configuration. `formatFlag` keeps a nullish flag distinct from `false`, since "nobody answered"
+  and "the answer is no" are different things to show.
+- `formatFileSize` — a byte count as a person reads it (`5 MB`, `1.5 MB`, `512 KB`), trailing
+  zeroes stripped, binary units by default and decimal units on request. A `unit` option pins the
+  output to one unit, for a column of sizes where a per-row unit makes two numbers impossible to
+  compare at a glance, or for a configured limit that should read the same whatever it is set to.
+  An unrecognised `unit` falls back to the fitting one rather than rendering `NaN undefined`.
+- `isAcceptedFileType` and `isWithinFileSize` — client-side file checks for an upload field, with
+  `image/*` wildcard support so one list can drive both the `accept` attribute and the validation.
+  Both are UX affordances rather than controls: the browser declares the type and the server must
+  re-check the bytes regardless. `isWithinFileSize` treats a maximum of 0 or less as "no limit",
+  so a misconfigured value accepts everything instead of rejecting everything.
+
+  `isAcceptedFileType` compares case-insensitively by default, which is what RFC 2045 says a mime
+  type is, and takes a `caseSensitive` option for mirroring a server that compares verbatim —
+  accepting a file the server will then reject is a worse experience than rejecting it early.
+
 ## [2.0.0] - 2026-08-10
 
 A rework, not a patch release. The public API changed shape, two exports are gone, and the package
