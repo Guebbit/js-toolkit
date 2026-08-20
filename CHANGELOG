@@ -2,6 +2,29 @@
 
 All notable changes to this project are documented here.
 
+## [2.2.0] - 2026-08-20
+
+### Added
+
+- `extractErrorMessage` — the readable message out of any caught or rejected value, with the
+  caller's `fallback` (empty by default) when there is none. It exists because `instanceof Error`
+  is not enough in front of an HTTP client: an interceptor that normalises failures rejects with a
+  plain object literal, and every `instanceof` test then reads a real API refusal as "nothing
+  usable" and shows its fallback instead of the message the server took the trouble to send.
+  Consulted in order — a bare string, an `Error`, a `message` on the value itself, then `.data`
+  (an unwrapped body) and `.response.data` (a raw axios error). The nested lookup runs only when
+  the levels above it came up empty, so it can add a message but never replace one. What to say
+  when the failure carried nothing is a decision about tone and language, so it is a parameter
+  rather than a built-in string.
+- `formatDuration` — a duration rendered compactly (`2h 15m`, `15m`, `3d 4h 5m`) for a status line
+  or a metrics panel. Leading zero units are dropped so a short duration reads as `15m` rather
+  than `0h 15m`, and the smallest requested unit is always kept so a zero duration reads as `0m`
+  rather than as an empty string. The cascade runs over the requested units *only*: the largest
+  absorbs everything above it (`['hours', 'minutes']` on three days gives `72h 5m`, not a silently
+  dropped `3d`) and a skipped middle unit is folded into the next one down rather than lost. Units
+  are applied largest first however the caller ordered them. The labels are ASCII and deliberately
+  not localised — use `Intl.RelativeTimeFormat` when the duration is prose rather than a metric.
+
 ## [2.1.0] - 2026-08-11
 
 ### Added

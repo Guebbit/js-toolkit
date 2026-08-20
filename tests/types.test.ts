@@ -174,7 +174,7 @@ describe('exported type surface', () => {
         // Guards the barrel itself: a re-export that resolves to undefined at
         // runtime still type-checks if the module shape is right.
         const values = Object.values(toolkit)
-        expect(values).toHaveLength(44)
+        expect(values).toHaveLength(46)
         expect(values.every((value) => typeof value === 'function')).toBe(true)
     })
 })

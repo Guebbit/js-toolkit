@@ -94,6 +94,25 @@ match('lorem ipsum', 'Ipsum', { mode: 'contains' }) // true
 match('lorem ipsum', 'lorem ispum', { mode: 'fuzzy', maxDistance: 2 }) // true
 ```
 
+### Errors
+
+| Signature                                                | What it does                                                                                                |
+| -------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `extractErrorMessage(error: unknown, fallback?): string` | The readable message out of any caught or rejected value, `fallback` (empty by default) when there is none. |
+
+`instanceof Error` is not enough for an HTTP client: an interceptor that normalises failures
+rejects with a plain object, and every `instanceof` test then shows its fallback instead of the
+message the server sent. Consulted in order — a bare string, an `Error`, a `message` on the value
+itself, then `.data.message` and `.response.data.message`. The nested lookup runs only when the
+levels above it came up empty, so it can add a message but never replace one.
+
+```ts
+extractErrorMessage(new Error('Boom')) // 'Boom'
+extractErrorMessage({ status: 400, message: 'Email taken' }) // 'Email taken'
+extractErrorMessage({ response: { data: { message: 'Nope' } } }) // 'Nope'
+extractErrorMessage(undefined, 'Something went wrong') // 'Something went wrong'
+```
+
 ### Numbers and ranges
 
 | Signature                                                                               | What it does                                                                                                                                   |
@@ -105,11 +124,12 @@ match('lorem ipsum', 'lorem ispum', { mode: 'fuzzy', maxDistance: 2 }) // true
 
 ### Time
 
-| Signature                                                                         | What it does                                                                          |
-| --------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
-| `secondsToTime(time?: number): ISecondsToTimeMap`                                 | Milliseconds to every unit at once, both depleting (`hours`) and total (`hoursOnly`). |
-| `timeToSeconds(date?: string, delimiter?: string): number`                        | `'HH:MM:SS:ms'` to milliseconds. Components may be omitted from the right.            |
-| `getExecTime<T>(fn: () => T \| Promise<T>): Promise<{ result: T; time: number }>` | Time a sync or async function, resolving with its result and elapsed milliseconds.    |
+| Signature                                                                         | What it does                                                                                             |
+| --------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| `secondsToTime(time?: number): ISecondsToTimeMap`                                 | Milliseconds to every unit at once, both depleting (`hours`) and total (`hoursOnly`).                    |
+| `formatDuration(seconds: number, options?): string`                               | A duration rendered compactly: `2h 15m`, `3d 4h 5m`. Largest requested unit absorbs everything above it. |
+| `timeToSeconds(date?: string, delimiter?: string): number`                        | `'HH:MM:SS:ms'` to milliseconds. Components may be omitted from the right.                               |
+| `getExecTime<T>(fn: () => T \| Promise<T>): Promise<{ result: T; time: number }>` | Time a sync or async function, resolving with its result and elapsed milliseconds.                       |
 
 ### JSON
 
