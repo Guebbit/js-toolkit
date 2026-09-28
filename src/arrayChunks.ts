@@ -1,9 +1,17 @@
 /**
- * Divide array in N numbers of sub-arrays.
- * Sub-arrays' lengths differ as less as possible
+ * @module
+ * Splits an array into `n` chunks whose lengths differ by at most one element.
+ * An evenly divisible input takes a fast splice-based path; otherwise each pass
+ * shrinks the remaining divisor by one, spreading the remainder across the
+ * first chunks instead of dumping it all into the last one.
+ */
+
+/**
+ * Divide an array into `n` sub-arrays, with lengths as close to equal as possible.
  *
- * @param {array} array - array to split
- * @param {number} n - number of chunks
+ * @param array - array to split
+ * @param n - number of chunks
+ * @returns `n` chunks in order; an empty array when `n` is less than 1
  */
 export default <T>(array: T[], n: number): T[][] => {
     const items = Object.assign([] as T[], array),

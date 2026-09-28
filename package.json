@@ -48,6 +48,7 @@
         "test:types": "tsc -p tsconfig.types.json",
         "test:package": "publint --strict && node tests/package/attw.mjs && node tests/package/smoke.mjs && node tests/package/dtsGuard.mjs",
         "test:mutation": "stryker run",
+        "test:mutation:incremental": "stryker run --incremental",
         "test:mutation:check": "node scripts/mutation-baseline.mjs",
         "lint": "eslint \"*/**/*.{ts,js,json}\"",
         "lint:fix": "eslint \"*/**/*.{ts,js,json}\" --fix",

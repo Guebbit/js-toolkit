@@ -1,7 +1,15 @@
 /**
+ * @module
+ * Reads the "value" of a form element, branching on what kind it is: an
+ * explicit attribute when asked for one, the checked state for a checkbox,
+ * the checked sibling's value for a radio group, otherwise `.value` falling
+ * back to `.textContent`.
+ */
+
+/**
  * Get value of an HTML element
  *
- * @param element
+ * @param element - element to read the value from
  * @param attribute - if not empty: it's an attribute
  */
 export default (

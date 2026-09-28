@@ -6,6 +6,12 @@
 */
 
 /**
+ * @module
+ * Classic Wagner–Fischer dynamic-programming edit distance: fills a matrix of prefix
+ * distances bottom-up, each cell the cheapest of a substitution, insertion or deletion.
+ */
+
+/**
  * Number of single-character edits needed to turn one string into the other.
  *
  * This is a true metric: never negative, symmetric, zero exactly when the two

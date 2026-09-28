@@ -1,4 +1,10 @@
 /**
+ * @module
+ * Plain distance when `size` is 0 or less; otherwise the numbers wrap around a
+ * circle of circumference `size`, so the distance is the shorter of the two arcs.
+ */
+
+/**
  * Distance between two numbers.
  *
  * With {size} <= 0 this is the plain linear distance |a - b|.
@@ -9,9 +15,9 @@
  * The result is always non-negative: it is a distance, and callers such as
  * {getMapDistance} feed it straight into Math.hypot.
  *
- * @param {number} a
- * @param {number} b
- * @param {number} size - circumference of the wrapping space, 0 for a linear one
+ * @param a - the first number
+ * @param b - the second number
+ * @param size - circumference of the wrapping space, 0 for a linear one
  */
 export default (a: number, b: number, size = 0): number => {
     const delta = Math.abs(a - b)

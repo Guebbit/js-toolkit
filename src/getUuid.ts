@@ -1,10 +1,19 @@
 /**
+ * @module
+ * RFC 4122 v4 UUID, preferring `crypto.randomUUID` and falling back to
+ * building the same shape by hand from `crypto.getRandomValues` when it is
+ * missing. Both sources draw on the platform CSPRNG.
+ */
+
+/**
  * A random RFC 4122 version 4 UUID.
  *
  * `crypto.randomUUID` is used when it is available. It is not, in a browser on
  * a non-secure origin, so the fallback builds the same shape out of
  * `crypto.getRandomValues` — which is available there. Both draw on the
  * platform CSPRNG; neither falls back to Math.random.
+ *
+ * @returns a random v4 UUID string
  */
 export default function getUuid(): string {
     // lib.dom declares randomUUID as always present. It is not: browsers omit it
@@ -13,6 +22,8 @@ export default function getUuid(): string {
     const { randomUUID } = crypto as Partial<Crypto>
     if (typeof randomUUID === 'function') return randomUUID.call(crypto)
 
+    // DOM: 16 random bytes is exactly a UUID's payload before the version/variant
+    // bits are stamped in below.
     const bytes = crypto.getRandomValues(new Uint8Array(16))
     // version 4 in the high nibble of byte 6, variant 10xx in byte 8
     bytes[6] = (bytes[6] & 0x0f) | 0x40

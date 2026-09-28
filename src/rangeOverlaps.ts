@@ -1,17 +1,22 @@
 /**
- * Check if 2 ranges overlap,
- * then return the number of overlapping units
+ * @module
+ * Interval overlap as a magnitude: the distance between the closer end and the further
+ * start, clamped to zero when the ranges do not intersect at all.
+ */
+
+/**
+ * Check whether two ranges overlap, and by how many units.
  *
- * WARNING: If B start right after A and have the same number, it will say that they overlap of "1"
- * In some cases is better to ignore this 1 unit of overlap
- * (example, in dates it would be 1 second of overlap)
+ * WARNING: if B starts right where A ends (the same boundary number), this counts as an
+ * overlap of 1 unit. For some data (dates, for example) that boundary should not count,
+ * and `sameUnitOverlap` controls it.
  *
- * @param {number} firstStart  - A1
- * @param {number} firstEnd    - A2
- * @param {number} secondStart - B1
- * @param {number} secondEnd   - B2
- * @param {number} sameUnitOverlap - same unit is or isn't overlap
- * @return {number}
+ * @param firstStart - start of range A
+ * @param firstEnd - end of range A
+ * @param secondStart - start of range B
+ * @param secondEnd - end of range B
+ * @param sameUnitOverlap - whether touching at the same boundary counts as 1 unit of overlap
+ * @returns the number of overlapping units, `0` when the ranges do not overlap
  */
 export default (
     firstStart: number,

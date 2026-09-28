@@ -1,6 +1,14 @@
 /**
- * php array_column
- * Return the values of one or more {columns} from every record in {haystack}.
+ * @module
+ * Mirrors PHP's `array_column`: pulls named columns out of an array of
+ * record-like objects, keeping one output slot per input record so the
+ * result can be zipped back onto the input by index. A single column name
+ * flattens to one value per record; multiple names nest one value-array per
+ * record, one slot per requested name.
+ */
+
+/**
+ * Return the values of one or more columns from every record in `haystack`.
  *
  * The result always has one entry per record, in the same order, so it can be
  * zipped straight back onto the input. A single column name yields a flat array
@@ -9,8 +17,8 @@
  * A record that is missing a column — or is not an object at all — contributes
  * undefined rather than throwing. Inherited properties do not count.
  *
- * @param {array} haystack
- * @param {string|string[]} columns
+ * @param haystack - records to read columns from
+ * @param columns - a single column name, or a list of column names
  */
 function arrayColumns(haystack: Record<string, unknown>[], columns: string): unknown[]
 function arrayColumns(haystack: Record<string, unknown>[], columns: string[]): unknown[][]

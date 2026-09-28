@@ -1,4 +1,12 @@
 /**
+ * @module
+ * Renders a duration by cascading it through a fixed, largest-first list of units — each unit
+ * takes the whole-number quotient of what's left and passes the remainder down. Leading zero
+ * units are dropped from the output, but the smallest requested unit always survives so a zero
+ * duration still renders something.
+ */
+
+/**
  * Seconds per unit, and the ASCII label each renders with.
  *
  * A "month" is 30 days and a "year" 365, since a bare duration has no calendar to anchor to.
@@ -14,8 +22,14 @@ const UNITS = {
     seconds: { seconds: 1, suffix: 's' }
 } as const
 
+/**
+ * A unit `formatDuration` can render, keyed the same way as `UNITS`.
+ */
 export type TDurationUnit = keyof typeof UNITS
 
+/**
+ * Options for rendering a duration compactly.
+ */
 export interface IFormatDurationOptions {
     /**
      * Which units to render. Order does not matter — they are always applied largest first.
@@ -40,8 +54,8 @@ export interface IFormatDurationOptions {
  * or a metrics panel, where they sit beside other machine-shaped values. Reach for
  * `Intl.RelativeTimeFormat` when the duration is prose the reader is meant to absorb.
  *
- * @param {number} seconds - duration in seconds; negatives and non-finite values are treated as 0
- * @param {IFormatDurationOptions} options
+ * @param seconds - duration in seconds; negatives and non-finite values are treated as 0
+ * @param options - which units to render
  */
 export default (
     seconds: number,

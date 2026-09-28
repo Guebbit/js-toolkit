@@ -1,11 +1,18 @@
 /**
- * Slices an associative array (object) to only include properties between specified start and end indices,
- * similar to how `Array.prototype.slice` works for arrays.
+ * @module
+ * Slices an object the way `Array.prototype.slice` slices an array: own keys
+ * are counted in enumeration order, and only the ones whose index falls in
+ * range make it into the result. Inherited keys never count.
+ */
+
+/**
+ * Slice an object to only the own properties whose enumeration index falls
+ * within `[start, end)`, mirroring `Array.prototype.slice`.
  *
- * @param obj
- * @param start - start of slice
- * @param end - end of slice
- * @return object sliced associative array / object to slice
+ * @param object - object to slice
+ * @param start - start index of the slice, inclusive
+ * @param end - end index of the slice, exclusive
+ * @returns a new object containing only the selected properties
  */
 export default (
     object: Record<string, unknown>,

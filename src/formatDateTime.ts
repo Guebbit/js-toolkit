@@ -1,9 +1,26 @@
+/**
+ * @module
+ * Renders a date via `Intl.DateTimeFormat`, or `Date#toLocaleString` when no `format` is given.
+ * An unparseable or missing value renders `empty` instead of the string `Invalid Date`, which is
+ * never something a user should see.
+ */
+
+/**
+ * Options for rendering a date as display text.
+ */
 export interface IFormatDateTimeOptions {
-    // BCP 47 tag, e.g. 'it-IT'. Omit to use the runtime's own default
+    /**
+     * BCP 47 tag, e.g. `'it-IT'`. Omit to use the runtime's own default.
+     */
     locale?: string
-    // what to show when there is no date, or an unparseable one
+    /**
+     * What to show when there is no date, or an unparseable one.
+     */
     empty?: string
-    // passed straight to Intl.DateTimeFormat
+    /**
+     * Passed straight to `Intl.DateTimeFormat`. Without it, formatting falls back to
+     * `Date#toLocaleString`.
+     */
     format?: Intl.DateTimeFormatOptions
 }
 
@@ -13,8 +30,8 @@ export interface IFormatDateTimeOptions {
  * An unparseable value is treated as missing rather than rendered as `Invalid Date`, which is a
  * string no user should ever be shown.
  *
- * @param {string|number|Date} value - anything the Date constructor accepts
- * @param {IFormatDateTimeOptions} options
+ * @param value - anything the Date constructor accepts
+ * @param options - locale, fallback text and `Intl.DateTimeFormat` options
  */
 export default (
     value?: string | number | Date | null,

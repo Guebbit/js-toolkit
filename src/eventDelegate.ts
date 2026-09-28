@@ -1,4 +1,11 @@
 /**
+ * @module
+ * Delegates one listener on a stable ancestor to many children, including ones that do not exist
+ * yet. Every event is checked against `childSelector` in the listener itself — `closest()` for a
+ * CSS selector, `contains()` for a Node — rather than attaching a listener per child.
+ */
+
+/**
  * Listen for an event on {parent} and run {callback} only when it originated
  * inside a matching child. One listener covers children that do not exist yet,
  * which is the point of delegating.
@@ -7,9 +14,9 @@
  *
  * @param eventName - click, pointerdown, etc
  * @param childSelector - a CSS selector, or a Node the target must be inside
- * @param callback
- * @param parent
- * @return a function that removes the listener — the only way to remove it,
+ * @param callback - run with `this` set to the matched child
+ * @param parent - the stable ancestor the listener is actually attached to
+ * @returns a function that removes the listener — the only way to remove it,
  *         since the registered listener is created here and never exposed
  */
 export default (

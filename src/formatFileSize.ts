@@ -1,12 +1,36 @@
+/**
+ * @module
+ * Picks the largest unit that keeps the value at least 1 (or uses the one `unit` forces), then
+ * divides by `step` that many times over. `step` is 1024 for binary units and 1000 for decimal
+ * ones — the same number doubles as the log base for picking the unit and as the divisor.
+ */
+
+/**
+ * Units for step-1024 sizes, as an OS reports them.
+ */
 const BINARY_UNITS = ['B', 'KB', 'MB', 'GB', 'TB'] as const
+
+/**
+ * Units for step-1000 sizes, the SI convention.
+ */
 const DECIMAL_UNITS = ['B', 'kB', 'MB', 'GB', 'TB'] as const
 
+/**
+ * A unit `formatFileSize` can render, binary or decimal.
+ */
 export type TFileSizeUnit = (typeof BINARY_UNITS)[number] | (typeof DECIMAL_UNITS)[number]
 
+/**
+ * Options for rendering a byte count as display text.
+ */
 export interface IFormatFileSizeOptions {
-    // digits after the decimal point, trailing zeroes stripped
+    /**
+     * Digits after the decimal point, trailing zeroes stripped.
+     */
     decimals?: number
-    // binary units (1 KB = 1024 B, what an OS reports) or decimal (1 kB = 1000 B)
+    /**
+     * Binary units (1 KB = 1024 B, what an OS reports) or decimal (1 kB = 1000 B).
+     */
     binary?: boolean
     /**
      * Always render in this unit instead of picking the fitting one.
@@ -22,8 +46,8 @@ export interface IFormatFileSizeOptions {
  *
  * Trailing zeroes are stripped, so a round number stays round — `5 MB`, never `5.0 MB`.
  *
- * @param {number} bytes - size in bytes; negatives are treated as 0
- * @param {IFormatFileSizeOptions} options
+ * @param bytes - size in bytes; negatives are treated as 0
+ * @param options - decimals, unit system and a forced unit
  */
 export default (
     bytes: number,

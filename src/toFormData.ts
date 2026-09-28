@@ -1,4 +1,10 @@
 /**
+ * @module
+ * Walks a plain object depth-first, appending each leaf to a FormData under a PHP-style
+ * bracket key that carries every ancestor property name.
+ */
+
+/**
  * Flatten an object into FormData, for a multipart request.
  *
  * Nested objects and arrays are namespaced with PHP-style brackets, so

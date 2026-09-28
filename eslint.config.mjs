@@ -2,6 +2,7 @@ import eslint from '@eslint/js'
 import globals from 'globals'
 import tseslint from 'typescript-eslint'
 import eslintPluginUnicorn from 'eslint-plugin-unicorn'
+import pluginJsdoc from 'eslint-plugin-jsdoc'
 
 export default tseslint.config(
     /**
@@ -80,6 +81,9 @@ export default tseslint.config(
             'no-nested-ternary': 'off',
             'unicorn/no-nested-ternary': 'off',
             'unicorn/prefer-top-level-await': 'off',
+            // CLAUDE.md, "Function design": nesting beyond 3 levels has to be
+            // pulled into a helper instead.
+            'max-depth': ['error', 3],
 
             /**
              *
@@ -219,6 +223,47 @@ export default tseslint.config(
             // prettier lowercases hex literals, unicorn wants them uppercase,
             // and --fix from either one is undone by the other
             'unicorn/number-literal-case': 'off'
+        }
+    },
+
+    /**
+     * JSDoc, scoped to source only — CLAUDE.md, "Comments" and "Code layout".
+     * https://github.com/gajus/eslint-plugin-jsdoc
+     */
+    {
+        files: ['src/**/*.ts'],
+
+        plugins: { jsdoc: pluginJsdoc },
+
+        // TypeScript mode: types live in the signature, so the tags are not asked to repeat them.
+        settings: { jsdoc: { mode: 'typescript' } },
+
+        rules: {
+            'jsdoc/require-jsdoc': [
+                'error',
+                {
+                    publicOnly: true,
+                    require: {
+                        FunctionDeclaration: true,
+                        ArrowFunctionExpression: true,
+                        FunctionExpression: true,
+                        ClassDeclaration: true
+                    },
+                    contexts: [
+                        'TSInterfaceDeclaration',
+                        'TSTypeAliasDeclaration',
+                        'TSEnumDeclaration'
+                    ]
+                }
+            ],
+            'jsdoc/check-param-names': [
+                'error',
+                { checkDestructured: false, disableMissingParamChecks: true }
+            ],
+            'jsdoc/check-tag-names': 'error',
+            'jsdoc/require-param-description': 'error',
+            'jsdoc/require-returns-description': 'error',
+            'jsdoc/require-throws': 'error'
         }
     },
 

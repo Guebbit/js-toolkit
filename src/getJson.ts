@@ -1,4 +1,11 @@
 /**
+ * @module
+ * A thin wrapper over `JSON.parse` that turns its thrown `SyntaxError` into an
+ * `undefined` return, so a caller can treat "not JSON" as a value instead of a
+ * control-flow exception.
+ */
+
+/**
  * Safe conversion of JSON.
  * If not valid: return undefined
  *
@@ -7,8 +14,8 @@
  * instead of JSON.parse, so a malformed string is an expected input and a
  * library has no business writing to the host's console over one.
  *
- * @param {string} json
- * @return {unknown} the parsed value, undefined if {json} is empty or invalid
+ * @param json - the string to parse, possibly empty or not valid JSON
+ * @returns the parsed value, undefined if {json} is empty or invalid
  */
 export default (json?: string): unknown => {
     if (!json) return

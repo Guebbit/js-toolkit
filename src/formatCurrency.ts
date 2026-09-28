@@ -48,8 +48,8 @@ const NO_CURRENCY_FORMAT: Intl.NumberFormatOptions = {
  * Bad data never throws: a non-number renders `empty`, and a malformed currency code renders a
  * plain number (with `format` if given, otherwise 2 decimals).
  *
- * @param {number} value - the amount
- * @param {IFormatCurrencyOptions} options
+ * @param value - the amount
+ * @param options - currency, locale, empty-value text and format overrides
  * @returns the formatted amount
  * @throws {RangeError} when `locale` or `format` is malformed — a caller bug, not data
  */

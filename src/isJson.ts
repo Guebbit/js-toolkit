@@ -1,4 +1,11 @@
 /**
+ * @module
+ * JSON structure parsing that never throws: `JSON.parse` runs inside a
+ * `try`/`catch`, and the result is accepted only when it is an object or
+ * array — any other valid JSON value or a parse failure both become `false`.
+ */
+
+/**
  * Parse a JSON structure, or report that the string is not one.
  *
  * Only objects and arrays count: a bare `5`, `"text"`, `true` or `null` is valid
@@ -10,8 +17,8 @@
  * a malformed string is an expected input here, and a library has no business
  * writing to the host's console over one.
  *
- * @param test
- * @return the parsed object or array, false if {test} is not a JSON structure
+ * @param test - string to parse
+ * @returns the parsed object or array, false if {test} is not a JSON structure
  */
 export default <T>(test: string): Record<string, T> | T[] | false => {
     try {

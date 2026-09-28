@@ -1,4 +1,5 @@
 /**
+ * @module
  * Rebuilds a value into a canonical form, so JSON.stringify of the result is a
  * stable cache key regardless of property insertion order. Recurses into nested
  * objects — a single-level `Object.keys().sort()` replacer only sorts the
@@ -12,9 +13,14 @@
  * replaced with the string '[Circular]' so a stable key can still be produced.
  * Pass `throwOnCircular` to surface it as an error instead — useful when a cycle
  * would mean a bug upstream rather than acceptable data.
+ */
+
+/**
+ * Canonicalize a value into a deterministic, JSON-stringify-stable shape.
  *
- * @param {*} value - the value to canonicalize
- * @param {boolean} throwOnCircular - throw on a cycle instead of emitting '[Circular]'
+ * @param value - the value to canonicalize
+ * @param throwOnCircular - throw on a cycle instead of emitting '[Circular]'
+ * @throws {TypeError} when `throwOnCircular` is true and a circular reference is found
  */
 const canonicalize = (value: unknown, throwOnCircular = false): unknown => {
     // objects currently on the path from the root to `node`, used to spot a loop

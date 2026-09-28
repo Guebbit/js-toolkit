@@ -1,4 +1,11 @@
 /**
+ * @module
+ * Query string parsing built on `URLSearchParams`: every key is deduplicated,
+ * its values are collected with `getAll` and optionally split on a separator,
+ * and a key collapses to a single string unless more than one value survives.
+ */
+
+/**
  * Parse a URL query string into a plain object.
  * A value is returned as an array if the key appears more than once
  * or its value contains {arraySeparator}.
@@ -10,6 +17,8 @@
  * @param arraySeparator - separator used to split multi-value params into arrays, false to disable
  */
 export default (
+    // DOM: `location` only exists in a browser — undefined in Node, so it is guarded
+    // rather than read directly.
     search: string | URLSearchParams = typeof location === 'undefined' ? '' : location.search,
     arraySeparator: string | false = ','
 ): Record<string, string | string[]> => {

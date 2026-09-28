@@ -1,3 +1,10 @@
+/**
+ * @module
+ * Distance between two map points, reusing {getDelta} per axis so each axis
+ * gets the same wrap-around treatment, then combining them with `Math.hypot`
+ * for the straight-line distance between the two.
+ */
+
 import getDelta from './getDelta.js'
 
 /**
@@ -7,11 +14,11 @@ import getDelta from './getDelta.js'
  * the map edge whenever that is shorter — the usual behaviour for a tiled or
  * toroidal map.
  *
- * @param {number} Xa - coordinate X of point A
- * @param {number} Xb - coordinate X of point B
- * @param {number} Ya - coordinate Y of point A
- * @param {number} Yb - coordinate Y of point B
- * @param {number} size - length of a map side, 0 for an unbounded map
+ * @param Xa - coordinate X of point A
+ * @param Xb - coordinate X of point B
+ * @param Ya - coordinate Y of point A
+ * @param Yb - coordinate Y of point B
+ * @param size - length of a map side, 0 for an unbounded map
  */
 export default (Xa: number, Xb: number, Ya: number, Yb: number, size = 0): number =>
     Math.hypot(getDelta(Xa, Xb, size), getDelta(Ya, Yb, size))

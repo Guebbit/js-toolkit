@@ -1,17 +1,28 @@
 /**
+ * @module
+ * Serializes a plain object into a query string via `URLSearchParams`, optionally merging
+ * into an existing query string so its untouched keys are preserved.
+ */
+
+/**
+ * A value that can be serialized into a query string: scalars pass through as-is, arrays
+ * are joined, and `null`/`undefined`/empty values are dropped instead of serialized.
+ */
+type QueryValue = string | number | boolean | null | undefined | (string | number | boolean)[]
+
+/**
  * Build a URL query string from a plain object.
- * Keys with undefined/null/empty-string/empty-array values are dropped
- * (or removed from {merge}, if present), array values are joined with {arraySeparator}.
  *
- * Framework agnostic: returns a plain query string to pass to any router,
- * or to apply with `history.replaceState`/`pushState` in a browser.
+ * Keys with `undefined`/`null`/empty-string/empty-array values are dropped (or removed
+ * from `merge`, if present); array values are joined with `arraySeparator`.
+ *
+ * Framework agnostic: returns a plain query string to pass to any router, or to apply
+ * with `history.replaceState`/`pushState` in a browser.
  *
  * @param query - key/value pairs to serialize, any attribute is allowed
  * @param merge - existing query string / URLSearchParams to merge into (its keys are kept unless overwritten)
  * @param arraySeparator - separator used to join array values
  */
-type QueryValue = string | number | boolean | null | undefined | (string | number | boolean)[]
-
 export default (
     query: Record<string, QueryValue>,
     merge: string | URLSearchParams | false = false,

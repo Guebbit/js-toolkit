@@ -1,4 +1,11 @@
 /**
+ * @module
+ * Overlap of two ranges via interval intersection: the later of the two starts
+ * paired with the earlier of the two ends. A non-positive width means no real
+ * overlap, reported as `[0, 0]` rather than a negative or zero-width range.
+ */
+
+/**
  * Check if 2 ranges overlap,
  * then return the START and END period of the overlap
  *
@@ -13,11 +20,11 @@
  * https://www.get-digital-help.com/days-contained-in-a-range-that-overlap-another-range/
  * https://www.codeproject.com/Articles/168662/Time-Period-Library-for-NET
  *
- * @param {number} firstStart  - A1
- * @param {number} firstEnd    - A2
- * @param {number} secondStart - B1
- * @param {number} secondEnd   - B2
- * @return {[number, number]}
+ * @param firstStart - A1
+ * @param firstEnd - A2
+ * @param secondStart - B1
+ * @param secondEnd - B2
+ * @returns the overlap as `[start, end]`, or `[0, 0]` when the ranges do not overlap
  */
 export default (
     firstStart: number,

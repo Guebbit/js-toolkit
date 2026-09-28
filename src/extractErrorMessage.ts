@@ -1,4 +1,12 @@
 /**
+ * @module
+ * Reads a human-readable message off anything a `catch` or a rejection can hand you, trying a
+ * fixed list of shapes in order: a bare string, an `Error`, a `message` on the value itself, then
+ * the nested spots an HTTP client tends to bury one in (`.data`, `.response.data`). The first
+ * shape that yields a non-empty string wins.
+ */
+
+/**
  * Whether a value is an object worth reading properties off.
  *
  * `typeof null === 'object'`, so the truthiness check is what keeps a `null` rejection out.
@@ -12,7 +20,7 @@ const isRecord = (value: unknown): value is Record<string, unknown> =>
  * An empty string is treated as absent: it renders as a blank alert, which reads as a broken UI
  * rather than as an explanation.
  *
- * @param {unknown} value - candidate carrier, of any shape
+ * @param value - candidate carrier, of any shape
  */
 const ownMessage = (value: unknown): string | undefined => {
     if (!isRecord(value)) return undefined
@@ -36,8 +44,8 @@ const ownMessage = (value: unknown): string | undefined => {
  * Returns `fallback` rather than throwing or inventing wording: what to say when the failure
  * carried nothing is a decision about tone and language, and belongs to the caller.
  *
- * @param {unknown} error - the caught or rejected value
- * @param {string} fallback - returned when nothing readable was found; empty by default
+ * @param error - the caught or rejected value
+ * @param fallback - returned when nothing readable was found; empty by default
  */
 export default (error: unknown, fallback = ''): string => {
     if (typeof error === 'string' && error) return error

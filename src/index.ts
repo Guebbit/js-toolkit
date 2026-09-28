@@ -1,3 +1,10 @@
+/**
+ * @module
+ * The package barrel: every helper's default export re-exported under its own name, plus the
+ * option/result types worth naming from outside their own module. One line per file — a new
+ * export adds a line here, never logic.
+ */
+
 export type { ISecondsToTimeMap } from './secondsToTime.js'
 export type { ISetCookieOptions } from './setCookie.js'
 export type { IMatchOptions, TMatchMode } from './match.js'

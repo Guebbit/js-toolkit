@@ -1,3 +1,13 @@
+/**
+ * @module
+ * Mime type matching against a file input's `accept` list: both sides are
+ * folded to a common case (unless `caseSensitive`), then compared verbatim or
+ * against a `type/*` wildcard.
+ */
+
+/**
+ * Options for matching a file's mime type against an accepted list.
+ */
 export interface IIsAcceptedFileTypeOptions {
     /**
      * Compare verbatim instead of case-insensitively, default false.
@@ -20,9 +30,9 @@ export interface IIsAcceptedFileTypeOptions {
  * Wildcards are supported (`image/*`), since that is what a file input's `accept` attribute
  * takes and keeping one list for both is the point.
  *
- * @param {File} file - anything carrying a mime `type`
- * @param {string[]} accepted - mime types, optionally with a `/*` wildcard
- * @param {IIsAcceptedFileTypeOptions} options
+ * @param file - anything carrying a mime `type`
+ * @param accepted - mime types, optionally with a `/*` wildcard
+ * @param options - matching options
  */
 export default (
     file: { type: string },

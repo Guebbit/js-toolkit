@@ -1,9 +1,19 @@
 /**
- * Coerce any value into a trimmed string array
- * Arrays are stringified item by item, comma-separated strings are split into items,
- * null/undefined become an empty array and anything else becomes a single-item array
+ * @module
+ * Normalizes an arbitrary value into a flat, trimmed string array so callers
+ * don't need to special-case "one string", "comma-separated string" and
+ * "already an array" separately.
+ */
+
+/**
+ * Coerce any value into a trimmed string array.
  *
- * @param value
+ * Arrays are stringified item by item, comma-separated strings are split into
+ * items, `null`/`undefined` become an empty array, and anything else becomes a
+ * single-item array.
+ *
+ * @param value - value to coerce
+ * @returns a flat array of trimmed, non-empty strings
  */
 export default (value?: unknown): string[] => {
     if (Array.isArray(value)) return value.map((item) => String(item).trim()).filter(Boolean)
