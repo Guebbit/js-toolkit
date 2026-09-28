@@ -27,14 +27,14 @@ idempotence (`canonicalize`), symmetry and the triangle inequality
 (`levenshteinDistance`), bounds that hold for every input (`getDelta` never
 exceeds half the circumference).
 
-The seed is fixed in `tests/setup.ts` so the mutation baseline is stable. That
+The seed is fixed in `tests/_setup/fastCheck.ts` so the mutation baseline is stable. That
 keeps the gate honest but stops the suite exploring — the same 100 cases forever.
 The `Nightly` workflow re-runs everything on a fresh random seed with ten times
 the cases, so new counterexamples still surface without destabilising the
 per-commit gate. Locally:
 
 ```sh
-FAST_CHECK_SEED=$RANDOM FAST_CHECK_RUNS=1000 npm test
+FC_SEED=$RANDOM FC_NUM_RUNS=1000 npm test
 ```
 
 Anything a new seed finds gets committed as a named regression case in the

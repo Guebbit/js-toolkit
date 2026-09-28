@@ -40,9 +40,9 @@ jobs:
 
             - name: Run the suite on a random seed
               env:
-                  FAST_CHECK_SEED: ${{ steps.seed.outputs.value }}
+                  FC_SEED: ${{ steps.seed.outputs.value }}
                   # more cases than the per-commit run, since nothing waits on this
-                  FAST_CHECK_RUNS: 1000
+                  FC_NUM_RUNS: 1000
               run: |
-                  echo "FAST_CHECK_SEED=$FAST_CHECK_SEED"
+                  echo "FC_SEED=$FC_SEED"
                   npm test

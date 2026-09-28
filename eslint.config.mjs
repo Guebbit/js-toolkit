@@ -226,7 +226,7 @@ export default tseslint.config(
      * "Special" files names are better to be left untouched
      */
     {
-        files: ['tests/**/*', '**/*.spec.ts', '**/*.test.ts', '**/*.d.ts'],
+        files: ['tests/**/*', '**/*.spec.ts', '**/*.d.ts'],
         rules: {
             'unicorn/filename-case': 'off',
             'unicorn/prevent-abbreviations': 'off'
@@ -243,7 +243,7 @@ export default tseslint.config(
      * Tests specific eslint config
      */
     {
-        files: ['tests/**/*', '**/*.spec.ts', '**/*.test.ts'],
+        files: ['tests/**/*', '**/*.spec.ts'],
 
         languageOptions: {
             parserOptions: {

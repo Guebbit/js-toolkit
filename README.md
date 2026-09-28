@@ -189,7 +189,7 @@ npm test                 # unit, property and type tests
 npm run test:pack        # packaging smoke test
 npm run test:mutation    # mutation testing
 
-FAST_CHECK_SEED=$RANDOM FAST_CHECK_RUNS=1000 npm test   # explore past the fixed seed
+FC_SEED=$RANDOM FC_NUM_RUNS=1000 npm test   # explore past the fixed seed
 ```
 
 The suite is layered — unit, property-based, type-level, packaging and mutation — and each layer
