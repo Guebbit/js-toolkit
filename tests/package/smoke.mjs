@@ -1,7 +1,8 @@
+#!/usr/bin/env node
 /**
  * Packaging smoke test.
  *
- * Builds a real tarball with `npm pack`, installs it into a throwaway directory
+ * Packs a real tarball with `npm pack`, installs it into a throwaway directory
  * and imports it the two ways a consumer can: `require()` from CommonJS and
  * `import` from ESM. Then calls a function and checks the answer.
  *
@@ -15,6 +16,15 @@
  * written into dist/cjs. Lose that file and `require()` fails at runtime while
  * every unit test stays green. The subpath exports are checked too, since a
  * wildcard that does not line up with the emitted layout only shows up here.
+ *
+ * Does not build `dist` itself — `npm run test:package` runs after `build` in
+ * `complete:check` and in CI, so building here would just do it twice.
+ *
+ * The expected export list is checked two ways: against `exports.json`, a
+ * frozen list that only a deliberate edit changes (so deleting a helper is a
+ * conscious, semver-major, CHANGELOG-worthy act, not a silent tarball shrink),
+ * and against `src/`, which catches the other direction — a module that exists
+ * but was never wired into `index.ts`.
  */
 import { execFileSync } from 'node:child_process'
 import fs from 'node:fs'
@@ -22,8 +32,11 @@ import os from 'node:os'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..')
 const pkg = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'))
+const frozenExports = JSON.parse(
+    fs.readFileSync(path.join(root, 'tests', 'package', 'exports.json'), 'utf8')
+)
 
 const run = (command, arguments_, cwd) =>
     execFileSync(command, arguments_, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] })
@@ -49,9 +62,6 @@ const check = (label, function_) => {
 }
 
 try {
-    console.log('building…')
-    run('npm', ['run', 'build'], root)
-
     console.log('packing…')
     const tarball = run('npm', ['pack', '--pack-destination', temporary], root)
         .trim()
@@ -69,14 +79,29 @@ try {
     const installed = path.join(temporary, 'node_modules', pkg.name)
 
     // Every module is re-exported from the barrel under its own file name, so
-    // the source folder is the expected export list. Deriving it beats a
+    // the source folder is the expected export list too. Deriving it beats a
     // hardcoded count, which goes stale on every added function and — worse —
     // still passes when a new module is never wired into index.ts.
     const sources = fs
         .readdirSync(path.join(root, 'src'))
         .filter((name) => name.endsWith('.ts'))
         .map((name) => name.replace(/\.ts$/, ''))
-    const expectedExports = sources.filter((name) => name !== 'index').sort()
+    const sourceExports = sources.filter((name) => name !== 'index').sort()
+    const expectedExports = [...frozenExports].sort()
+
+    console.log('\nchecking the expected export list:')
+    check('exports.json matches src/ in both directions', () => {
+        const missingFromFrozen = sourceExports.filter((name) => !frozenExports.includes(name))
+        const missingFromSource = frozenExports.filter((name) => !sourceExports.includes(name))
+        if (missingFromFrozen.length > 0)
+            throw new Error(
+                `in src/ but not exports.json (add it, plus a CHANGELOG line): ${missingFromFrozen.join(', ')}`
+            )
+        if (missingFromSource.length > 0)
+            throw new Error(
+                `in exports.json but no matching src/ file (removed? that's a BREAKING CHANGELOG line): ${missingFromSource.join(', ')}`
+            )
+    })
 
     console.log('\nchecking the published file set:')
     check('both builds and the types are published', () => {
