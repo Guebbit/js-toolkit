@@ -62,6 +62,14 @@ describe('(formatDateTime) Render a date for display, in the reader’s locale',
         ).toThrow(RangeError)
     })
 
+    test.each([
+        ['an invalid Date', new Date(Number.NaN)],
+        ['NaN', Number.NaN]
+    ])('returns the custom fallback for %s', (_label, value) => {
+        // the NaN guard, not the empty-value guard, is what catches these
+        expect(formatDateTime(value, { empty: 'N/A' })).toBe('N/A')
+    })
+
     test('accepts a custom fallback', () => {
         expect(formatDateTime(undefined, { empty: 'N/A' })).toBe('N/A')
     })

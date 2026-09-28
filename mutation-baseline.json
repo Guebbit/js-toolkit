@@ -49,7 +49,8 @@
     },
     "src/extractErrorMessage.ts": {
         "total": 90,
-        "covered": 90
+        "covered": 90,
+        "note": "The survivor drops the typeof-object check in isRecord, equivalent: a primitive has no own message, so destructuring it yields undefined either way. Null is still excluded by the truthiness check."
     },
     "src/formatCurrency.ts": {
         "total": 100,
@@ -57,11 +58,13 @@
     },
     "src/formatDateTime.ts": {
         "total": 60,
-        "covered": 60
+        "covered": 60,
+        "note": "Both survivors sit on the empty-string check and are equivalent: new Date('') is invalid, so the NaN guard returns the fallback anyway."
     },
     "src/formatDuration.ts": {
         "total": 93.55,
-        "covered": 93.55
+        "covered": 93.55,
+        "note": "Both survivors are equivalent. An empty unit list yields no slice, hence ''. Treating 0 as positive still leaves 0 remaining."
     },
     "src/formatFileSize.ts": {
         "total": 95.24,
@@ -141,8 +144,9 @@
         "covered": 100
     },
     "src/isAcceptedFileType.ts": {
-        "total": 78.57,
-        "covered": 78.57
+        "total": 92.86,
+        "covered": 92.86,
+        "note": "Two survivors, both equivalent. Folding with toUpperCase instead of toLowerCase compares the same pair either way. Dropping the empty-entry guard changes nothing: the file type is non-empty by then, so an empty entry never equals it or prefixes it."
     },
     "src/isInViewport.ts": {
         "total": 100,

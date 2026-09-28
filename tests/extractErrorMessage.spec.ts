@@ -42,7 +42,13 @@ describe('(extractErrorMessage) Pull a human-readable message out of a rejection
             ['an Error with no message', new Error('')],
             ['a non-string message', { message: 42 }],
             ['an empty message', { message: '' }],
-            ['a nested empty message', { data: { message: '' } }]
+            ['a nested empty message', { data: { message: '' } }],
+            // eslint-disable-next-line unicorn/no-null -- a null body is what these cases test
+            ['a null body', { data: null }],
+            // eslint-disable-next-line unicorn/no-null -- a null response is what this case tests
+            ['a null response', { response: null }],
+            // eslint-disable-next-line unicorn/no-null -- a null body is what this case tests
+            ['a null response body', { response: { data: null } }]
         ])('falls back for %s', (_label, value) => {
             expect(extractErrorMessage(value, 'Fallback')).toBe('Fallback')
         })

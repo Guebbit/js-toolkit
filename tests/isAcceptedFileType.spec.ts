@@ -53,4 +53,23 @@ describe('(isAcceptedFileType) Whether a file’s declared mime type is accepted
     test('ignores empty entries', () => {
         expect(isAcceptedFileType({ type: 'image/png' }, ['', '  '])).toBe(false)
     })
+
+    test('rejects a file with no type even against the catch-all', () => {
+        // an undetermined type must not slip through as "anything goes"
+        expect(isAcceptedFileType({ type: '' }, ['*/*'])).toBe(false)
+    })
+
+    test('a subtype wildcard matches the whole type segment, not a prefix of it', () => {
+        expect(isAcceptedFileType({ type: 'illustration/svg' }, ['image/*'])).toBe(false)
+        expect(isAcceptedFileType({ type: 'imagex/png' }, ['image/*'])).toBe(false)
+    })
+
+    test('an exact entry is not a prefix match', () => {
+        expect(isAcceptedFileType({ type: 'image/png2' }, ['image/png'])).toBe(false)
+        expect(isAcceptedFileType({ type: 'image/gif' }, ['image/png'])).toBe(false)
+    })
+
+    test('an empty entry never matches, whatever the file', () => {
+        expect(isAcceptedFileType({ type: 'image/png' }, [''])).toBe(false)
+    })
 })

@@ -48,6 +48,15 @@ describe('(formatDuration) Render a duration compactly', () => {
         expect(formatDuration(7500, { units: ['hours', 'minutes', 'hours'] })).toBe('2h 5m')
     })
 
+    test.each([
+        ['negative', -5],
+        ['NaN', Number.NaN],
+        ['Infinity', Number.POSITIVE_INFINITY],
+        ['-Infinity', Number.NEGATIVE_INFINITY]
+    ])('treats a %s duration as zero', (_label, seconds) => {
+        expect(formatDuration(seconds)).toBe('0m')
+    })
+
     test('renders nothing when no unit was asked for', () => {
         expect(formatDuration(7500, { units: [] })).toBe('')
     })
