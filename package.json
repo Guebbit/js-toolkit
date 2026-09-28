@@ -1,7 +1,31 @@
 {
     "name": "@guebbit/js-toolkit",
     "version": "2.2.1",
+    "description": "Framework-free TypeScript helpers — arrays, strings, numbers, time, formatting, DOM, browser platform — shipped as a dual ESM/CommonJS build with no runtime dependencies.",
+    "keywords": [
+        "typescript",
+        "toolkit",
+        "utilities",
+        "helpers",
+        "array",
+        "string",
+        "dom",
+        "browser",
+        "cookies",
+        "query-string",
+        "esm",
+        "commonjs"
+    ],
+    "homepage": "https://guebbit.github.io/js-toolkit/",
+    "bugs": {
+        "url": "https://github.com/Guebbit/js-toolkit/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Guebbit/js-toolkit.git"
+    },
     "license": "AGPLv3.0",
+    "author": "Guebbit",
     "type": "module",
     "sideEffects": false,
     "main": "./dist/cjs/index.js",
@@ -51,15 +75,14 @@
         "test:mutation:check": "node scripts/mutation-baseline.mjs",
         "lint": "eslint \"*/**/*.{ts,js,json}\"",
         "lint:fix": "eslint \"*/**/*.{ts,js,json}\" --fix",
-        "prettier": "npx prettier .",
-        "prettier:check": "npx prettier --check .",
+        "prettier": "npx prettier . --check",
         "prettier:fix": "npx prettier . --write",
         "docs:dev": "vitepress dev docs --port 8080",
         "docs:build": "vitepress build docs",
         "docs:preview": "vitepress preview docs",
         "update:all": "npm-check-updates -u",
-        "complete:check": "npm run lint && npm run prettier:check && npm run typecheck && npm run build && npm run test",
-        "complete": "npm run lint:fix && npm run prettier:fix && npm run typecheck && npm run build && npm run test && npm run test:package && npm run docs:build",
+        "complete": "npm run lint:fix && npm run prettier:fix && npm run typecheck && npm run build && npm run test:package && npm run test && npm run test:types && npm run docs:build",
+        "complete:check": "npm run lint && npm run prettier && npm run typecheck && npm run build && npm run test:package && npm run test && npm run test:types && npm run docs:build",
         "check:clean": "node -e \"const s=require('child_process').execSync('git status --porcelain').toString();if(s.trim()){console.error('working tree is not clean — commit or stash before publishing:\\n'+s);process.exit(1)}\"",
         "prepublishOnly": "npm run check:clean && npm run complete:check",
         "publish:public": "npm publish --access public"
