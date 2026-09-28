@@ -1,13 +1,8 @@
 import { getCookie, setCookie } from '../src'
+import { clearCookies } from './_helpers/cookies'
 
 describe('setCookie', () => {
-    afterEach(() => {
-        for (const row of document.cookie.split('; ')) {
-            const name = row.split('=')[0]
-            // eslint-disable-next-line unicorn/no-document-cookie
-            if (name) document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT`
-        }
-    })
+    afterEach(clearCookies)
 
     test('writes a readable cookie', () => {
         setCookie('theme', 'dark')

@@ -1,15 +1,11 @@
 import { getCookie } from '../src'
+import { clearCookies } from './_helpers/cookies'
 
 // eslint-disable-next-line unicorn/no-document-cookie
 const setRawCookie = (cookie: string) => (document.cookie = cookie)
 
 describe('getCookie', () => {
-    afterEach(() => {
-        for (const row of document.cookie.split('; ')) {
-            const name = row.split('=')[0]
-            if (name) setRawCookie(`${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT`)
-        }
-    })
+    afterEach(clearCookies)
 
     test('reads an existing cookie', () => {
         setRawCookie('theme=dark')

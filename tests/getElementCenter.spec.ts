@@ -1,15 +1,11 @@
 import { getElementCenter } from '../src'
-
-const mockElement = (rect: Partial<DOMRect>) => ({
-    getBoundingClientRect: jest.fn().mockReturnValue(rect)
-})
+import { stubRect } from './_helpers/dom'
 
 describe('getElementCenter', () => {
     test('calculates the center of a given element', () => {
         expect(
             getElementCenter(
-                // @ts-expect-error this is a poor mock of an Element
-                mockElement({
+                stubRect({
                     left: 0,
                     top: 0,
                     width: 100,
@@ -22,8 +18,7 @@ describe('getElementCenter', () => {
     test('handles element with zero width and height', () => {
         expect(
             getElementCenter(
-                // @ts-expect-error this is a poor mock of an Element
-                mockElement({
+                stubRect({
                     left: 0,
                     top: 0,
                     width: 0,
@@ -36,8 +31,7 @@ describe('getElementCenter', () => {
     test('calculates the center of a positioned element', () => {
         expect(
             getElementCenter(
-                // @ts-expect-error this is a poor mock of an Element
-                mockElement({
+                stubRect({
                     left: 100,
                     top: 150,
                     width: 200,

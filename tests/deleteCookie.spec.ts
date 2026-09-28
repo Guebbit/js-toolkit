@@ -1,6 +1,9 @@
 import { deleteCookie, getCookie, setCookie } from '../src'
+import { clearCookies } from './_helpers/cookies'
 
 describe('deleteCookie', () => {
+    afterEach(clearCookies)
+
     test('removes a previously set cookie', () => {
         setCookie('theme', 'dark')
         expect(getCookie('theme')).toBe('dark')
