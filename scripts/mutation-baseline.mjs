@@ -25,6 +25,12 @@
  * normal, which is exactly what would happen if this script always wrote back
  * whatever it measured.
  *
+ * A file with no baseline entry is a gap, not a pass: outside CI it is recorded
+ * at its current score so a local run can move on, but in CI (`process.env.CI`)
+ * that same file fails the run instead. Otherwise a new source file rides in
+ * ungated until someone remembers to run this locally and commit the result —
+ * exactly the hole that left 8 files unchecked before this rule existed.
+ *
  * Usage:
  *   node scripts/mutation-baseline.mjs           check, and raise improved files
  *   node scripts/mutation-baseline.mjs --init    write a baseline from scratch
@@ -36,6 +42,10 @@ import { fileURLToPath } from 'node:url'
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const reportPath = path.join(root, 'reports', 'mutation', 'mutation.json')
 const baselinePath = path.join(root, 'mutation-baseline.json')
+
+// CI must fail closed on a missing baseline; a local run may still record one
+// so a contributor can commit it deliberately.
+const inCI = Boolean(process.env.CI)
 
 // Floating-point scores are compared with a small slack so a re-run that lands
 // on the same mutants cannot fail on a rounding difference alone.
@@ -115,13 +125,20 @@ const baseline = JSON.parse(fs.readFileSync(baselinePath, 'utf8'))
 const regressions = []
 const improvements = []
 const added = []
+const missingInCI = []
 
 for (const [file, entry] of Object.entries(measured)) {
     const previous = baseline[file]
 
-    // A brand-new source file has no baseline yet; record where it starts rather
-    // than letting it in ungated.
+    // A brand-new source file has no baseline yet. Outside CI, record where it
+    // starts rather than letting it in ungated; in CI, that recording is itself
+    // the hole — the file must fail instead, forcing a local `--init` and a
+    // deliberate commit.
     if (!previous) {
+        if (inCI) {
+            missingInCI.push(file)
+            continue
+        }
         added.push(file)
         baseline[file] = asBaseline(entry)
         continue
@@ -178,6 +195,18 @@ if (improvements.length > 0) {
         console.log(`  ${file}  ${metric} ${was}% -> ${now}%`)
 }
 
+if (missingInCI.length > 0) {
+    console.error('\nNo baseline entry for:')
+    for (const file of missingInCI)
+        console.error(
+            `  ${file}  total ${round(measured[file].total)}%  covered ${round(measured[file].covered)}%`
+        )
+    console.error(
+        '\nRun `npm run test:mutation && npm run test:mutation:check` locally and commit' +
+            '\nthe updated mutation-baseline.json — CI never records a baseline on its own.'
+    )
+}
+
 if (regressions.length > 0) {
     console.error('\nMutation score regressed:')
     for (const { file, metric, was, now, survived, noCoverage, note } of regressions) {
@@ -196,6 +225,8 @@ if (regressions.length > 0) {
     console.error('\nBaseline left unchanged. Fix the tests, do not lower the bar.')
     process.exit(1)
 }
+
+if (missingInCI.length > 0) process.exit(1)
 
 const sorted = Object.fromEntries(
     Object.entries(baseline).toSorted(([a], [b]) => a.localeCompare(b))

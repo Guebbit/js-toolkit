@@ -47,11 +47,35 @@
         "total": 100,
         "covered": 100
     },
+    "src/extractErrorMessage.ts": {
+        "total": 90,
+        "covered": 90
+    },
     "src/formatCurrency.ts": {
         "total": 100,
         "covered": 100
     },
+    "src/formatDateTime.ts": {
+        "total": 60,
+        "covered": 60
+    },
+    "src/formatDuration.ts": {
+        "total": 93.55,
+        "covered": 93.55
+    },
+    "src/formatFileSize.ts": {
+        "total": 95.24,
+        "covered": 95.24
+    },
+    "src/formatFlag.ts": {
+        "total": 100,
+        "covered": 100
+    },
     "src/formatNodeList.ts": {
+        "total": 100,
+        "covered": 100
+    },
+    "src/formatText.ts": {
         "total": 100,
         "covered": 100
     },
@@ -112,11 +136,19 @@
         "total": 94.74,
         "covered": 94.74
     },
+    "src/isAcceptedFileType.ts": {
+        "total": 78.57,
+        "covered": 78.57
+    },
     "src/isInViewport.ts": {
         "total": 100,
         "covered": 100
     },
     "src/isJson.ts": {
+        "total": 100,
+        "covered": 100
+    },
+    "src/isWithinFileSize.ts": {
         "total": 100,
         "covered": 100
     },
