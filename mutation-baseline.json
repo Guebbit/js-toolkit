@@ -47,6 +47,10 @@
         "total": 100,
         "covered": 100
     },
+    "src/formatCurrency.ts": {
+        "total": 100,
+        "covered": 100
+    },
     "src/formatNodeList.ts": {
         "total": 100,
         "covered": 100

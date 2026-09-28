@@ -5,8 +5,31 @@ describe('(formatCurrency) Render an amount as money', () => {
         expect(formatCurrency(1234.5, { locale: 'en-US', currency: 'USD' })).toBe('$1,234.50')
     })
 
-    test('defaults to two decimals', () => {
-        expect(formatCurrency(10, { locale: 'en-US', currency: 'USD' })).toBe('$10.00')
+    test('defaults to EUR when no currency is given', () => {
+        expect(formatCurrency(10, { locale: 'en-US' })).toBe('€10.00')
+    })
+
+    test.each([
+        ['USD', 10, '$10.00'],
+        ['JPY', 1234, '¥1,234'],
+        ['KWD', 1234.5, 'KWD 1,234.500']
+    ])('uses the currency’s own decimals (%s)', (currency, amount, expected) => {
+        expect(formatCurrency(amount, { locale: 'en-US', currency })).toBe(expected)
+    })
+
+    test('rounds to the minor unit', () => {
+        expect(formatCurrency(1234.5, { locale: 'en-US', currency: 'JPY' })).toBe('¥1,235')
+    })
+
+    test('a format without digits keeps the currency’s own decimals', () => {
+        // pins replace-not-merge: the caller's format is used as is, not merged with a default
+        expect(
+            formatCurrency(1234, {
+                locale: 'en-US',
+                currency: 'JPY',
+                format: { currencyDisplay: 'code' }
+            })
+        ).toBe('JPY 1,234')
     })
 
     test('respects the locale’s separators', () => {
@@ -39,9 +62,40 @@ describe('(formatCurrency) Render an amount as money', () => {
         expect(formatCurrency(value)).toBe('—')
     })
 
-    test('degrades to a plain number for an unknown currency code', () => {
+    test.each([
+        ['empty string', ''],
+        ['too short', 'EU'],
+        ['too long', 'EUR1'],
+        ['leading digit', '1EUR'],
+        ['non-ASCII letter', 'ÄBC'],
+        ['not a code at all', 'NOT_A_CODE']
+    ])('degrades to a plain number for a malformed currency code (%s)', (_label, currency) => {
         // a price without its symbol is cosmetic; a crashed render is not
-        expect(formatCurrency(10, { locale: 'en-US', currency: 'NOT_A_CODE' })).toBe('10.00')
+        expect(formatCurrency(10, { locale: 'en-US', currency })).toBe('10.00')
+    })
+
+    test('a malformed currency code with a format uses it as is', () => {
+        expect(
+            formatCurrency(1234.5, {
+                locale: 'en-US',
+                currency: '',
+                format: { maximumFractionDigits: 0 }
+            })
+        ).toBe('1,235')
+    })
+
+    test('a well-formed but unknown currency code stays in currency style', () => {
+        // 'XYZ' is well-formed (three ASCII letters) but has no ISO 4217 data: Intl prints it
+        // as-is with its own 2-decimal fallback, rather than throwing
+        expect(formatCurrency(10, { locale: 'en-US', currency: 'XYZ' })).toBe('XYZ 10.00')
+    })
+
+    test('currency code is case-insensitive', () => {
+        expect(formatCurrency(10, { locale: 'en-US', currency: 'eur' })).toBe('€10.00')
+    })
+
+    test('throws on a malformed locale', () => {
+        expect(() => formatCurrency(10, { locale: 'en_US', currency: 'USD' })).toThrow(RangeError)
     })
 
     test('accepts a custom fallback', () => {
