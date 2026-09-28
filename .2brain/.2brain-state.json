@@ -1,0 +1,38 @@
+{
+  "generated_at": "2026-09-28T20:26:18.059567+00:00",
+  "head": "90a968ec0ab85fafc520828b4a242abf4e0b8b6d",
+  "threshold": 5,
+  "layers": {
+    "execution": {
+      "artifact": ".2brain/EXECUTION.md"
+    },
+    "memory": {
+      "artifact": ".2brain/repo-memory.json",
+      "report": ".2brain/REPO_MEMORY.md",
+      "synced_entries": 0,
+      "count": 0,
+      "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "index": {
+      "artifact": ".2brain/repo-index.json",
+      "revision": "0c059d38fee76716538752c9074af407a9c4738aa8cdf15e8a1c8369764b4411",
+      "chunk_count": 757,
+      "artifact_count": 139,
+      "artifact_digest": "eec70cf7151dae65909d151844e77ccc0f9ae2c027c7ebc61351a660dbf8d5bc"
+    },
+    "context": {
+      "artifact": ".2brain/REPO_CONTEXT.md",
+      "injected": [],
+      "ai_target": "claude",
+      "provider": "ollama",
+      "model": "qwen3.8:27b",
+      "mode": "arch"
+    },
+    "arch": {
+      "file_count": 144,
+      "elapsed_seconds": 1395.5,
+      "seconds_per_file": 9.691,
+      "recorded_at": "2026-09-28T20:26:18.057855+00:00"
+    }
+  }
+}
