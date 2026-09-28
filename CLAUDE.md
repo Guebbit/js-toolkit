@@ -46,6 +46,10 @@ export.
 - MUST handle errors explicitly — no swallowed promises. A helper that must not throw (a
   formatter in a render path, a clipboard write) returns its failure as a value (a fallback
   string, `false`), and its JSDoc says so.
+- A render-path formatter never throws on **data**: any input that can change while the app runs
+  (the value, a currency code, a locale). It may throw on a malformed **options object**
+  (`format`): that is written in code, so it fails on every call and a test catches it. See
+  `docs/guide/getting-started.md`, "What the formatters throw".
 
 ## Comments
 

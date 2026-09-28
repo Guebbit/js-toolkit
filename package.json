@@ -1,6 +1,6 @@
 {
     "name": "@guebbit/js-toolkit",
-    "version": "2.2.1",
+    "version": "2.3.0",
     "description": "Framework-free TypeScript helpers — arrays, strings, numbers, time, formatting, DOM, browser platform — shipped as a dual ESM/CommonJS build with no runtime dependencies.",
     "keywords": [
         "typescript",
@@ -42,6 +42,7 @@
                 "default": "./dist/cjs/index.js"
             }
         },
+        "./internal/*": null,
         "./*": {
             "import": {
                 "types": "./dist/esm/*.d.ts",

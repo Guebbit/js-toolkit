@@ -2,6 +2,16 @@
 
 All notable changes to this project are documented here.
 
+## [2.3.0] - 2026-09-28
+
+### Changed
+
+- `formatCurrency` and `formatDateTime` — a malformed `locale` (`'en_US'`, `''`) no longer throws a
+  `RangeError`: it falls back to the runtime's own default, as `Intl` already does for a
+  well-formed tag it has no data for (`'zz'`). A locale is often runtime data (a header, a user
+  setting), and a formatter in a render path must not crash on data. An invalid `format` still
+  throws.
+
 ## [2.2.1] - 2026-09-28
 
 ### Fixed

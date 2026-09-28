@@ -136,6 +136,10 @@
         "total": 94.74,
         "covered": 94.74
     },
+    "src/internal/resolveLocale.ts": {
+        "total": 100,
+        "covered": 100
+    },
     "src/isAcceptedFileType.ts": {
         "total": 78.57,
         "covered": 78.57

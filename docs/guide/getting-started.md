@@ -67,6 +67,36 @@ Most helpers are environment-agnostic. The DOM helpers need a `document` (a brow
 helper is its own module and the package is side-effect free, importing the pure ones from a server
 bundle does not drag the DOM ones in.
 
+## What the formatters throw
+
+The display formatters (`formatCurrency`, `formatDateTime`, …) sit in render paths, where a throw
+takes a whole view down. So each input is sorted by one question: can it change while the app runs?
+
+```mermaid
+flowchart LR
+    input[A formatter input] --> question{Can it change<br/>while the app runs?}
+    question -->|yes: value, currency, locale| data[Data]
+    question -->|no: format| config[Config]
+    data --> fallback[Never throws:<br/>renders a fallback]
+    config --> throws[May throw:<br/>it fails on every call,<br/>so a test catches it]
+```
+
+| Input      | Kind   | When it is unusable                                                        |
+| ---------- | ------ | -------------------------------------------------------------------------- |
+| `value`    | data   | renders `empty`                                                            |
+| `currency` | data   | malformed (`'EU'`, `''`): a plain number, no symbol                        |
+| `locale`   | data   | malformed (`'en_US'`, `''`) or unknown (`'zz'`): the runtime's own default |
+| `format`   | config | throws a `RangeError` or `TypeError`, straight from `Intl` — a caller bug  |
+
+- **A locale is data.** It usually arrives at runtime: `navigator.language`, a user setting, an
+  `Accept-Language` header, an i18n library. A POSIX-style `'en_US'` is a realistic input that no
+  test fixture will contain.
+- **A malformed locale is treated like an unknown one.** `Intl` already falls back on its own for
+  a well-formed tag it has no data for (`'zz'`). It only throws on a malformed one. The formatters
+  map that case onto the same fallback, using the spec's own check (`Intl.getCanonicalLocales`).
+- **`format` is config.** It is an object written in code, so a bad one fails on every call, in
+  development and in tests, not only in production.
+
 ## What to use, and when
 
 - **[Arrays and objects](/api/arrays-and-objects)** — reshaping, slicing and coercing plain data.

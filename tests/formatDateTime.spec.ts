@@ -39,6 +39,29 @@ describe('(formatDateTime) Render a date for display, in the reader’s locale',
         expect(formatDateTime(value)).toBe('—')
     })
 
+    test.each([
+        ['underscore', 'en_US'],
+        ['empty string', ''],
+        ['well-formed but unknown', 'zz']
+    ])('uses the runtime’s default locale for an unusable one (%s)', (_label, locale) => {
+        // a locale is often runtime data (a header, a user setting): a bad one must not crash a render
+        const value = '2026-03-04T10:30:00Z'
+        const format: Intl.DateTimeFormatOptions = { dateStyle: 'long', timeZone: 'UTC' }
+        // both paths: Date#toLocaleString without a format, Intl.DateTimeFormat with one
+        expect(formatDateTime(value, { locale })).toBe(formatDateTime(value))
+        expect(formatDateTime(value, { locale, format })).toBe(formatDateTime(value, { format }))
+    })
+
+    test('still throws on a malformed format, even next to a malformed locale', () => {
+        // format is written in code, not data: the locale fallback must not swallow its error
+        expect(() =>
+            formatDateTime('2026-03-04T10:30:00Z', {
+                locale: 'en_US',
+                format: { timeZone: 'Not/AZone' }
+            })
+        ).toThrow(RangeError)
+    })
+
     test('accepts a custom fallback', () => {
         expect(formatDateTime(undefined, { empty: 'N/A' })).toBe('N/A')
     })

@@ -2,7 +2,12 @@
 module.exports = {
     preset: 'ts-jest',
     testEnvironment: 'jsdom',
-    roots: ['<rootDir>/tests'],
+    // src/ is a root for the import graph, not for tests (testMatch below finds
+    // those). --findRelatedTests, which Stryker runs for every mutant, can only
+    // trace imports through files inside a root. Stryker adds just the mutated
+    // file's own folder, so a file in src/internal/ would find no tests: the
+    // helpers that import it sit one level up.
+    roots: ['<rootDir>/tests', '<rootDir>/src'],
     // testMatch, not the default spec|test pattern: it keeps _helpers/ and
     // _setup/ (fixtures and configuration, not tests) out of the run without a
     // separate ignore list.

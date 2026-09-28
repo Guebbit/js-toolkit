@@ -13,9 +13,9 @@
  *    browser consumer with no `@types/node` installed must still type-check
  *    against everything else in the package;
  *  - no `.d.ts` may import `internal/` — see CLAUDE.md, "Function design".
- *    Dormant today: `src/internal/` does not exist yet, so this never
- *    matches, but the check stays on so the first file added there is caught
- *    immediately rather than found later.
+ *    A public helper may call internal code, but its declaration must not
+ *    reference it: `internal/` is outside the exports map, so a type that
+ *    leaks from there is one a consumer can neither import nor name.
  */
 import { readdir, readFile } from 'node:fs/promises'
 import path from 'node:path'

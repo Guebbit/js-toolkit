@@ -122,10 +122,12 @@ Every layer above runs against `src/`, through ts-jest — never against what ac
   subpath, then type-checks a consumer of each module kind. Also the **public-API guard**:
   `tests/package/exports.json` is a frozen list of runtime exports, checked against `src/` in both
   directions — deleting a helper without editing that list (plus a **BREAKING** CHANGELOG line)
-  fails here.
+  fails here. It also checks that every module under `src/internal/` is refused to both `require`
+  and `import`: the `./*` wildcard would match `internal/<name>` too, and only the
+  `"./internal/*": null` entry in `exports` keeps it out.
 - **`dtsGuard.mjs`** — the ESM and CommonJS declaration trees must describe the same modules, no
-  `.d.ts` may import a `node:` builtin except `deleteFile`'s, and none may import `internal/`
-  (dormant until `src/internal/` exists — see CLAUDE.md, "Function design").
+  `.d.ts` may import a `node:` builtin except `deleteFile`'s, and none may import `internal/` (see
+  CLAUDE.md, "Function design").
 
 The dual build is the sharp edge these catch and nothing else does: the root package is
 `"type": "module"`, so `dist/cjs` only parses as CommonJS because the build writes a

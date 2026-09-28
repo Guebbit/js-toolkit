@@ -186,6 +186,41 @@ console.log('esm:ok')
         if (!out.includes('esm:ok')) throw new Error(`unexpected output: ${out}`)
     })
 
+    // src/internal/ is shared machinery, not public API (CLAUDE.md, "Function design"). The `./*`
+    // wildcard matches across slashes, so only the `./internal/*: null` entry keeps it out —
+    // both `require` and `import` must be refused with the exports map's own error code.
+    const internalDirectory = path.join(root, 'src', 'internal')
+    const internals = fs.existsSync(internalDirectory)
+        ? fs
+              .readdirSync(internalDirectory)
+              .filter((name) => name.endsWith('.ts'))
+              .map((name) => name.replace(/\.ts$/, ''))
+        : []
+    fs.writeFileSync(
+        path.join(temporary, 'internal.mjs'),
+        `import { createRequire } from 'node:module'
+const require = createRequire(import.meta.url)
+const refused = async (attempt) => {
+    try {
+        await attempt()
+    } catch (error) {
+        return error.code === 'ERR_PACKAGE_PATH_NOT_EXPORTED'
+    }
+    return false
+}
+for (const name of ${JSON.stringify(internals)}) {
+    const specifier = ${JSON.stringify(pkg.name)} + '/internal/' + name
+    if (!(await refused(() => require.resolve(specifier)))) throw new Error('require reaches ' + specifier)
+    if (!(await refused(() => import(specifier)))) throw new Error('import reaches ' + specifier)
+}
+console.log('internal:' + ${internals.length})
+`
+    )
+    check(`internal/ is unreachable from outside (${internals.length} module(s))`, () => {
+        const out = run('node', ['internal.mjs'], temporary)
+        if (!out.startsWith('internal:')) throw new Error(`unexpected output: ${out}`)
+    })
+
     // Types have to resolve for both kinds of consumer. With `type: module` at
     // the root and one shared declaration folder, TypeScript reads every .d.ts
     // as ESM and a CommonJS consumer cannot import the package at all — which

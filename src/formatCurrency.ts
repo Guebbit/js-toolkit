@@ -2,8 +2,11 @@
  * @module
  * Money for display, via `Intl.NumberFormat` in currency style.
  * The currency sets the decimals (JPY 0, EUR 2, KWD 3); `format` can override them.
- * A malformed currency code prints a plain number instead of throwing.
+ * A malformed currency code prints a plain number instead of throwing, and an unusable locale
+ * falls back to the runtime's default.
  */
+
+import resolveLocale from './internal/resolveLocale.js'
 
 /**
  * Options for rendering an amount as money.
@@ -14,7 +17,8 @@ export interface IFormatCurrencyOptions {
      */
     currency?: string
     /**
-     * BCP 47 tag, e.g. `'it-IT'`. Omit to use the runtime's own default.
+     * BCP 47 tag, e.g. `'it-IT'`. Omitted or unusable (malformed, or unknown to `Intl`), the
+     * runtime's own default is used.
      */
     locale?: string
     /**
@@ -45,19 +49,23 @@ const NO_CURRENCY_FORMAT: Intl.NumberFormatOptions = {
 /**
  * Render an amount as money, with the reader's separators and the currency's symbol and decimals.
  *
- * Bad data never throws: a non-number renders `empty`, and a malformed currency code renders a
- * plain number (with `format` if given, otherwise 2 decimals).
+ * Bad data never throws: a non-number renders `empty`, a malformed currency code renders a plain
+ * number (with `format` if given, otherwise 2 decimals), and an unusable `locale` falls back to the
+ * runtime's default.
  *
  * @param value - the amount
  * @param options - currency, locale, empty-value text and format overrides
  * @returns the formatted amount
- * @throws {RangeError} when `locale` or `format` is malformed — a caller bug, not data
+ * @throws {RangeError | TypeError} when `format` is invalid — written in code, so a caller bug
  */
 export default (
     value?: number | null,
-    { currency = 'EUR', locale, empty = '—', format }: IFormatCurrencyOptions = {}
+    // TODO(next major): drop the `'EUR'` default and make `currency` required.
+    // A missing currency should not silently become euros. Removing the default is breaking.
+    { currency = 'EUR', locale: givenLocale, empty = '—', format }: IFormatCurrencyOptions = {}
 ): string => {
     if (typeof value !== 'number' || Number.isNaN(value)) return empty
+    const locale = resolveLocale(givenLocale)
     // no usable currency: a plain decimal number, no symbol
     if (!WELL_FORMED_CURRENCY.test(currency))
         return new Intl.NumberFormat(locale, format ?? NO_CURRENCY_FORMAT).format(value)

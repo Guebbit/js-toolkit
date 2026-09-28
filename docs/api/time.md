@@ -97,17 +97,22 @@ formatDateTime(
 
 Render a date for display, in the reader's locale, via `Intl.DateTimeFormat` — or
 `Date#toLocaleString` when no `format` is given. An unparseable or missing `value` renders `empty`
-instead of the string `'Invalid Date'`, which is never something a user should see.
+instead of the string `'Invalid Date'`, which is never something a user should see, and an unusable
+`locale` falls back to the runtime's own default.
 
 `IFormatDateTimeOptions`:
 
 | Field    | Type                         | Default | Purpose                                                                                              |
 | -------- | ---------------------------- | ------- | ---------------------------------------------------------------------------------------------------- |
-| `locale` | `string`                     | —       | BCP 47 tag, e.g. `'it-IT'`. Omitted uses the runtime's own default.                                  |
+| `locale` | `string`                     | —       | BCP 47 tag, e.g. `'it-IT'`. Omitted or unusable, the runtime's own default is used.                  |
 | `empty`  | `string`                     | `'—'`   | shown when there is no date, or an unparseable one                                                   |
 | `format` | `Intl.DateTimeFormatOptions` | —       | passed straight to `Intl.DateTimeFormat`; without it, formatting falls back to `Date#toLocaleString` |
 
 ```ts
 formatDateTime('2026-01-15') // locale-formatted date
 formatDateTime('not a date') // '—'
+formatDateTime('2026-01-15', { locale: 'en_US' }) // malformed tag: the runtime's default locale
 ```
+
+Throws a `RangeError` or `TypeError` when `format` is invalid — a caller bug, not bad data. See
+[What the formatters throw](/guide/getting-started#what-the-formatters-throw).

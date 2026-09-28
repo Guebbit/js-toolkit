@@ -85,15 +85,15 @@ formatCurrency(value?: number | null, options?: IFormatCurrencyOptions): string
 
 Render an amount as money, with the reader's separators and the currency's own symbol and decimals
 — via `Intl.NumberFormat` in currency style. Bad data never throws: a non-number renders `empty`,
-and a malformed currency code renders a plain number instead (with `format` if given, otherwise 2
-decimals).
+a malformed currency code renders a plain number instead (with `format` if given, otherwise 2
+decimals), and an unusable `locale` falls back to the runtime's own default.
 
 `IFormatCurrencyOptions`:
 
 | Field      | Type                       | Default | Purpose                                                                                                          |
 | ---------- | -------------------------- | ------- | ---------------------------------------------------------------------------------------------------------------- |
 | `currency` | `string`                   | `'EUR'` | ISO 4217 code, e.g. `'EUR'`. Any case.                                                                           |
-| `locale`   | `string`                   | —       | BCP 47 tag, e.g. `'it-IT'`. Omitted uses the runtime's own default.                                              |
+| `locale`   | `string`                   | —       | BCP 47 tag, e.g. `'it-IT'`. Omitted or unusable, the runtime's own default is used.                              |
 | `empty`    | `string`                   | `'—'`   | shown when `value` is not a number                                                                               |
 | `format`   | `Intl.NumberFormatOptions` | —       | passed straight to `Intl.NumberFormat`; without it, decimals come from the currency itself (JPY 0, EUR 2, KWD 3) |
 
@@ -103,4 +103,5 @@ formatCurrency(1234.5, { currency: 'JPY' }) // '¥1,235' — JPY has 0 decimals
 formatCurrency(null) // '—'
 ```
 
-Throws a `RangeError` when `locale` or `format` is malformed — a caller bug, not bad data.
+Throws a `RangeError` or `TypeError` when `format` is invalid — a caller bug, not bad data. See
+[What the formatters throw](/guide/getting-started#what-the-formatters-throw).

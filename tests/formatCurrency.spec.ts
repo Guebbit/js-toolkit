@@ -94,8 +94,32 @@ describe('(formatCurrency) Render an amount as money', () => {
         expect(formatCurrency(10, { locale: 'en-US', currency: 'eur' })).toBe('€10.00')
     })
 
-    test('throws on a malformed locale', () => {
-        expect(() => formatCurrency(10, { locale: 'en_US', currency: 'USD' })).toThrow(RangeError)
+    test.each([
+        ['underscore', 'en_US'],
+        ['empty string', ''],
+        ['well-formed but unknown', 'zz']
+    ])('uses the runtime’s default locale for an unusable one (%s)', (_label, locale) => {
+        // a locale is often runtime data (a header, a user setting): a bad one must not crash a render
+        expect(formatCurrency(1234.5, { locale, currency: 'USD' })).toBe(
+            formatCurrency(1234.5, { currency: 'USD' })
+        )
+    })
+
+    test('an unusable locale falls back on the plain-number path too', () => {
+        expect(formatCurrency(1234.5, { locale: 'en_US', currency: '' })).toBe(
+            formatCurrency(1234.5, { currency: '' })
+        )
+    })
+
+    test('still throws on a malformed format, even next to a malformed locale', () => {
+        // format is written in code, not data: the locale fallback must not swallow its error
+        expect(() =>
+            formatCurrency(10, {
+                locale: 'en_US',
+                currency: 'USD',
+                format: { maximumFractionDigits: 101 }
+            })
+        ).toThrow(RangeError)
     })
 
     test('accepts a custom fallback', () => {
