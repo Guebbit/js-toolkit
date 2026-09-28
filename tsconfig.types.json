@@ -1,0 +1,16 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "noEmit": true,
+        // Overrides the base config's `src`-only rootDir: this program also includes tests/types.
+        // `declaration`/`declarationDir` stay as inherited — harmless, since noEmit above means
+        // nothing is ever written.
+        "rootDir": ".",
+        // Proves the type tests stand on their own: no Jest globals (describe, expect) leak in to
+        // paper over a missing import, the way they could under tsconfig.tests.json. "node" stays
+        // in the list — deleteFile.ts and getExecTime.ts are genuinely Node-only source, not test
+        // code, and need `process`/`node:fs` to resolve at all.
+        "types": ["node"]
+    },
+    "include": ["src", "tests/types"]
+}
