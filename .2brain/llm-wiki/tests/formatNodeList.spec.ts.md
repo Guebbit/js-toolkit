@@ -8,9 +8,11 @@ model: ollama:qwen3.8:27b
 # tests/formatNodeList.spec.ts
 
 ## Purpose
+
 Unit tests for the `formatNodeList` utility, verifying that it normalises any DOM element collection (NodeList, HTMLCollection, single Element, array, or nothing) into a plain, static JavaScript array.
 
 ## Key elements
+
 - **`describe('(formatNodeList) …')`** — single suite containing eight test cases.
 - **Test: "returns an empty array when given nothing"** — covers `undefined` and `null` inputs.
 - **Test: "wraps a single element in an array"** — a bare `Element` becomes `[element]`.
@@ -22,9 +24,11 @@ Unit tests for the `formatNodeList` utility, verifying that it normalises any DO
 - **Test: "returns an empty array for an empty collection"** — zero-length collection → `[]`.
 
 ## Relationships
+
 - **`src/index.ts`** — the sole import target; provides the `formatNodeList` function under test.
 
 ## Notes
+
 - All assertions use `toStrictEqual`, not `toEqual`, specifically because Jest's `toEqual` treats `[undefined]` as equal to `[]`. This is called out in an inline comment.
 - The HTMLCollection test intentionally uses `getElementsByTagName` and carries an `eslint-disable` for `unicorn/prefer-query-selector`, because `querySelectorAll` returns a NodeList and would not exercise that code path.
 - Tests mutate `document.body.innerHTML` and rely on a DOM environment (jsdom or similar); they do not clean up between cases.

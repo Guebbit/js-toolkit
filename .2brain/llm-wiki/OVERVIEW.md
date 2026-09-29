@@ -9,13 +9,13 @@ A TypeScript library of small, composable utility functions. Each `src/*.ts` mod
 
 ## Main Areas
 
-| Area | Contents | Notes |
-|---|---|---|
-| **Utilities (`src/`)** | ~108 single-purpose modules (e.g. `arrayChunks`, `formatCurrency`, `getCookie`, `getJson`) | Grouped thematically by domain: arrays & objects, strings, numbers & ranges, time, JSON, errors, browser/DOM, Node/file, etc. |
-| **Internal (`src/internal/`)** | `resolveLocale.ts` | Shared helper not meant for public re-export. |
-| **Tests (`tests/`)** | Property-based specs and `*.test-d.ts` type tests | Verify runtime invariants and exported types. |
-| **Docs (`docs/`)** | VitePress site: per-domain API pages + guides (getting started, testing) | Mirrors the `src/` groupings. |
-| **Tooling (`scripts/`, config)** | Build script, mutation baseline, ESLint config, `package.json` | Standard build/lint/mutation-test pipeline. |
+| Area                             | Contents                                                                                   | Notes                                                                                                                         |
+| -------------------------------- | ------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------- |
+| **Utilities (`src/`)**           | ~108 single-purpose modules (e.g. `arrayChunks`, `formatCurrency`, `getCookie`, `getJson`) | Grouped thematically by domain: arrays & objects, strings, numbers & ranges, time, JSON, errors, browser/DOM, Node/file, etc. |
+| **Internal (`src/internal/`)**   | `resolveLocale.ts`                                                                         | Shared helper not meant for public re-export.                                                                                 |
+| **Tests (`tests/`)**             | Property-based specs and `*.test-d.ts` type tests                                          | Verify runtime invariants and exported types.                                                                                 |
+| **Docs (`docs/`)**               | VitePress site: per-domain API pages + guides (getting started, testing)                   | Mirrors the `src/` groupings.                                                                                                 |
+| **Tooling (`scripts/`, config)** | Build script, mutation baseline, ESLint config, `package.json`                             | Standard build/lint/mutation-test pipeline.                                                                                   |
 
 ## How the Pieces Relate
 

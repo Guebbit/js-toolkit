@@ -9,7 +9,7 @@ model: ollama:qwen3.8:27b
 
 ## Purpose
 
-Provides a single utility that quantifies the overlap between two numeric intervals as a magnitude (number of units), returning `0` when the intervals do not intersect. Exists so callers can both test *whether* two ranges overlap and *how much* they overlap in one call.
+Provides a single utility that quantifies the overlap between two numeric intervals as a magnitude (number of units), returning `0` when the intervals do not intersect. Exists so callers can both test _whether_ two ranges overlap and _how much_ they overlap in one call.
 
 ## Key elements
 
@@ -21,5 +21,5 @@ Provides a single utility that quantifies the overlap between two numeric interv
 
 ## Notes
 
-- The `sameUnitOverlap` parameter controls an edge case: when one range's end equals the other's start (e.g. `[1, 3]` and `[3, 5]`), the default (`false`) treats that as **zero** overlap. Passing `true` makes it count as **1 unit**. The JSDoc explicitly calls out dates as a scenario where the boundary should *not* count — verify which convention your caller expects before changing the default.
+- The `sameUnitOverlap` parameter controls an edge case: when one range's end equals the other's start (e.g. `[1, 3]` and `[3, 5]`), the default (`false`) treats that as **zero** overlap. Passing `true` makes it count as **1 unit**. The JSDoc explicitly calls out dates as a scenario where the boundary should _not_ count — verify which convention your caller expects before changing the default.
 - The function is symmetric: argument order for the two ranges does not matter.

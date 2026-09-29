@@ -9,7 +9,7 @@ model: ollama:qwen3.8:27b
 
 ## Purpose
 
-Property-based tests (via `fast-check`) for the three string utilities exported from `src/index.ts`: `levenshteinDistance`, `match`, and `coerceStringArray`. The tests encode the mathematical invariants (metric axioms, mode-lattice relationships, normalisation rules) that must hold for *all* inputs, not just hand-picked examples, and are sized to run fast enough inside a pre-commit hook.
+Property-based tests (via `fast-check`) for the three string utilities exported from `src/index.ts`: `levenshteinDistance`, `match`, and `coerceStringArray`. The tests encode the mathematical invariants (metric axioms, mode-lattice relationships, normalisation rules) that must hold for _all_ inputs, not just hand-picked examples, and are sized to run fast enough inside a pre-commit hook.
 
 ## Key elements
 
@@ -27,5 +27,5 @@ Property-based tests (via `fast-check`) for the three string utilities exported 
 
 - All string arbiters are capped at `maxLength: 12` explicitly to keep the file runnable in a pre-commit hook; raising the cap will slow the Levenshtein and fuzzy-match tests quadratically.
 - The `levenshteinDistance(a)` single-arg call and `levenshteinDistance(a, null)` are tested as equivalent to passing `''`; the `eslint-disable` comments suppress `unicorn/no-null` and `unicorn/no-useless-undefined` for those intentional cases.
-- The idempotence test for `coerceStringArray` filters generated strings to exclude commas (`s.includes(',')`), because a comma in the *output* would be re-split on a second pass—this is a known design boundary, not a bug.
+- The idempotence test for `coerceStringArray` filters generated strings to exclude commas (`s.includes(',')`), because a comma in the _output_ would be re-split on a second pass—this is a known design boundary, not a bug.
 - The comment "The old sentinel returned 999 here" documents a prior implementation where the empty string was a special case; the current code no longer treats it specially, and the tests assert that.

@@ -1,8 +1,8 @@
 ---
 tags:
-  - 2brain
-  - 2brain/module
-  - project/js-toolkit
+    - 2brain
+    - 2brain/module
+    - project/js-toolkit
 type: module
 module: / (repository root)
 files: 12
@@ -30,13 +30,15 @@ This module has **no internal sub-module dependencies**. It is a self-contained 
 
 ## Where to start
 
-1. **`README.md`** — Two minutes of reading that tells you *what* the library does and *how* to import its helpers.
+1. **`README.md`** — Two minutes of reading that tells you _what_ the library does and _how_ to import its helpers.
 2. **`package.json`** (the `"exports"` and `"scripts"` fields) — Reveals the exact public API surface and the commands that drive build, test, lint, and publish, giving you a map of the whole project workflow.
 
 ## Connected modules
+
 _(none)_
 
 ## Files
+
 - `CLAUDE.md` — A published npm library (`@guebbit/js-toolkit`): framework-free TypeScript helpers (arrays,
 - `PLAN_FORMAT_CURRENCY.md` — Decided 2026-09-28** (`boilerplate-node-backend/DECISIONS.md`, D18, option A): fix it once, here,
 - `README.md` — Small, dependency-free TypeScript helpers for the things that keep coming up: array and object
@@ -51,4 +53,5 @@ _(none)_
 - `tsconfig.types.json`
 
 ---
+
 [[js-toolkit_INDEX|← js-toolkit index]]

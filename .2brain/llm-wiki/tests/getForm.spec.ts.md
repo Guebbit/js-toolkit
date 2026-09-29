@@ -15,13 +15,13 @@ Jest spec that verifies `getForm` correctly serialises every named form control 
 
 - **`markup`** (module-level constant) – a full HTML form string injected into `document.body` via `beforeEach`; exercises one of each control type.
 - **`describe('(getForm) …')`** – the single suite. Contains seven `test` blocks:
-  - *Input* – asserts the full expected object for the rich form.
-  - *returns an empty object for a missing form* – `getForm(null)` → `{}`.
-  - *skips fields without a name attribute* – unnamed inputs are omitted.
-  - *returns an empty object for a form with no fields* – bare `<form>` → `{}`.
-  - *honours a custom selector* – second argument narrows which controls are collected.
-  - *keeps the first field in document order when two share a name* – pins the backward-walk behaviour.
-  - *reports an unchecked checkbox as false* – unchecked checkbox yields `false`, not omission.
+    - _Input_ – asserts the full expected object for the rich form.
+    - _returns an empty object for a missing form_ – `getForm(null)` → `{}`.
+    - _skips fields without a name attribute_ – unnamed inputs are omitted.
+    - _returns an empty object for a form with no fields_ – bare `<form>` → `{}`.
+    - _honours a custom selector_ – second argument narrows which controls are collected.
+    - _keeps the first field in document order when two share a name_ – pins the backward-walk behaviour.
+    - _reports an unchecked checkbox as false_ – unchecked checkbox yields `false`, not omission.
 
 ## Relationships
 
@@ -29,6 +29,6 @@ Jest spec that verifies `getForm` correctly serialises every named form control 
 
 ## Notes
 
-- **Duplicate-name resolution is order-sensitive.** The implementation walks the field list in reverse, so the *first* field in document order wins. The dedicated test exists specifically to catch an accidental direction change.
+- **Duplicate-name resolution is order-sensitive.** The implementation walks the field list in reverse, so the _first_ field in document order wins. The dedicated test exists specifically to catch an accidental direction change.
 - **`getForm` accepts `null`.** Callers typically pass a raw `querySelector` result without a null-check; the spec pins that this returns `{}` rather than throwing.
 - **Inline ESLint suppressions** (`@typescript-eslint/naming-convention`, `unicorn/no-null`) appear throughout because the test object keys and the explicit `null` argument would otherwise violate lint rules. Don't remove them without adjusting the project's lint config.

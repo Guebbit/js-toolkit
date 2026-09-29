@@ -14,11 +14,11 @@ A single-purpose utility that extracts a meaningful value from an HTML form elem
 ## Key elements
 
 - **Default export** `(element: HTMLElement | null, attribute?: string) → string | number | boolean | undefined`
-  - `element` is `null` → returns `undefined`.
-  - Non-empty `attribute` → returns `element.getAttribute(attribute) ?? undefined`.
-  - `<input type="checkbox">` → returns `checked` (boolean).
-  - `<input type="radio">` → walks `parentElement` siblings sharing the same `name`, returns the checked sibling's `.value`, or `undefined`.
-  - Fallback → `(element as HTMLInputElement | HTMLSelectElement).value ?? element.textContent`.
+    - `element` is `null` → returns `undefined`.
+    - Non-empty `attribute` → returns `element.getAttribute(attribute) ?? undefined`.
+    - `<input type="checkbox">` → returns `checked` (boolean).
+    - `<input type="radio">` → walks `parentElement` siblings sharing the same `name`, returns the checked sibling's `.value`, or `undefined`.
+    - Fallback → `(element as HTMLInputElement | HTMLSelectElement).value ?? element.textContent`.
 
 ## Relationships
 

@@ -23,5 +23,5 @@ Provides a single function that checks whether a file's declared MIME type match
 ## Notes
 
 - Explicitly **not** a security control. The MIME type is whatever the browser reports; a server must still validate actual file bytes. This function only prevents a wasted upload.
-- `caseSensitive: true` exists solely to mirror a server that compares verbatim. The doc comment warns that enabling it can cause the client to *accept* a file the server rejects (e.g. `IMAGE/PNG` vs `image/png`), which is worse than rejecting early.
+- `caseSensitive: true` exists solely to mirror a server that compares verbatim. The doc comment warns that enabling it can cause the client to _accept_ a file the server rejects (e.g. `IMAGE/PNG` vs `image/png`), which is worse than rejecting early.
 - Patterns in the `accepted` array are trimmed before comparison, so stray whitespace in an `accept` attribute value is tolerated.

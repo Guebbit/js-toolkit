@@ -17,7 +17,7 @@ Test suite for the `match` function, verifying that two-string comparison behave
 - **`describe('(match) …')`** — top-level block; the first test asserts that identical strings always match regardless of mode (equality short-circuit).
 - **`describe('case sensitivity')`** — confirms the default is case-insensitive and `sensitive: true` disables folding.
 - **`describe("mode 'exact'")`** — verifies strict equality after trim/case-fold; substrings are rejected in both directions.
-- **`describe("mode 'contained'")`** — documents that this is the *default* mode (no `mode` key needed) and that it asks "is `a` inside `b`?".
+- **`describe("mode 'contained'")`** — documents that this is the _default_ mode (no `mode` key needed) and that it asks "is `a` inside `b`?".
 - **`describe("mode 'contains'")`** — the mirror: "does `a` hold `b`?".
 - **`describe("mode 'either'")`** — containment in either direction; still rejects unrelated strings.
 - **`describe("mode 'fuzzy'")`** — Levenshtein-style distance gated by `maxDistance`; confirms that a case-only difference counts as an edit only under `sensitive: true`; confirms substring logic does not leak into fuzzy mode.

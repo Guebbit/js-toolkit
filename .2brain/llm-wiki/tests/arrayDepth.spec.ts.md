@@ -15,11 +15,11 @@ Jest test suite for the `arrayDepth` utility. Verifies that the function correct
 
 - **`describe('(arrayDepth) Get depth of array')`** – single test group; imports `arrayDepth` from `'../src'` (the barrel at `src/index.ts`).
 - **Tests (5 cases):**
-  - Non-array string → expects `0`.
-  - Single-element array → expects `1`.
-  - Doubly nested array → expects `2`.
-  - Triply nested array → expects `3`.
-  - Irregularly nested array (mixed scalars and sub-arrays at multiple levels) → expects `4`.
+    - Non-array string → expects `0`.
+    - Single-element array → expects `1`.
+    - Doubly nested array → expects `2`.
+    - Triply nested array → expects `3`.
+    - Irregularly nested array (mixed scalars and sub-arrays at multiple levels) → expects `4`.
 
 ## Relationships
 
@@ -29,4 +29,4 @@ Jest test suite for the `arrayDepth` utility. Verifies that the function correct
 ## Notes
 
 - The test imports from the package root (`'../src'`), not from the individual module. If `src/index.ts` changes its exports, this test breaks even if `arrayDepth` itself is untouched.
-- The "complex" case uses a ragged array (`[1, 2, [3, 4, [5, 6], 7, [8, [9, 91]], 10], 11, 12]`) to confirm depth is measured by the *deepest* nesting path, not the average or first branch.
+- The "complex" case uses a ragged array (`[1, 2, [3, 4, [5, 6], 7, [8, [9, 91]], 10], 11, 12]`) to confirm depth is measured by the _deepest_ nesting path, not the average or first branch.

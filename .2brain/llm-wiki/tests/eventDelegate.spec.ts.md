@@ -26,6 +26,6 @@ Jest test suite for the `eventDelegate` utility. It verifies that event delegati
 
 - **Optional `parent` parameter.** When omitted, `eventDelegate` attaches its listener to `window`. The test "should add event listener to window…" covers this default path.
 - **`this` binding via `mock.instances`.** The spec asserts `callback.mock.instances[0] === child`, which means `eventDelegate` calls the callback with the matched element as `this` (not as an argument).
-- **Node selector is a containment check, not an equality check.** A sibling element that is *not* inside the Node must not trigger the callback. Conversely, the Node *does* contain itself, so clicking the Node directly counts.
+- **Node selector is a containment check, not an equality check.** A sibling element that is _not_ inside the Node must not trigger the callback. Conversely, the Node _does_ contain itself, so clicking the Node directly counts.
 - **Unsubscribe is the only cleanup path.** The internal listener is never exposed; the returned function is the sole mechanism to remove it. Leaking occurs if the caller discards the return value.
 - **DOM setup uses `innerHTML` assignment** rather than `appendChild`, so elements created in one test are fully replaced in the next.

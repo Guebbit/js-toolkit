@@ -14,14 +14,14 @@ Unit-test suite for the `setUrlQueries` utility (imported from `src/index.ts`). 
 ## Key elements
 
 - **`describe('setUrlQueries', …)`** — single block containing eight tests covering:
-  - Basic `{ key: value }` → `"key=value"` serialization.
-  - Coercion of numbers/booleans to their string representations.
-  - Omission of `undefined`, `null`, `''`, and `[]` values from the output.
-  - Array joining with the default comma separator.
-  - Array joining with a caller-supplied separator (3rd argument).
-  - Merging new keys into / overriding existing keys in a pre-existing query string.
-  - Removing a key from the merged result when its value is `undefined`.
-  - Accepting a `URLSearchParams` instance as the merge target instead of a raw string.
+    - Basic `{ key: value }` → `"key=value"` serialization.
+    - Coercion of numbers/booleans to their string representations.
+    - Omission of `undefined`, `null`, `''`, and `[]` values from the output.
+    - Array joining with the default comma separator.
+    - Array joining with a caller-supplied separator (3rd argument).
+    - Merging new keys into / overriding existing keys in a pre-existing query string.
+    - Removing a key from the merged result when its value is `undefined`.
+    - Accepting a `URLSearchParams` instance as the merge target instead of a raw string.
 
 ## Relationships
 

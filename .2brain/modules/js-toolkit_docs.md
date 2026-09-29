@@ -1,8 +1,8 @@
 ---
 tags:
-  - 2brain
-  - 2brain/module
-  - project/js-toolkit
+    - 2brain
+    - 2brain/module
+    - project/js-toolkit
 type: module
 module: docs/
 files: 13
@@ -24,7 +24,7 @@ The `docs/` directory is the VitePress-powered documentation site for `@guebbit/
 
 ## How it connects
 
-This module has no runtime or build-time dependencies on other modules in the repository. It is a pure consumer: it *describes* the library's public API but is never imported by application code. The only tooling dependency is VitePress (a dev dependency), which reads the config and Markdown files to produce a static site.
+This module has no runtime or build-time dependencies on other modules in the repository. It is a pure consumer: it _describes_ the library's public API but is never imported by application code. The only tooling dependency is VitePress (a dev dependency), which reads the config and Markdown files to produce a static site.
 
 ## Where to start
 
@@ -32,9 +32,11 @@ This module has no runtime or build-time dependencies on other modules in the re
 2. **`docs/.vitepress/config.mts`** — read this second if you plan to edit or add documentation pages; it shows how the sidebar is wired and what plugins are active, so new files land in the right place.
 
 ## Connected modules
+
 _(none)_
 
 ## Files
+
 - `docs/.vitepress/config.mts` — VitePress site configuration for the `@guebbit/js-toolkit` documentation. It defines the site metadata, navigation layout, and enables Mermaid diagram rendering via a plugin wrapper.
 - `docs/api/arrays-and-objects.md` — Reshaping, slicing and coercing plain arrays and objects — no class instances, no mutation of the
 - `docs/api/browser-platform.md` — Clipboard, downloads, cookies, query strings, `FormData`, and the client-side file checks that
@@ -50,4 +52,5 @@ _(none)_
 - `docs/index.md` — layout: home
 
 ---
+
 [[js-toolkit_INDEX|← js-toolkit index]]

@@ -9,13 +9,13 @@ model: ollama:qwen3.8:27b
 
 ## Purpose
 
-Property-based test suite (via `fast-check`) that verifies structural invariants and algebraic laws of the collection utility functions exposed by the package, rather than asserting behaviour on hand-picked examples. Each `describe` block pins down a small set of laws that must hold for *all* inputs within a bounded domain.
+Property-based test suite (via `fast-check`) that verifies structural invariants and algebraic laws of the collection utility functions exposed by the package, rather than asserting behaviour on hand-picked examples. Each `describe` block pins down a small set of laws that must hold for _all_ inputs within a bounded domain.
 
 ## Key elements
 
 - **`item` / `list`** — shared `fast-check` arbitraries: a `string | integer` leaf and an array of up to 30 such leaves. Reused across most test blocks.
 - **`(arrayChunks) properties`** — asserts round-trip (`.flat()` reproduces input), immutability, empty-result for non-positive `n`, saturation of chunk count, max-min length ≤ 1, and no empty chunks.
-- **`(arrayDepth) properties`** — asserts depth is 0 for non-arrays, wrapping adds exactly 1 (recursion law via `fc.letrec`), flat arrays are depth 1, and the result tracks the *deepest* branch regardless of position.
+- **`(arrayDepth) properties`** — asserts depth is 0 for non-arrays, wrapping adds exactly 1 (recursion law via `fc.letrec`), flat arrays are depth 1, and the result tracks the _deepest_ branch regardless of position.
 - **`(associativeSlice) properties`** — asserts key-order preservation, output is a value-identical subset, full-span returns the original object, inverted/empty spans yield `{}`, result width ≤ span width, and input immutability.
 - **`(arrayColumns) properties`** — asserts one result entry per haystack row, list-of-columns adds a nesting level, bare-column equals first slot of the same column as a list, and missing keys yield `undefined`.
 - **`(canonicalize) properties`** — asserts key-order invariance (via local `shuffleKeys` helper that reverses insertion order), idempotency, value preservation, array-order preservation, and recursively sorted keys at every depth. Uses a dedicated `jsonValue` arbitrary restricted to JSON-representable types.

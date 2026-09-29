@@ -15,11 +15,11 @@ Package barrel file. It re-exports every helper's default export under its own n
 
 - **Type re-exports** — `ISecondsToTimeMap`, `ISetCookieOptions`, `IMatchOptions`, `TMatchMode`, `IFormatDateTimeOptions`, `IFormatCurrencyOptions`, `IFormatFileSizeOptions`, `IFormatDurationOptions`, `TDurationUnit`. These are the public option/result types callers need for typed usage.
 - **Function re-exports (~50 helpers)** — Each follows the pattern `export { default as <name> } from './<name>.js'`. Grouped loosely by domain:
-  - *Array / collection*: `arrayChunks`, `appendChildren`, `arrayColumns`, `arrayDepth`, `associativeSlice`, `canonicalize`, `coerceStringArray`
-  - *DOM / UI*: `copyToClipboard`, `deleteFile`, `downloadBlob`, `eventDelegate`, `formatNodeList`, `formatText`, `getElementCenter`, `getForm`, `getIframe`, `getSiblings`, `isInViewport`, `isAcceptedFileType`
-  - *Formatting*: `formatCurrency`, `formatDateTime`, `formatDuration`, `formatFileSize`, `formatFlag`
-  - *Cookie / URL*: `deleteCookie`, `getCookie`, `setCookie`, `getUrlQueries`, `setUrlQueries`
-  - *Data / misc*: `extractErrorMessage`, `getDelta`, `getExecTime`, `getIndex`, `getJson`, `getMapDistance`, `getOverlapRange`, `getUuid`, `getValue`, `isJson`, `isWithinFileSize`, `levenshteinDistance`, `match`, `rangeOverlaps`, `secondsToTime`, `timeToSeconds`, `toFormData`
+    - _Array / collection_: `arrayChunks`, `appendChildren`, `arrayColumns`, `arrayDepth`, `associativeSlice`, `canonicalize`, `coerceStringArray`
+    - _DOM / UI_: `copyToClipboard`, `deleteFile`, `downloadBlob`, `eventDelegate`, `formatNodeList`, `formatText`, `getElementCenter`, `getForm`, `getIframe`, `getSiblings`, `isInViewport`, `isAcceptedFileType`
+    - _Formatting_: `formatCurrency`, `formatDateTime`, `formatDuration`, `formatFileSize`, `formatFlag`
+    - _Cookie / URL_: `deleteCookie`, `getCookie`, `setCookie`, `getUrlQueries`, `setUrlQueries`
+    - _Data / misc_: `extractErrorMessage`, `getDelta`, `getExecTime`, `getIndex`, `getJson`, `getMapDistance`, `getOverlapRange`, `getUuid`, `getValue`, `isJson`, `isWithinFileSize`, `levenshteinDistance`, `match`, `rangeOverlaps`, `secondsToTime`, `timeToSeconds`, `toFormData`
 
 ## Relationships
 

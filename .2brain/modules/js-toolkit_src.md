@@ -1,8 +1,8 @@
 ---
 tags:
-  - 2brain
-  - 2brain/module
-  - project/js-toolkit
+    - 2brain
+    - 2brain/module
+    - project/js-toolkit
 type: module
 module: src/
 files: 47
@@ -36,9 +36,10 @@ updated: 2026-09-28T20:01:02.120590+00:00
 ## Where to start
 
 1. **`src/index.ts`** — Read the barrel file first. It is the complete public API in one view; skimming its export list tells you exactly what the module offers and what option/result types are available.
-2. **`src/eventDelegate.ts`** or **`src/formatNodeList.ts`** — Pick one DOM helper and trace how a "framework-free" DOM utility is structured: a single default-exported function, minimal parameters, defensive guards for `null`/detached nodes, and a comment explaining *why* the helper exists. This pattern repeats across the module and sets the expectation for every other file.
+2. **`src/eventDelegate.ts`** or **`src/formatNodeList.ts`** — Pick one DOM helper and trace how a "framework-free" DOM utility is structured: a single default-exported function, minimal parameters, defensive guards for `null`/detached nodes, and a comment explaining _why_ the helper exists. This pattern repeats across the module and sets the expectation for every other file.
 
 ## Connected modules
+
 ```mermaid
 flowchart LR
     m_src["src/"]
@@ -56,6 +57,7 @@ flowchart LR
 [[js-toolkit_src_internal|src/internal/]] · [[js-toolkit_tests|tests/]] · [[js-toolkit_tests_properties|tests/properties/]] · [[js-toolkit_tests_types|tests/types/]]
 
 ## Files
+
 - `src/appendChildren.ts` — Provides a single helper that appends one or more child nodes (or nested arrays of nodes) to a parent element using a `DocumentFragment`, ensuring the live DOM is mutated exactly once regardless of how many children are passed.
 - `src/arrayChunks.ts` — Provides a single utility function that splits an array into `n` sub-arrays whose lengths differ by at most one element. It exists so callers get a balanced chunking without duplicating the distribution logic (e.g. spreading the remainder across the first chunks rather than dumping it into the last).
 - `src/arrayColumns.ts` — A single-function module that mirrors PHP's `array_column`: it extracts one or more named properties from each record in an array of objects. It always preserves a 1-to-1 slot count with the input so the result can be zipped back by index.
@@ -81,7 +83,7 @@ flowchart LR
 - `src/getElementCenter.ts` — Provides a single utility to compute the geometric centre of a DOM element as a pair of viewport-relative coordinates, derived from its bounding rect.
 - `src/getExecTime.ts` — A tiny utility that measures the wall-clock execution time of any function (sync or async) using Node's monotonic nanosecond clock, returning the function's result together with the elapsed duration in milliseconds.
 - `src/getForm.ts` — Collects the current values of all named form fields within a given `<form>` element into a single `Record<string, unknown>` map keyed by each field's `name` attribute. It exists so callers can snapshot a form's state in one call without manually iterating fields or handling per-type value extraction.
-- `src/getIframe.ts` — Safely retrieves the `<body>` element from an iframe's *own* document (i.e. `contentWindow.document.body`), guarding against the element not actually being an iframe, the iframe being detached, or the window not yet being available. It exists so callers can access cross-document DOM without risking a `TypeError` on a null `contentWindow`.
+- `src/getIframe.ts` — Safely retrieves the `<body>` element from an iframe's _own_ document (i.e. `contentWindow.document.body`), guarding against the element not actually being an iframe, the iframe being detached, or the window not yet being available. It exists so callers can access cross-document DOM without risking a `TypeError` on a null `contentWindow`.
 - `src/getIndex.ts` — Provides a single utility that returns a DOM element's zero-based position among its parent's children (or `-1` when the element is null or detached). It exists as a lightweight, framework-free stand-in for jQuery's `.index()` so the codebase can query sibling position without a library dependency.
 - `src/getJson.ts` — A thin wrapper around `JSON.parse` that converts the thrown `SyntaxError` into an `undefined` return value, allowing callers to treat "not valid JSON" as a normal value rather than handling a control-flow exception.
 - `src/getMapDistance.ts` — Computes the straight-line (Euclidean) distance between two points on a map. By delegating each axis to `getDelta`, it supports optional wrap-around (toroidal) distance when a map `size` is provided, then combines the two axis deltas with `Math.hypot`.
@@ -93,11 +95,11 @@ flowchart LR
 - `src/index.ts` — Package barrel file. It re-exports every helper's default export under its own name and surfaces a handful of option/result types so consumers can import from a single entry point. The file contains no logic of its own — adding a new public helper means adding one `export` line here.
 - `src/isAcceptedFileType.ts` — Provides a single function that checks whether a file's declared MIME type matches an entry in a file input's `accept` list. Exists to give an early, client-side "this won't be accepted" signal before a user waits out an upload that the server would reject.
 - `src/isInViewport.ts` — Provides a single-purpose utility that tests whether a DOM element is visible within the browser viewport, supporting both "fully contained" and "any overlap" semantics. It exists so callers can gate scroll-triggered behavior (lazy loading, animations, intersection checks) without re-implementing the rect/viewport comparison.
-- `src/isJson.ts` — Provides a single, throw-safe helper for parsing a string into a JSON *structure* (object or array). It exists so callers can distinguish "this is a walkable JSON structure" from every other case (parse failure, primitive value, `null`) with one boolean-like check, without wrapping `JSON.parse` in their own `try`/`catch`.
+- `src/isJson.ts` — Provides a single, throw-safe helper for parsing a string into a JSON _structure_ (object or array). It exists so callers can distinguish "this is a walkable JSON structure" from every other case (parse failure, primitive value, `null`) with one boolean-like check, without wrapping `JSON.parse` in their own `try`/`catch`.
 - `src/isWithinFileSize.ts` — A single pure predicate that checks whether a file-like object's `size` is within a caller-supplied byte limit. It exists as a client-side fail-fast guard so oversized files are rejected before any network upload begins; the server remains the authoritative enforcer.
 - `src/levenshteinDistance.ts` — Implements the classic Wagner–Fischer dynamic-programming Levenshtein edit distance. It returns the minimum number of single-character insertions, deletions, or substitutions required to transform one string into another. Serves as the distance metric consumed by the fuzzy-matching logic in this project.
 - `src/match.ts` — Provides a single string-comparison function that supports five comparison modes (exact, contains, contained, either, fuzzy) with optional case-sensitivity and a configurable edit-distance threshold. It centralises the "do these two strings match?" logic so callers don't reimplement trimming, normalisation, or distance checks.
-- `src/rangeOverlaps.ts` — Provides a single utility that quantifies the overlap between two numeric intervals as a magnitude (number of units), returning `0` when the intervals do not intersect. Exists so callers can both test *whether* two ranges overlap and *how much* they overlap in one call.
+- `src/rangeOverlaps.ts` — Provides a single utility that quantifies the overlap between two numeric intervals as a magnitude (number of units), returning `0` when the intervals do not intersect. Exists so callers can both test _whether_ two ranges overlap and _how much_ they overlap in one call.
 - `src/secondsToTime.ts` — Converts a duration in milliseconds into a flat object containing both remainder-style breakdowns (years, months, weeks, …) and single-unit totals (`yearsOnly`, `monthsOnly`, …) using repeated integer division. It exists so callers can pick whichever representation they need without re-deriving the math.
 - `src/setCookie.ts` — A single-purpose module that assembles a `document.cookie` attribute string from a name, value, and an optional set of cookie attributes, then performs one `document.cookie` assignment to add or update that cookie without affecting others.
 - `src/setUrlQueries.ts` — Serializes a plain key/value object into a URL query string using `URLSearchParams`, with optional merging into an existing query string. It exists as a framework-agnostic utility so callers can build query strings for any router or apply them via `history.pushState`/`replaceState` without pulling in a specific framework.
@@ -105,4 +107,5 @@ flowchart LR
 - `src/toFormData.ts` — Converts a plain JavaScript object into a `FormData` instance suitable for multipart/form-data uploads. Because `FormData` is inherently flat (strings and blobs only), this module encodes object nesting via PHP-style bracket keys (`user[tags][0]`), giving the server a parseable path back into the original structure.
 
 ---
+
 [[js-toolkit_INDEX|← js-toolkit index]]

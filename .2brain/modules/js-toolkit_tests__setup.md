@@ -1,8 +1,8 @@
 ---
 tags:
-  - 2brain
-  - 2brain/module
-  - project/js-toolkit
+    - 2brain
+    - 2brain/module
+    - project/js-toolkit
 type: module
 module: tests/_setup/
 files: 1
@@ -21,17 +21,20 @@ updated: 2026-09-28T20:02:01.831906+00:00
 
 ## How it connects
 
-This module is a leaf in the dependency graph: it imports no other project modules, and (by the naming convention `_setup`) other test files import *from* it. It sits at the bottom of the test-infrastructure chain—pure configuration with no runtime dependency on application code.
+This module is a leaf in the dependency graph: it imports no other project modules, and (by the naming convention `_setup`) other test files import _from_ it. It sits at the bottom of the test-infrastructure chain—pure configuration with no runtime dependency on application code.
 
 ## Where to start
 
 Open **`tests/_setup/fastCheck.ts`**. It is the only file in the module and the single point where FastCheck is configured, so reading it tells you exactly what seed, case count, and reporter settings apply to every property-based test in the suite.
 
 ## Connected modules
+
 _(none)_
 
 ## Files
+
 - `tests/_setup/fastCheck.ts`
 
 ---
+
 [[js-toolkit_INDEX|← js-toolkit index]]

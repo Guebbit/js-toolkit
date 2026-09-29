@@ -18,7 +18,7 @@ Jest test suite that verifies `canonicalize` produces a stable, insertion-order-
 - **`undefined`-dropping test** — uses `toStrictEqual` (not `toEqual`) and checks `Object.keys` to guarantee the key is absent, not merely `undefined`.
 - **Date → ISO string test** — confirms `Date` instances are converted at any nesting depth.
 - **Primitive passthrough test** — numbers, strings, booleans, `null`, and `undefined` are returned unchanged.
-- **Circular-reference tests** — default behavior replaces cycles with the string `"[Circular]"`; a `throwOnCircular` flag (second arg) makes it throw instead; a diamond (shared but acyclic) reference is *not* treated as circular.
+- **Circular-reference tests** — default behavior replaces cycles with the string `"[Circular]"`; a `throwOnCircular` flag (second arg) makes it throw instead; a diamond (shared but acyclic) reference is _not_ treated as circular.
 
 ## Relationships
 

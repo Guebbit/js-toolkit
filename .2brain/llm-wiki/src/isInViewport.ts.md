@@ -14,8 +14,8 @@ Provides a single-purpose utility that tests whether a DOM element is visible wi
 ## Key elements
 
 - **default export** `(element: Element, fully = false): boolean` — Reads the element's `getBoundingClientRect()`, compares it to the viewport dimensions, and returns `true` if:
-  - `fully` is `true`: all four edges fall inside the viewport (`top ≥ 0`, `left ≥ 0`, `bottom ≤ height`, `right ≤ width`).
-  - `fully` is `false` (default): any overlap exists (`top < height && bottom > 0 && left < width && right > 0`).
+    - `fully` is `true`: all four edges fall inside the viewport (`top ≥ 0`, `left ≥ 0`, `bottom ≤ height`, `right ≤ width`).
+    - `fully` is `false` (default): any overlap exists (`top < height && bottom > 0 && left < width && right > 0`).
 - **Viewport size fallback** — Uses `window.innerHeight / innerWidth` with a fallback to `document.documentElement.clientHeight / clientWidth` when the window values are `0` (notable in certain sandboxed iframes outside a full browsing context).
 
 ## Relationships

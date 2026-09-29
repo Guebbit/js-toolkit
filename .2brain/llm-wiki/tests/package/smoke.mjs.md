@@ -28,7 +28,7 @@ End-to-end packaging smoke test. It runs `npm pack`, installs the resulting tarb
 
 ## Relationships
 
-No graph neighbors. The script is self-contained: it shells out to `npm` and `node` and reads the repository's `src/`, `package.json`, and `tests/package/exports.json` at runtime. It is invoked by `npm run test:package`, which the build pipeline (`complete:check`, CI) schedules *after* the `build` step.
+No graph neighbors. The script is self-contained: it shells out to `npm` and `node` and reads the repository's `src/`, `package.json`, and `tests/package/exports.json` at runtime. It is invoked by `npm run test:package`, which the build pipeline (`complete:check`, CI) schedules _after_ the `build` step.
 
 ## Notes
 

@@ -29,7 +29,7 @@ Test suite for the `formatCurrency` function. It pins the function's formatting 
 ## Notes
 
 - **Replace-not-merge contract:** the `format` object is used verbatim, not deep-merged with a default. A test explicitly pins this; changing to merge behavior will break it.
-- **Graceful vs. hard failure split:** malformed *data* (locale, currency code, amount) degrades silently; malformed *code config* (`format.maximumFractionDigits > 100`) must throw `RangeError`. The locale fallback must not swallow that throw.
+- **Graceful vs. hard failure split:** malformed _data_ (locale, currency code, amount) degrades silently; malformed _code config_ (`format.maximumFractionDigits > 100`) must throw `RangeError`. The locale fallback must not swallow that throw.
 - **Currency-code validation** is "exactly 3 ASCII letters, case-insensitive." Anything else (digits, non-ASCII, wrong length, empty) triggers the plain-number path.
 - **Zero is not falsy-here:** `0` is formatted normally; the fallback path is only for `undefined`/`null`/`NaN`.
 - An intentional `// eslint-disable-next-line unicorn/no-null` guards the `null` test case.

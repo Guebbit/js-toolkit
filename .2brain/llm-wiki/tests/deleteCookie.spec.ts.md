@@ -15,10 +15,10 @@ Unit tests for the `deleteCookie` utility, verifying both its basic removal beha
 
 - **`describe('deleteCookie')`** — end-to-end round-trip test: sets a cookie via `setCookie`, confirms it with `getCookie`, then asserts it is `undefined` after `deleteCookie`.
 - **`describe('deleteCookie attributes')`** — intercepts writes to `document.cookie` by redefining the property on `document` so the raw string is captured in a local `written` variable. Individual tests assert:
-  - Name is URI-encoded (`the%20me`).
-  - Expiration is the epoch (`Thu, 01 Jan 1970 00:00:00 GMT`).
-  - Default path is `/`; an explicit path is used when provided; path is omitted when empty string is passed.
-  - Domain appears only when explicitly supplied.
+    - Name is URI-encoded (`the%20me`).
+    - Expiration is the epoch (`Thu, 01 Jan 1970 00:00:00 GMT`).
+    - Default path is `/`; an explicit path is used when provided; path is omitted when empty string is passed.
+    - Domain appears only when explicitly supplied.
 
 ## Relationships
 

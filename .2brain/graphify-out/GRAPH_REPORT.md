@@ -1,20 +1,24 @@
-# Graph Report - target-repo  (2026-09-28)
+# Graph Report - target-repo (2026-09-28)
 
 ## Corpus Check
+
 - 165 files · ~48,336 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
+
 - 645 nodes · 609 edges · 129 communities (42 shown, 87 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 3 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
+
 - Built from commit: `90a968ec`
 - Run `2brain check /target-repo` to check if the graph is stale.
 - Run `2brain /target-repo` after code changes.
 
 ## Community Hubs (Navigation)
+
 - Project Documentation & Conventions
 - Package Metadata
 - Mutation Testing Config
@@ -139,6 +143,7 @@
 - WELL_FORMED_CURRENCY regex
 
 ## God Nodes (most connected - your core abstractions)
+
 1. `scripts` - 23 edges
 2. `keywords` - 13 edges
 3. `compilerOptions` - 13 edges
@@ -151,21 +156,24 @@
 10. `Getting Started` - 7 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `CI Workflow` --conceptually_related_to--> `CLAUDE.md — Project Conventions`  [INFERRED]
+
+- `CI Workflow` --conceptually_related_to--> `CLAUDE.md — Project Conventions` [INFERRED]
   .github/workflows/ci.yml → CLAUDE.md
-- `Docs Deploy Workflow` --references--> `VitePress Home Page`  [INFERRED]
+- `Docs Deploy Workflow` --references--> `VitePress Home Page` [INFERRED]
   .github/workflows/docs.yml → docs/index.md
-- `Nightly Property-Fuzz Workflow` --conceptually_related_to--> `mutation-baseline.json`  [INFERRED]
+- `Nightly Property-Fuzz Workflow` --conceptually_related_to--> `mutation-baseline.json` [INFERRED]
   .github/workflows/nightly.yml → CLAUDE.md
-- `CI Workflow` --references--> `mutation-baseline.json`  [EXTRACTED]
+- `CI Workflow` --references--> `mutation-baseline.json` [EXTRACTED]
   .github/workflows/ci.yml → CLAUDE.md
-- `Release Workflow` --references--> `CHANGELOG`  [EXTRACTED]
+- `Release Workflow` --references--> `CHANGELOG` [EXTRACTED]
   .github/workflows/release.yml → CLAUDE.md
 
 ## Import Cycles
+
 - None detected.
 
 ## Hyperedges (group relationships)
+
 - **formatCurrency fix: plan → source → tests → changelog → release** — plan_format_currency_md, src_format_currency_ts, tests_format_currency_test_ts, changelog, github_workflows_release_yml [EXTRACTED 0.90]
 - **CI quality gate: lint, typecheck, build, test, mutation, docs, audit** — github_workflows_ci_yml, eslint_config_mjs, mutation_baseline_json, package_json, commitlint_config_cjs [EXTRACTED 0.85]
 - **@guebbit/js-toolkit consumer ecosystem** — npm_guebbit_js_toolkit, npm_guebbit_vue_toolkit, boilerplate_vue_frontend, boilerplate_node_backend, vue_toolkit [EXTRACTED 0.90]
@@ -175,151 +183,188 @@
 ## Communities (129 total, 87 thin omitted)
 
 ### Community 1 - "Project Documentation & Conventions"
+
 Cohesion: 0.29
 Nodes (7): CLAUDE.md — Project Conventions, commitlint.config.cjs, Dependabot Configuration, CI Workflow, Nightly Property-Fuzz Workflow, mutation-baseline.json, package.json
 
 ### Community 2 - "Package Metadata"
+
 Cohesion: 0.05
 Nodes (36): author, bugs, url, description, engines, node, files, homepage (+28 more)
 
 ### Community 3 - "Mutation Testing Config"
+
 Cohesion: 0.07
 Nodes (29): clear-text, html, json, progress, !src/index.ts, src/**/*.ts, checkers, concurrency (+21 more)
 
 ### Community 4 - "NPM Build Scripts"
+
 Cohesion: 0.09
 Nodes (23): scripts, build, check:clean, complete, complete:check, docs:build, docs:dev, docs:preview (+15 more)
 
 ### Community 5 - "TypeScript Base Config"
+
 Cohesion: 0.09
 Nodes (21): dom.iterable, es2022, node_modules, compilerOptions, allowSyntheticDefaultImports, baseUrl, esModuleInterop, isolatedModules (+13 more)
 
 ### Community 6 - "Mutation Baseline Tracking"
+
 Cohesion: 0.12
 Nodes (13): added, baseline, baselinePath, improvements, inCI, initialising, measured, missingInCI (+5 more)
 
 ### Community 8 - "CJS Build Config"
+
 Cohesion: 0.15
 Nodes (12): compilerOptions, declaration, declarationMap, module, moduleResolution, noEmit, outDir, sourceMap (+4 more)
 
 ### Community 9 - "ESM Build Config"
+
 Cohesion: 0.15
 Nodes (12): compilerOptions, declaration, declarationMap, module, moduleResolution, noEmit, outDir, sourceMap (+4 more)
 
 ### Community 10 - "Testing Infrastructure"
+
 Cohesion: 0.29
 Nodes (6): formatCurrency, getDelta, getMapDistance, getOverlapRange, Numbers and ranges, rangeOverlaps
 
 ### Community 11 - "Collection Utility Functions"
+
 Cohesion: 0.17
 Nodes (5): arrayColumns(), arrayDepth(), canonicalize(), item, list
 
 ### Community 12 - "Test TypeScript Config"
+
 Cohesion: 0.17
 Nodes (11): compilerOptions, noEmit, types, exclude, extends, include, jest, node (+3 more)
 
 ### Community 13 - "Type Testing Config"
+
 Cohesion: 0.18
 Nodes (10): tests/types, compilerOptions, noEmit, rootDir, types, extends, include, node (+2 more)
 
 ### Community 14 - "Time Formatting Utilities"
+
 Cohesion: 0.29
 Nodes (5): IFormatDurationOptions, TDurationUnit, UNITS, factors, ISecondsToTimeMap
 
 ### Community 15 - "ESLint TypeScript Config"
+
 Cohesion: 0.20
 Nodes (9): compilerOptions, types, extends, include, jest, node, src, tests (+1 more)
 
 ### Community 16 - "Dev Dependencies"
+
 Cohesion: 0.22
 Nodes (9): @arethetypeswrong/cli, eslint-plugin-prettier, npm-check-updates, devDependencies, @arethetypeswrong/cli, eslint-plugin-prettier, npm-check-updates, typescript-eslint (+1 more)
 
 ### Community 17 - "Type Declaration Guard"
+
 Cohesion: 0.22
 Nodes (7): cjsRoot, esmRoot, failures, missingFromCjs, missingFromEsm, NODE_IMPORT_ALLOWED, root
 
 ### Community 18 - "Prettier Formatting Config"
+
 Cohesion: 0.25
 Nodes (7): printWidth, $schema, semi, singleQuote, tabWidth, trailingComma, useTabs
 
 ### Community 19 - "File Size Formatting"
+
 Cohesion: 0.29
 Nodes (5): BINARY_UNITS, DECIMAL_UNITS, IFormatFileSizeOptions, TFileSizeUnit, fakeFile
 
 ### Community 20 - "Smoke Test Script"
+
 Cohesion: 0.29
 Nodes (4): frozenExports, pkg, root, temporary
 
 ### Community 21 - "Form Data Conversion"
+
 Cohesion: 0.33
 Nodes (3): toFormData(), queryKey, queryValue
 
 ### Community 24 - "Currency Formatting"
+
 Cohesion: 0.25
 Nodes (4): IFormatCurrencyOptions, NO_CURRENCY_FORMAT, IFormatDateTimeOptions, [start, end]
 
 ### Community 27 - "Time Conversion Utilities"
+
 Cohesion: 0.29
 Nodes (6): formatDateTime, formatDuration, getExecTime, secondsToTime, Time, timeToSeconds
 
 ### Community 29 - "Numeric Property Tests"
+
 Cohesion: 0.50
 Nodes (3): circumference, coordinate, range
 
 ### Community 30 - "String Property Tests"
+
 Cohesion: 0.50
 Nodes (3): anyString, nonEmpty, shortString
 
 ### Community 37 - "Type Export Checking"
+
 Cohesion: 0.10
 Nodes (20): API Docs — Arrays and Objects, Browser and Node, ESM vs CommonJS, Getting Started, Install, Subpath imports and `moduleResolution`, Usage, What the formatters throw (+12 more)
 
 ### Community 38 - "File Validation"
+
 Cohesion: 0.18
 Nodes (10): Browser platform, copyToClipboard, downloadBlob, formatFileSize, getCookie / setCookie / deleteCookie, getUrlQueries, isAcceptedFileType, isWithinFileSize (+2 more)
 
 ### Community 39 - "DOM Viewport Utilities"
+
 Cohesion: 0.17
 Nodes (11): appendChildren, DOM, eventDelegate, formatNodeList, getElementCenter, getForm, getIframe, getIndex (+3 more)
 
 ### Community 40 - "Form Value Utilities"
+
 Cohesion: 0.18
 Nodes (10): Change, Consumers (checked across `~/Work/Guebbit`, 2026-09-28), Design, Goal, Not in this change: needs your call, Plan: `formatCurrency` — the currency's own decimals, and a fallback scoped to its purpose, Steps, Tests (`tests/formatCurrency.test.ts`, or `.spec.ts` if the other plan's Phase 1 renames have landed) (+2 more)
 
 ### Community 41 - "DOM Traversal Utilities"
+
 Cohesion: 0.20
 Nodes (9): Async and error handling, Code layout, Commenting external calls, Comments, Function design, Scope, Tests, TypeScript (+1 more)
 
 ### Community 42 - "JSON Parsing Utilities"
+
 Cohesion: 0.50
 Nodes (3): getJson, isJson, JSON
 
 ### Community 43 - "Text Formatting"
+
 Cohesion: 0.29
 Nodes (6): formatFlag, formatText, getUuid, levenshteinDistance, match, Strings
 
 ### Community 48 - "ESLint Prettier Plugin"
+
 Cohesion: 0.22
 Nodes (9): exports, ./internal/*, ./package.json, import, default, types, require, default (+1 more)
 
 ### Community 74 - "NPM Dependency Updates"
+
 Cohesion: 0.25
 Nodes (7): arrayChunks, arrayColumns, arrayDepth, Arrays and objects, associativeSlice, canonicalize, coerceStringArray
 
 ### Community 93 - "Clipboard Copy"
+
 Cohesion: 0.25
 Nodes (7): API, Browser and Node, Contributing, @guebbit/js-toolkit, Install, License, Usage
 
 ### Community 94 - "Blob Download"
+
 Cohesion: 0.67
 Nodes (3): CHANGELOG, Release Workflow, @guebbit/js-toolkit (npm package)
 
 ## Knowledge Gaps
+
 - **344 isolated node(s):** `husky.sh script`, `$schema`, `semi`, `tabWidth`, `singleQuote` (+339 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **87 thin communities (<3 nodes) omitted from report** — run `2brain query /target-repo "..."` to explore isolated nodes.
 
 ## Suggested Questions
+
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `devDependencies` connect `Dev Dependencies` to `Package Metadata`, `Package Keywords & Tags`, `Commit Linting`, `ESLint`, `ESLint Prettier Config`, `ESLint JS Rules`, `ESLint JSDoc Plugin`, `ESLint Unicorn Plugin`, `Type Assertion Testing`, `Property-Based Testing`, `ESLint Globals`, `Git Hook Manager`, `Jest Test Runner`, `Jest JSdom Environment`, `Mermaid Diagrams`, `Prettier Formatter`, `Package Publishing Lint`, `Mutation Testing Core`, `Stryker Jest Runner`, `Stryker TypeScript Checker`, `TypeScript Jest Transformer`, `Jest Type Definitions`, `Node Type Definitions`, `TypeScript ESLint Plugin`, `TypeScript ESLint Parser`, `VitePress Documentation`, `VitePress Mermaid Plugin`, `DOM Append Children`, `Iframe Access`, `UUID Generation`?**

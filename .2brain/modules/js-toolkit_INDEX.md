@@ -1,8 +1,8 @@
 ---
 tags:
-  - 2brain
-  - 2brain/index
-  - project/js-toolkit
+    - 2brain
+    - 2brain/index
+    - project/js-toolkit
 type: index
 modules: 11
 updated: 2026-09-28T20:03:01.853370+00:00
@@ -13,6 +13,7 @@ updated: 2026-09-28T20:03:01.853370+00:00
 `js-toolkit` is a JavaScript (TypeScript) utility library whose implementation lives in `src/` (with a small `src/internal/` sub-package), accompanied by user-facing documentation in `docs/` and build/automation scripts in `scripts/`. A substantial test suite under `tests/` is subdivided into helpers, setup, package-integration, property-based, and type-level test files. The repository root holds the remaining top-level configuration and metadata files.
 
 ## Module map
+
 ```mermaid
 flowchart LR
     m_docs["docs/<br/>13 files"]
@@ -34,6 +35,7 @@ flowchart LR
 ```
 
 ## Modules
+
 - [[js-toolkit_docs|docs/]] — 13 files, 0 connected modules
 - [[js-toolkit_scripts|scripts/]] — 2 files, 0 connected modules
 - [[js-toolkit_src|src/]] — 47 files, 4 connected modules

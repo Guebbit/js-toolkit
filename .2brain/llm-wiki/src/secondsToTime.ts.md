@@ -15,7 +15,7 @@ Converts a duration in milliseconds into a flat object containing both remainder
 
 - **`ISecondsToTimeMap`** (exported interface) — 16 numeric fields: 8 remainder units (largest-to-smallest) and 8 corresponding `…Only` fields (whole duration expressed in that single unit).
 - **`factors`** (module-private const) — Maps each unit name to its millisecond equivalent. Used as the loop's iteration source.
-- **default export** — `(time?: number) => ISecondsToTimeMap`. Defaults to `0`. Iterates `factors` largest→smallest; for each unit computes `…Only` from the *original* `time` and the remainder from the running `remaining` accumulator.
+- **default export** — `(time?: number) => ISecondsToTimeMap`. Defaults to `0`. Iterates `factors` largest→smallest; for each unit computes `…Only` from the _original_ `time` and the remainder from the running `remaining` accumulator.
 
 ## Relationships
 
@@ -26,5 +26,5 @@ Converts a duration in milliseconds into a flat object containing both remainder
 
 - "Month" is fixed at 30 days and "year" at 365 days. There is no calendar anchoring; use a date library when real month lengths matter.
 - Every field on `ISecondsToTimeMap` is required (no `?`), so callers never need a non-null assertion to read a unit.
-- The `…Only` values use `Math.floor(time / factor)` on the *original* input, not on the remainder. They represent "how many of this unit fit in the whole duration," not "what's left after peeling off larger units."
+- The `…Only` values use `Math.floor(time / factor)` on the _original_ input, not on the remainder. They represent "how many of this unit fit in the whole duration," not "what's left after peeling off larger units."
 - `millisecondsOnly` always equals the input (factor is 1).

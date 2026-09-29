@@ -1,8 +1,8 @@
 ---
 tags:
-  - 2brain
-  - 2brain/module
-  - project/js-toolkit
+    - 2brain
+    - 2brain/module
+    - project/js-toolkit
 type: module
 module: src/internal/
 files: 1
@@ -28,6 +28,7 @@ This module provides small, internal utility functions that the rest of the code
 Read **`src/internal/resolveLocale.ts`** first. It is short, self-contained, and has no further imports—understanding its input/output contract (well-formed tag → pass-through, malformed/empty → `undefined`) is all you need before tracing how `src/` calls it.
 
 ## Connected modules
+
 ```mermaid
 flowchart LR
     m_src_internal["src/internal/"]
@@ -39,7 +40,9 @@ flowchart LR
 [[js-toolkit_src|src/]]
 
 ## Files
+
 - `src/internal/resolveLocale.ts` — Sanitises a user-supplied locale string before it reaches any `Intl` constructor. Malformed BCP 47 tags (e.g. `'en_US'`, `''`) cause `Intl` to throw a `RangeError`; this module maps those cases onto `undefined` so the runtime's default locale is used instead, while passing through well-formed tags and `undefined` unchanged.
 
 ---
+
 [[js-toolkit_INDEX|← js-toolkit index]]

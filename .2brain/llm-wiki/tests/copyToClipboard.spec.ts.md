@@ -15,12 +15,12 @@ Jest test suite for the `copyToClipboard` utility exported from `src/index.ts`. 
 
 - **`mockExecCommand(result)`** — Helper that replaces `document.execCommand` with a Jest mock. Accepts a boolean or a function (to simulate throwing). Returns the mock for later assertions.
 - **`describe('copyToClipboard', …)`** — Six tests covering:
-  - Clipboard API happy path (resolves `true`, calls `writeText`).
-  - Clipboard API rejection + `execCommand` failure → resolves `false`, logs to `console.error`.
-  - Clipboard API absent → falls back to `execCommand('copy')`.
-  - `execCommand` throws → resolves `false`, logs to `console.error`.
-  - Fallback creates exactly one `<textarea>`, sets `value`, `position: fixed`, `opacity: 0`.
-  - When the Clipboard API is absent, `navigator.clipboard` is never accessed (no `TypeError` logged), confirming feature-detection over try/catch.
+    - Clipboard API happy path (resolves `true`, calls `writeText`).
+    - Clipboard API rejection + `execCommand` failure → resolves `false`, logs to `console.error`.
+    - Clipboard API absent → falls back to `execCommand('copy')`.
+    - `execCommand` throws → resolves `false`, logs to `console.error`.
+    - Fallback creates exactly one `<textarea>`, sets `value`, `position: fixed`, `opacity: 0`.
+    - When the Clipboard API is absent, `navigator.clipboard` is never accessed (no `TypeError` logged), confirming feature-detection over try/catch.
 - **`afterEach` cleanup** — Uses `Reflect.deleteProperty` to remove the mocked `navigator.clipboard` and `document.execCommand`, then restores all Jest spies.
 
 ## Relationships
@@ -29,6 +29,6 @@ Jest test suite for the `copyToClipboard` utility exported from `src/index.ts`. 
 
 ## Notes
 
-- The last test is deliberately structured as a **feature-detection guard check**: it asserts that no error is logged when the Clipboard API is missing, ensuring the implementation checks for API existence *before* calling it rather than relying on a catch-all.
+- The last test is deliberately structured as a **feature-detection guard check**: it asserts that no error is logged when the Clipboard API is missing, ensuring the implementation checks for API existence _before_ calling it rather than relying on a catch-all.
 - `document.execCommand` is deprecated; the file carries `eslint-disable` comments for `@typescript-eslint/no-deprecated` wherever it is referenced.
 - The textarea-inspection test wraps the real `document.createElement` to capture instances, so assertions read actual style properties rather than a full DOM mock.

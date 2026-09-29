@@ -25,4 +25,4 @@ Unit tests for the `appendChildren` utility, verifying that it appends one or mo
 ## Notes
 
 - Tests rely on a browser-like DOM (`document.createElement`), so the test runner must provide a DOM environment (e.g., jsdom) rather than running in bare Node.
-- The flattening test passes a *mixed* argument list (element + array) as a single invocation, confirming `appendChildren` handles both shapes in one call.
+- The flattening test passes a _mixed_ argument list (element + array) as a single invocation, confirming `appendChildren` handles both shapes in one call.

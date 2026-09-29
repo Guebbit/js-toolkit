@@ -15,8 +15,8 @@ Covers the `getUrlQueries` branch that executes when no `location` global exists
 
 - **`@jest-environment` directive** — Pins the suite to Stryker's Node jest-env wrapper (not stock `node`) so that mutation-coverage data is reported back to Stryker; under a normal Jest run it behaves identically to `node`.
 - **`describe('(getUrlQueries) outside a browser')`** — Contains two focused assertions:
-  - Asserts `typeof location === 'undefined'` and that `getUrlQueries()` returns `{}`.
-  - Asserts that an explicitly passed query string (`'?lorem=ipsum&dolor=sit'`) still parses to the expected object.
+    - Asserts `typeof location === 'undefined'` and that `getUrlQueries()` returns `{}`.
+    - Asserts that an explicitly passed query string (`'?lorem=ipsum&dolor=sit'`) still parses to the expected object.
 
 ## Relationships
 

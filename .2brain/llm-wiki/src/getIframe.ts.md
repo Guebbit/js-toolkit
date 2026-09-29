@@ -9,14 +9,14 @@ model: ollama:qwen3.8:27b
 
 ## Purpose
 
-Safely retrieves the `<body>` element from an iframe's *own* document (i.e. `contentWindow.document.body`), guarding against the element not actually being an iframe, the iframe being detached, or the window not yet being available. It exists so callers can access cross-document DOM without risking a `TypeError` on a null `contentWindow`.
+Safely retrieves the `<body>` element from an iframe's _own_ document (i.e. `contentWindow.document.body`), guarding against the element not actually being an iframe, the iframe being detached, or the window not yet being available. It exists so callers can access cross-document DOM without risking a `TypeError` on a null `contentWindow`.
 
 ## Key elements
 
 - **default export (function)** — `getIframeBody(iframe?)`. Accepts a loosely typed `HTMLElement | HTMLIFrameElement | Element | null` and returns `HTMLElement | HTMLBodyElement | undefined`. Performs three checks in sequence:
-  1. `tagName === 'IFRAME'` — rejects any non-iframe element.
-  2. `contentWindow` is truthy — rejects detached/unloaded iframes.
-  3. Returns `contentWindow?.document.body`.
+    1. `tagName === 'IFRAME'` — rejects any non-iframe element.
+    2. `contentWindow` is truthy — rejects detached/unloaded iframes.
+    3. Returns `contentWindow?.document.body`.
 
 ## Relationships
 

@@ -16,7 +16,7 @@ Unit-test suite for the `getValue` function, verifying it returns the correct va
 - **`describe('(getValue) get value of various elements', …)`** — single top-level suite containing all tests.
 - **Initial DOM setup** (top of file) — injects a `<form>` into `document.body` with one of each supported element type, used by the first seven tests.
 - **`test('Checkbox', …)`** — asserts `getValue` returns a truthy value (not a specific string) for a checked checkbox.
-- **`test('Radio reads its own group, not a neighbouring one', …)`** — overwrites `document.body.innerHTML` with two radio groups sharing a parent form; asserts each unselected radio resolves to its *own* group's checked value.
+- **`test('Radio reads its own group, not a neighbouring one', …)`** — overwrites `document.body.innerHTML` with two radio groups sharing a parent form; asserts each unselected radio resolves to its _own_ group's checked value.
 - **`test('Radio handles a name containing CSS syntax', …)`** — overwrites `document.body.innerHTML` again with a radio group whose `name` contains `]`, `[`, and `"`; asserts lookup still works, confirming the name is compared as a property rather than interpolated into a selector.
 
 ## Relationships

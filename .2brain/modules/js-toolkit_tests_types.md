@@ -1,8 +1,8 @@
 ---
 tags:
-  - 2brain
-  - 2brain/module
-  - project/js-toolkit
+    - 2brain
+    - 2brain/module
+    - project/js-toolkit
 type: module
 module: tests/types/
 files: 11
@@ -18,17 +18,17 @@ Compile-time type-assertion suite that locks in the public API signatures of the
 ## Key parts
 
 - **Per-domain signature tests** — One file per functional area of the toolkit, each asserting exact parameter types, return types, overloads, and optionality:
-  - `arrays-and-objects.test-d.ts` – generic preservation through array/object helpers
-  - `browser-platform.test-d.ts` – clipboard, cookies, downloads, query-string, FormData, file-check utilities
-  - `dom.test-d.ts` – element-returning helpers keep concrete element types (no widening to `any`)
-  - `errors.test-d.ts` – `extractErrorMessage` accepts `unknown`, returns `string`
-  - `json.test-d.ts` – `getJson` / `isJson` return checked types, not `any`
-  - `node.test-d.ts` – `deleteFile` required-argument enforcement
-  - `numbers-and-ranges.test-d.ts` – numeric helpers and `IFormatCurrencyOptions`
-  - `strings.test-d.ts` – fuzzy matching, edit distance, UUID generation, display formatters
-  - `time.test-d.ts` – unit conversion, execution timing, date/duration formatting
+    - `arrays-and-objects.test-d.ts` – generic preservation through array/object helpers
+    - `browser-platform.test-d.ts` – clipboard, cookies, downloads, query-string, FormData, file-check utilities
+    - `dom.test-d.ts` – element-returning helpers keep concrete element types (no widening to `any`)
+    - `errors.test-d.ts` – `extractErrorMessage` accepts `unknown`, returns `string`
+    - `json.test-d.ts` – `getJson` / `isJson` return checked types, not `any`
+    - `node.test-d.ts` – `deleteFile` required-argument enforcement
+    - `numbers-and-ranges.test-d.ts` – numeric helpers and `IFormatCurrencyOptions`
+    - `strings.test-d.ts` – fuzzy matching, edit distance, UUID generation, display formatters
+    - `time.test-d.ts` – unit conversion, execution timing, date/duration formatting
 
-- **`surface.test-d.ts`** – a single meta-guard that asserts *every* export from the package entry point has a concrete (non-`any`) type. Catches the "any satisfies everything" regression class that per-domain files might miss if a new export is added.
+- **`surface.test-d.ts`** – a single meta-guard that asserts _every_ export from the package entry point has a concrete (non-`any`) type. Catches the "any satisfies everything" regression class that per-domain files might miss if a new export is added.
 
 - **`_fixtures.ts`** – shared type-level fixtures (helper types, sample values) used across the `.test-d.ts` files to avoid duplication.
 
@@ -42,6 +42,7 @@ This module depends on **`src/`** in one direction only: each `.test-d.ts` file 
 2. **`arrays-and-objects.test-d.ts`** – the most representative per-domain file: demonstrates generic preservation, overload checking, and parameter-constraint assertions in a single file. Reading it after `surface.test-d.ts` gives you the full mental model of how this directory protects the API.
 
 ## Connected modules
+
 ```mermaid
 flowchart LR
     m_tests_types["tests/types/"]
@@ -53,6 +54,7 @@ flowchart LR
 [[js-toolkit_src|src/]]
 
 ## Files
+
 - `tests/types/_fixtures.ts`
 - `tests/types/arrays-and-objects.test-d.ts` — A type-level (compile-time) test that verifies the generic signatures of the array and object helper functions exported by the toolkit. It ensures element types are preserved through generic parameters rather than collapsing to `unknown[]`, and that overloaded and parameter-constrained call sites are correctly typed.
 - `tests/types/browser-platform.test-d.ts` — Compile-time type-test for the browser-platform utilities (clipboard, cookies, downloads, query strings, FormData, file checks). It asserts via `expect-type` that every public export has a well-known, non-`any` signature and that specific invalid call sites are rejected by the type system. It guards against silent type regressions without executing any runtime code.
@@ -66,4 +68,5 @@ flowchart LR
 - `tests/types/time.test-d.ts` — Type-level test file that asserts the public TypeScript signatures of the toolkit's time-related utilities (unit conversion, execution timing, and date/duration formatting). It exists to catch accidental signature changes in the type system before they reach consumers, without any runtime execution.
 
 ---
+
 [[js-toolkit_INDEX|← js-toolkit index]]

@@ -15,9 +15,9 @@ Jest test suite for the `associativeSlice` utility, which extracts a contiguous 
 
 - **`describe('(associativeSlice) …')`** — single top-level block; all tests share one fixture object with five keys (`lorem`, `adipiscing`, `dolor`, `elit`, `sit`).
 - **Slicing-range tests** — cover normal range, start-at-zero, end-exclusive boundary, end-past-last, start-past-last, and empty/inverted span (all expected to return `{}`).
-- **Negative-start test** — asserts a negative start index is clamped to `0` (does *not* count back from the end like `Array.prototype.slice`).
+- **Negative-start test** — asserts a negative start index is clamped to `0` (does _not_ count back from the end like `Array.prototype.slice`).
 - **Empty-input test** — `associativeSlice({}, 0, 5)` returns `{}`.
-- **Reference-semantics test** — nested objects in the result are the *same* reference as in the input (no deep clone).
+- **Reference-semantics test** — nested objects in the result are the _same_ reference as in the input (no deep clone).
 - **Immutability test** — the input object is unchanged after a call.
 - **Inherited-key test** — uses `Object.create` to confirm prototype-chain properties do not consume an index slot and are excluded from the result.
 
@@ -28,6 +28,6 @@ Jest test suite for the `associativeSlice` utility, which extracts a contiguous 
 ## Notes
 
 - End index is **exclusive**; an off-by-one in the implementation silently shifts every caller's window.
-- Negative `start` is treated as `0`, *not* as "count back from the end." This diverges from `Array.prototype.slice` and is intentional per the test comment.
+- Negative `start` is treated as `0`, _not_ as "count back from the end." This diverges from `Array.prototype.slice` and is intentional per the test comment.
 - Only **own** enumerable keys are indexed; inherited (prototype) keys are invisible to the slice.
 - Values pass through **by reference** — callers may mutate the nested value and affect both the sliced result and the original object.

@@ -24,4 +24,4 @@ Sanitises a user-supplied locale string before it reaches any `Intl` constructor
 
 - The check is intentionally minimal: it only validates well-formedness via `Intl.getCanonicalLocales` and does **not** canonicalise the tag (e.g. `'no-noy'` is passed through as-is). Downstream `Intl` constructors do their own canonicalisation.
 - Because the export is `default`, consumers must import without a named binding: `import resolveLocale from './internal/resolveLocale'`.
-- The catch block swallows *all* errors from `getCanonicalLocales`, not only `RangeError`. In practice the spec only defines that throw, so this is safe, but it means a future spec change that introduces a different error type would also be silently mapped to the runtime default.
+- The catch block swallows _all_ errors from `getCanonicalLocales`, not only `RangeError`. In practice the spec only defines that throw, so this is safe, but it means a future spec change that introduces a different error type would also be silently mapped to the runtime default.

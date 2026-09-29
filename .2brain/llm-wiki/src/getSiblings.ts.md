@@ -14,10 +14,10 @@ Provides a small utility that returns the sibling elements of a given DOM node (
 ## Key elements
 
 - **`default` export (anonymous function)** — Accepts an `HTMLElement | Element | null`. Returns an `Element[]` of the element's siblings, or an empty array if the argument is null/undefined, has no `parentNode`, or the parent has no `children`. Internally:
-  1. Guards against a falsy element.
-  2. Casts `element.parentNode` to `HTMLElement | null` (because the DOM type is `Node`, which lacks `children`).
-  3. Converts the `children` `HTMLCollection` to an array via `Array.prototype.slice.call`.
-  4. Filters out the original element.
+    1. Guards against a falsy element.
+    2. Casts `element.parentNode` to `HTMLElement | null` (because the DOM type is `Node`, which lacks `children`).
+    3. Converts the `children` `HTMLCollection` to an array via `Array.prototype.slice.call`.
+    4. Filters out the original element.
 
 ## Relationships
 

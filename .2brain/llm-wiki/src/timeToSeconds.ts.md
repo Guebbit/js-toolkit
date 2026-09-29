@@ -14,8 +14,8 @@ Converts a delimited time string (e.g. `"14:30:05:250"`) into a **milliseconds**
 ## Key elements
 
 - **Default export** – `(date?: string, delimiter?: string): number`
-  - Splits `date` on `delimiter` (default `':'`), maps each part to an integer (`Number.parseInt`), and computes `(h × 3600 + m × 60 + s) × 1000 + ms`.
-  - Destructures into exactly four slots (`hours`, `minutes`, `seconds`, `milliseconds`), each defaulting to `0` when absent.
+    - Splits `date` on `delimiter` (default `':'`), maps each part to an integer (`Number.parseInt`), and computes `(h × 3600 + m × 60 + s) × 1000 + ms`.
+    - Destructures into exactly four slots (`hours`, `minutes`, `seconds`, `milliseconds`), each defaulting to `0` when absent.
 
 ## Relationships
 

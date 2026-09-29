@@ -1,8 +1,8 @@
 ---
 tags:
-  - 2brain
-  - 2brain/module
-  - project/js-toolkit
+    - 2brain
+    - 2brain/module
+    - project/js-toolkit
 type: module
 module: tests/_helpers/
 files: 2
@@ -29,6 +29,7 @@ updated: 2026-09-28T20:01:51.326332+00:00
 Read **`dom.ts`** first—it is the more general of the two and shows the conventions (naming, export style, how test state is created and torn down) used across the helpers. Then skim **`cookies.ts`**, which follows the same pattern in a narrower domain. Together they take well under five minutes to read and give you the full API surface the rest of the suite relies on.
 
 ## Connected modules
+
 ```mermaid
 flowchart LR
     m_tests_helpers["tests/_helpers/"]
@@ -40,8 +41,10 @@ flowchart LR
 [[js-toolkit_tests|tests/]]
 
 ## Files
+
 - `tests/_helpers/cookies.ts`
 - `tests/_helpers/dom.ts`
 
 ---
+
 [[js-toolkit_INDEX|← js-toolkit index]]

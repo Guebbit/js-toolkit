@@ -14,9 +14,9 @@ A single-function module that parses a URL query string into a plain `Record<str
 ## Key elements
 
 - **Default export** — `parseQueryString(search?, arraySeparator?)`
-  - `search` (`string | URLSearchParams`, optional): the query string to parse. Defaults to `location.search` in a browser; falls back to `''` in non-DOM environments (e.g. Node).
-  - `arraySeparator` (`string | false`, default `','`): character that splits a single param value into an array. Pass `false` to disable splitting.
-  - For each unique key (deduplicated via `Set`), collects all values with `URLSearchParams#getAll`, optionally splits each value on the separator, and returns a **single string** if exactly one value survives, otherwise a **string array**.
+    - `search` (`string | URLSearchParams`, optional): the query string to parse. Defaults to `location.search` in a browser; falls back to `''` in non-DOM environments (e.g. Node).
+    - `arraySeparator` (`string | false`, default `','`): character that splits a single param value into an array. Pass `false` to disable splitting.
+    - For each unique key (deduplicated via `Set`), collects all values with `URLSearchParams#getAll`, optionally splits each value on the separator, and returns a **single string** if exactly one value survives, otherwise a **string array**.
 
 ## Relationships
 

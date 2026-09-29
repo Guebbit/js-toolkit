@@ -1,8 +1,8 @@
 ---
 tags:
-  - 2brain
-  - 2brain/module
-  - project/js-toolkit
+    - 2brain
+    - 2brain/module
+    - project/js-toolkit
 type: module
 module: tests/
 files: 48
@@ -28,7 +28,7 @@ The `tests/` directory contains the project's full Jest unit-test suite. Every `
 
 ## How it connects
 
-- **`src/`** – Every spec imports the utility under test from `src/index.ts` (or `../src`). The tests are the behavioural contract for the public API defined there; they run *after* `src/` in the build/test pipeline and never import from one another directly.
+- **`src/`** – Every spec imports the utility under test from `src/index.ts` (or `../src`). The tests are the behavioural contract for the public API defined there; they run _after_ `src/` in the build/test pipeline and never import from one another directly.
 - **`tests/_helpers/`** – Shared mocks, DOM fixtures, and assertion helpers live here and are imported by individual specs to reduce duplication (e.g., stubbing `document.cookie`, simulating clipboard events, or building mock `NodeList` objects).
 
 ## Where to start
@@ -37,6 +37,7 @@ The `tests/` directory contains the project's full Jest unit-test suite. Every `
 2. **`tests/arrayChunks.spec.ts`** – A small, dependency-free spec that demonstrates the project's testing style (clear arrange/act/assert, edge-case calls, and inline expected output) without requiring DOM mocks, making it an easy reference for writing new tests.
 
 ## Connected modules
+
 ```mermaid
 flowchart LR
     m_tests["tests/"]
@@ -50,6 +51,7 @@ flowchart LR
 [[js-toolkit_src|src/]] · [[js-toolkit_tests__helpers|tests/_helpers/]]
 
 ## Files
+
 - `tests/appendChildren.spec.ts` — Unit tests for the `appendChildren` utility, verifying that it appends one or more child elements to a parent node, flattens nested arrays, and returns the parent element.
 - `tests/arrayChunks.spec.ts` — Jest test suite that verifies the `arrayChunks` utility correctly splits an array into N sub-arrays of as-equal length as possible. It exists to lock in the balancing behavior of `arrayChunks` against a fixed 9-element string array.
 - `tests/arrayColumns.spec.ts` — Test suite for the `arrayColumns` utility, verifying that it correctly extracts values from one or more named columns across an array of row objects. It also pins down edge-case behavior: non-array inputs, missing/null rows, empty column names, and prototype-property safety.
@@ -100,4 +102,5 @@ flowchart LR
 - `tests/toFormData.spec.ts` — Unit tests for the `toFormData` utility. Verifies that plain JavaScript objects (including nested structures, arrays, File/Blob values, nulls, and prototype-inherited properties) are correctly serialized into a `FormData` instance, and that the function respects a caller-supplied `FormData` for appending.
 
 ---
+
 [[js-toolkit_INDEX|← js-toolkit index]]

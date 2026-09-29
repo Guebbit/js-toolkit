@@ -9,7 +9,7 @@ model: ollama:qwen3.8:27b
 
 ## Purpose
 
-Property-based test suite (via `fast-check`) that verifies round-trip and algebraic invariants of the utility functions exported by `src/index.ts`. It exists to pin down the *contract* of serialization/deserialization pairs so that refactors cannot silently break symmetry without tripping a property.
+Property-based test suite (via `fast-check`) that verifies round-trip and algebraic invariants of the utility functions exported by `src/index.ts`. It exists to pin down the _contract_ of serialization/deserialization pairs so that refactors cannot silently break symmetry without tripping a property.
 
 ## Key elements
 

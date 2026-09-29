@@ -15,9 +15,9 @@ Unit tests for the `isInViewport` utility, verifying both its default "any pixel
 
 - **`beforeAll`** – Patches `globalThis.innerWidth` / `innerHeight` to fixed values (1024 × 768) for a deterministic viewport.
 - **`describe('isInViewport')`** – Top-level suite covering:
-  - Basic visibility: fully inside → `true`, partially inside → `true`, entirely outside → `false`.
-  - `fully` parameter: partial visibility with `fully: true` → `false`; full visibility with `fully: true` → `true`.
-- **`describe('partial branch boundaries')`** – Four tests, each causing exactly one of the four strict-inequality checks (`top < h`, `bottom > 0`, `left < w`, `right > 0`) to fail, confirming the element is reported as *not* in the viewport.
+    - Basic visibility: fully inside → `true`, partially inside → `true`, entirely outside → `false`.
+    - `fully` parameter: partial visibility with `fully: true` → `false`; full visibility with `fully: true` → `true`.
+- **`describe('partial branch boundaries')`** – Four tests, each causing exactly one of the four strict-inequality checks (`top < h`, `bottom > 0`, `left < w`, `right > 0`) to fail, confirming the element is reported as _not_ in the viewport.
 - **`describe('fully branch boundaries')`** – Eight tests (each boundary at the exact edge and one pixel past) confirming the inclusive logic (`>= 0`, `<= width/height`): touching the edge → `true`, one pixel beyond → `false`.
 
 ## Relationships
@@ -27,6 +27,6 @@ Unit tests for the `isInViewport` utility, verifying both its default "any pixel
 
 ## Notes
 
-- The two modes use *different* comparison operators: the partial branch uses **strict** inequalities (element touching an edge is **not** considered in-viewport), while the fully branch uses **inclusive** comparisons (touching an edge **is** considered fully in-viewport). The boundary tests exist specifically to pin this asymmetry.
+- The two modes use _different_ comparison operators: the partial branch uses **strict** inequalities (element touching an edge is **not** considered in-viewport), while the fully branch uses **inclusive** comparisons (touching an edge **is** considered fully in-viewport). The boundary tests exist specifically to pin this asymmetry.
 - Viewport dimensions are set via `Object.defineProperty` on `globalThis` rather than a framework mock, so any test running in the same worker inherits these values unless it redefines them.
 - `stubRect` returns a plain object with `{top, left, bottom, right}`; the code under test must read only those four properties.

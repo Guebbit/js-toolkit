@@ -15,10 +15,10 @@ Unit-test suite for the `getCookie` helper exported by the library. It verifies 
 
 - **`setRawCookie(cookie: string)`** – Local helper that writes a raw string directly to `document.cookie` (bypasses any library setter). Used to seed state before each assertion.
 - **`describe('getCookie')`** – Top-level test block containing four cases:
-  - *reads an existing cookie* – basic happy-path read.
-  - *decodes the value* – confirms the returned value is `decodeURIComponent`-ed (e.g. `a b&c`).
-  - *returns undefined for a missing cookie* – absent name yields `undefined`, not `""` or a throw.
-  - *does not match a cookie whose name is only a prefix* – guards against naive `startsWith` matching (`themeExtra` ≠ `theme`).
+    - _reads an existing cookie_ – basic happy-path read.
+    - _decodes the value_ – confirms the returned value is `decodeURIComponent`-ed (e.g. `a b&c`).
+    - _returns undefined for a missing cookie_ – absent name yields `undefined`, not `""` or a throw.
+    - _does not match a cookie whose name is only a prefix_ – guards against naive `startsWith` matching (`themeExtra` ≠ `theme`).
 - **`afterEach(clearCookies)`** – Resets `document.cookie` between tests so cases are independent.
 
 ## Relationships

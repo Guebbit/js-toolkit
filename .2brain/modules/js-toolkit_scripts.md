@@ -1,8 +1,8 @@
 ---
 tags:
-  - 2brain
-  - 2brain/module
-  - project/js-toolkit
+    - 2brain
+    - 2brain/module
+    - project/js-toolkit
 type: module
 module: scripts/
 files: 2
@@ -29,11 +29,14 @@ This module is a leaf node in the dependency graph—it depends on no other inte
 Read **`scripts/build.mjs`** first: it is the entry point for every publishable artifact and shows the dual-compile strategy and output layout in a single, short file. Next, glance at **`scripts/mutation-baseline.mjs`** to understand how the project guards against silent test-quality decay on a per-file basis.
 
 ## Connected modules
+
 _(none)_
 
 ## Files
+
 - `scripts/build.mjs` — Builds dual ESM and CommonJS outputs (plus type declarations) from a single TypeScript source tree by invoking `tsc` twice with separate tsconfig files, then writes marker `package.json` files so Node resolves each output directory with the correct module system.
 - `scripts/mutation-baseline.mjs` — Per-file mutation-testing gate. Reads a Stryker JSON report, compares each file's kill score against a committed `mutation-baseline.json`, fails the run on any regression, and ratchets baselines upward only when the entire run is regression-free. Replaces a single global percentage that can hide a weak file behind a strong one.
 
 ---
+
 [[js-toolkit_INDEX|← js-toolkit index]]

@@ -25,6 +25,6 @@ No dependency-graph neighbors. This file is a self-contained CLI entry point (sh
 ## Notes
 
 - Resolves the package root by going two directories up from the script's own location (`tests/package/` → repo root), so it must be run from its expected place in the tree.
-- The `internal/` prohibition is a project convention documented in `CLAUDE.md` under "Function design": a public helper may *call* internal code, but its declaration must not *reference* it, because `internal/` is outside the `exports` map and consumers cannot import or name those types.
+- The `internal/` prohibition is a project convention documented in `CLAUDE.md` under "Function design": a public helper may _call_ internal code, but its declaration must not _reference_ it, because `internal/` is outside the `exports` map and consumers cannot import or name those types.
 - `NODE_IMPORT_ALLOWED` is keyed by **basename** only; if a file is renamed or moved, the guard will flag it.
 - The script assumes both `dist/esm` and `dist/cjs` already exist; it will throw on a missing directory rather than reporting a friendly failure.

@@ -14,11 +14,11 @@ Jest test suite for the `isJson` utility, which parses a JSON string and returns
 ## Key elements
 
 - **`describe('(isJson) …')`** — single top-level block importing `isJson` from `../src` and containing all test cases:
-  - *Empty / populated arrays and objects* — verifies parsing and that the return value is the parsed structure (not a boolean).
-  - *Malformed JSON* — confirms `false` is returned for syntactically invalid input (single quotes, missing value, plain text).
-  - *Rejection of non-structure values* — `'5'`, `'"lorem"'`, `'true'`, `'false'`, `'null'` all return `false`, because the function is defined as checking for a *structure* and because `false` is the failure sentinel.
-  - *No console output* — spies on `console.error` to assert the library stays silent on invalid input.
-  - *Nested structures* — `{"a":{"b":[1,2]}}` parses to the full nested object.
+    - _Empty / populated arrays and objects_ — verifies parsing and that the return value is the parsed structure (not a boolean).
+    - _Malformed JSON_ — confirms `false` is returned for syntactically invalid input (single quotes, missing value, plain text).
+    - _Rejection of non-structure values_ — `'5'`, `'"lorem"'`, `'true'`, `'false'`, `'null'` all return `false`, because the function is defined as checking for a _structure_ and because `false` is the failure sentinel.
+    - _No console output_ — spies on `console.error` to assert the library stays silent on invalid input.
+    - _Nested structures_ — `{"a":{"b":[1,2]}}` parses to the full nested object.
 
 ## Relationships
 

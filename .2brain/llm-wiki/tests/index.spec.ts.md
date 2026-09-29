@@ -15,15 +15,15 @@ Runtime smoke test for the barrel module (`src/index.ts`). It verifies that ever
 
 - **`describe('barrel')`** — the single test suite in the file.
 - **`test('every export is a callable function')`** — asserts two things:
-  - `Object.values(toolkit)` has exactly **46** entries (the expected export count).
-  - Every value satisfies `typeof value === 'function'`.
+    - `Object.values(toolkit)` has exactly **46** entries (the expected export count).
+    - Every value satisfies `typeof value === 'function'`.
 
 ## Relationships
 
-- **`src/index.ts`** — imported as `* as toolkit`. This spec is the only consumer that checks the barrel's *runtime* shape; it does not exercise individual exports' behavior, only that they exist and are callable.
+- **`src/index.ts`** — imported as `* as toolkit`. This spec is the only consumer that checks the barrel's _runtime_ shape; it does not exercise individual exports' behavior, only that they exist and are callable.
 
 ## Notes
 
 - The export count (`46`) is **hardcoded**. Adding or removing a re-export in `src/index.ts` requires updating this literal, otherwise the test fails.
-- The file deliberately complements `tests/types/surface.test-d.ts`: the type test validates the *static* surface, while this spec guards the *runtime* surface.
+- The file deliberately complements `tests/types/surface.test-d.ts`: the type test validates the _static_ surface, while this spec guards the _runtime_ surface.
 - The test does **not** call the exported functions; it only checks `typeof`. Actual behavior coverage lives elsewhere.

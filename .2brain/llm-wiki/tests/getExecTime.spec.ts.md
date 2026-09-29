@@ -16,7 +16,7 @@ Test suite for the `getExecTime` utility, verifying that it correctly wraps a (s
 - **`(getExecTime) measure execution time of a function`** — the single `describe` block; all five `test` cases live inside it.
 - **Sync result test** — confirms `result` is the return value of a plain synchronous function.
 - **Async result test** — confirms `result` is the resolved value when the wrapped function returns a Promise.
-- **Elapsed-time test** — asserts `time` is a number ≥ 0 *and* < 60 000 ms (the upper bound guards against a unit-conversion or sign-inversion bug that a `≥ 0` check alone would miss).
+- **Elapsed-time test** — asserts `time` is a number ≥ 0 _and_ < 60 000 ms (the upper bound guards against a unit-conversion or sign-inversion bug that a `≥ 0` check alone would miss).
 - **Sync-throw test** — uses `expect(() => …).toThrow` (synchronous assertion) to confirm a thrown error in the timed function surfaces immediately, not as a rejection.
 - **Async-reject test** — uses `expect(…).rejects.toThrow` to confirm a rejected Promise from the timed function surfaces as a rejection of `getExecTime`'s own Promise.
 

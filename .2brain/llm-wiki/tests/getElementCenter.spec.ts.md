@@ -14,9 +14,9 @@ Unit tests for the `getElementCenter` function, verifying that it correctly comp
 ## Key elements
 
 - **`describe('getElementCenter')`** — Test suite containing three cases:
-  - *"calculates the center of a given element"* — 100×200 rect at origin expects `[50, 100]`.
-  - *"handles element with zero width and height"* — Degenerate 0×0 rect expects `[0, 0]`.
-  - *"calculates the center of a positioned element"* — 200×300 rect at (100, 150) expects `[200, 300]`.
+    - _"calculates the center of a given element"_ — 100×200 rect at origin expects `[50, 100]`.
+    - _"handles element with zero width and height"_ — Degenerate 0×0 rect expects `[0, 0]`.
+    - _"calculates the center of a positioned element"_ — 200×300 rect at (100, 150) expects `[200, 300]`.
 - **`stubRect(...)`** (imported) — Builds a minimal object with `left`, `top`, `width`, `height` to stand in for a real DOM element's bounding rect, avoiding any real DOM dependency.
 
 ## Relationships

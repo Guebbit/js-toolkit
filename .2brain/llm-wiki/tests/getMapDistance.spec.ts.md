@@ -8,9 +8,11 @@ model: ollama:qwen3.8:27b
 # tests/getMapDistance.spec.ts
 
 ## Purpose
+
 Unit tests for the `getMapDistance` function, verifying both plain (unbounded) Euclidean distance and the optional wrapping-around-map-edges behavior. The test suite is written to catch specific regressions: swapped axis arguments, leaking map size into a coordinate, and non-symmetric results.
 
 ## Key elements
+
 - **`describe('(getMapDistance) …')`** — top-level suite; no setup/teardown hooks.
 - **Zero-distance test** — same point returns `0`.
 - **3-4-5 triangle test** — pins the exact Pythagorean result so a swapped-arg bug shows as a wrong number, not just a reordered one.
@@ -21,9 +23,11 @@ Unit tests for the `getMapDistance` function, verifying both plain (unbounded) E
 - **Symmetry test** — swapping both points produces the identical distance.
 
 ## Relationships
+
 - **`src/index.ts`** — the sole import target; provides the `getMapDistance` function under test. No other modules are touched.
 
 ## Notes
+
 - The function signature is positional: `(x1, y1, x2, y2, size?)`. The 5th argument (`size`) is optional and enables edge-wrapping; omitting it yields plain Euclidean distance.
-- Test comments are written to explain *which* regression each case guards against (swapped args, size-as-coordinate confusion). Keep them when editing so the intent stays visible.
+- Test comments are written to explain _which_ regression each case guards against (swapped args, size-as-coordinate confusion). Keep them when editing so the intent stays visible.
 - The suite uses `toBe` for exact integer results and `toBeCloseTo` for floating-point results; match that convention when adding cases.

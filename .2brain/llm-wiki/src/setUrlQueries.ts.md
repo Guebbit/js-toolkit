@@ -15,14 +15,14 @@ Serializes a plain key/value object into a URL query string using `URLSearchPara
 
 - **`QueryValue`** (type) — Union of `string | number | boolean | null | undefined` and arrays of those scalars. Defines what a query value may be.
 - **default export** (function) — Takes three arguments:
-  - `query: Record<string, QueryValue>` — key/value pairs to serialize.
-  - `merge: string | URLSearchParams | false` (default `false`) — an existing query string or `URLSearchParams` to start from; its keys are preserved unless overwritten by `query`.
-  - `arraySeparator: string` (default `','`) — separator used when joining array values.
+    - `query: Record<string, QueryValue>` — key/value pairs to serialize.
+    - `merge: string | URLSearchParams | false` (default `false`) — an existing query string or `URLSearchParams` to start from; its keys are preserved unless overwritten by `query`.
+    - `arraySeparator: string` (default `','`) — separator used when joining array values.
 
-  Behavior:
-  - Drops (deletes) any key whose value is `undefined`, `null`, `''`, or an empty array.
-  - Joins array values with `arraySeparator`.
-  - Returns a plain query string (no leading `?`).
+    Behavior:
+    - Drops (deletes) any key whose value is `undefined`, `null`, `''`, or an empty array.
+    - Joins array values with `arraySeparator`.
+    - Returns a plain query string (no leading `?`).
 
 ## Relationships
 
@@ -32,5 +32,5 @@ Serializes a plain key/value object into a URL query string using `URLSearchPara
 
 - The default export is a **function**, not a named export — import with a default import (`import setUrlQueries from …`).
 - The returned string does **not** include a leading `?`. Callers must prepend it when constructing a full URL.
-- When `merge` is provided, keys present in `merge` but *absent* from `query` survive; keys present in both are overwritten by `query`.
+- When `merge` is provided, keys present in `merge` but _absent_ from `query` survive; keys present in both are overwritten by `query`.
 - `parameters.delete(key)` is called for empty values even if the key isn't in the merged set — this is a no-op in that case but ensures correctness when it is.

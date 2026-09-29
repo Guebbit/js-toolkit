@@ -15,7 +15,7 @@ Unit tests for the `formatText` utility. Verifies that the function returns its 
 
 - **`describe('(formatText) …')`** — top-level suite grouping all tests for the single `formatText` function.
 - **`test('returns the text when there is some')`** — asserts pass-through of a plain non-empty string.
-- **`test('preserves surrounding whitespace of a non-empty value')`** — confirms leading/trailing spaces are *not* trimmed from a valid value.
+- **`test('preserves surrounding whitespace of a non-empty value')`** — confirms leading/trailing spaces are _not_ trimmed from a valid value.
 - **`test.each([...])('falls back for %s')`** — table-driven test covering five "empty" cases: `undefined`, `null`, `''`, whitespace-only (`'   '`), and a lone tab (`'\t'`). Each must produce the default fallback `'—'`.
 - **`test('accepts a custom fallback')`** — verifies the optional second argument overrides the default glyph.
 
@@ -25,6 +25,6 @@ Unit tests for the `formatText` utility. Verifies that the function returns its 
 
 ## Notes
 
-- The `null` case carries an explicit `// eslint-disable-next-line unicorn/no-null` comment because the test *intentionally* exercises `null` handling despite the lint rule banning it.
+- The `null` case carries an explicit `// eslint-disable-next-line unicorn/no-null` comment because the test _intentionally_ exercises `null` handling despite the lint rule banning it.
 - The fallback glyph is the em-dash character `—` (U+2014), not a hyphen.
-- Whitespace-only strings are treated as "empty" (fall back), but whitespace *surrounding* non-empty content is preserved—these are distinct rules.
+- Whitespace-only strings are treated as "empty" (fall back), but whitespace _surrounding_ non-empty content is preserved—these are distinct rules.

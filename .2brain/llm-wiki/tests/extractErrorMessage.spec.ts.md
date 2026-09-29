@@ -25,6 +25,6 @@ Jest test suite for `extractErrorMessage`, a utility that pulls a human-readable
 ## Notes
 
 - The function's inferred signature is `extractErrorMessage(value: unknown, fallback?: string): string`.
-- Shallow-preference is an explicit, tested invariant: nesting can *add* a message but never *replace* one already present at a shallower level.
+- Shallow-preference is an explicit, tested invariant: nesting can _add_ a message but never _replace_ one already present at a shallower level.
 - Several `// eslint-disable-next-line` comments suppress `unicorn/no-null` and `unicorn/error-message` rules; these are intentional — the tests deliberately exercise `null` and empty-`Error`-message paths.
 - The "nothing readable" table includes a non-string `message` value (`{ message: 42 }`), documenting that only string messages are considered valid.

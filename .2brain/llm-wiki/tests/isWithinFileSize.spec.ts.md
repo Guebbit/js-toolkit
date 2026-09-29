@@ -15,10 +15,10 @@ Unit tests for the `isWithinFileSize` utility, verifying that it correctly accep
 
 - **`FIVE_MB`** — local constant (`5 * 1024 * 1024`) used as the reference limit throughout the suite.
 - **`describe('(isWithinFileSize) …')`** — single top-level block containing:
-  - Accepts a file **under** the limit.
-  - Accepts a file **exactly at** the limit (inclusive boundary).
-  - Rejects a file **over** the limit by one byte.
-  - `test.each` over degenerate maxima (`0`, `-1`, `NaN`): all must behave as "no limit" and return `true`.
+    - Accepts a file **under** the limit.
+    - Accepts a file **exactly at** the limit (inclusive boundary).
+    - Rejects a file **over** the limit by one byte.
+    - `test.each` over degenerate maxima (`0`, `-1`, `NaN`): all must behave as "no limit" and return `true`.
 
 ## Relationships
 
